@@ -1,0 +1,89 @@
+\documentclass{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\title{Specyfikacja funkcjonalna - Poker Royal Flush}
+\author{Artur Prasuła}
+
+\begin{document}
+\maketitle
+
+\section{Opis ogólny}
+    \subsection{Nazwa programu}
+        Poker Royal Flush
+    
+    \subsection{Poruszany problem}
+        Program umożliwiać będzie sieciową grę w pokera, pomiędzy sześcioma graczami.
+    
+    \subsection{Użytkownik docelowy}
+        Granie w tę grę, nie będzie wiązało się z ryzykiem przegrania pieniędzy, dzięki czemu program przeznaczony jest do dwóch grup osób.
+        Pierwsza grupa to miłośnicy pokera, którzy nie chcą wydawać pieniędzy i martwić się stratami, a
+        druga grupa to osoby początkujące, które dopiero uczą się gry i nie chcą przegrywać pieniędzy w swoich pierwszych rozgrywkach.
+
+\section{Opis funkcjonalności}
+    \subsection{Jak korzystać z programu}
+        Aplikację kliencką obsłużyć będzie można za pomocą myszy komputerowej.
+        Po uruchomieniu programu, poprosi on użytkownika o podanie odpowiednich informacji, takich jak: IP serwera, port.
+        W czasie rozgrywki, wszystkie możliwe ruchy będą wyświetlone w dolnym menu, a wykonanie ruchu będzie się wiązało z kliknięciem odpowiedniego przycisku w tym menu. Odpowiedni kolor graczy, będzie sygnalizować o tym kogo jest kolej na wykonanie ruchu.
+        \\
+        Aplikację serwerową należy jedynie uruchomić z odpowiednimi parametrami. W czasie rozgrywki serwer nie będzie wymagać żadnej ingerencji użytkownika.
+    
+    \subsection{Uruchomienie programu}
+        Aplikację kliencką uruchomimy z poziomu GUI systemu operacyjnego, klikając dwa razy na aplikację \textbf{PokerRoyalFlush.jar}.
+        \\
+        Aplikację serwerową uruchomimy z poziomu linii poleceń.
+        \begin{center}
+            java -jar PokerRoyalFlushServer.jar [port] [start money] [blind]
+        \end{center}
+        gdzie,\\
+        \textbf{port} - port serwera (domyślnie - 5000)\\
+        \textbf{start money} - wartość początkowej ilości pieniędzy jaką dostaje każdy z gracz po dołączeniu do stołu (domyślnie - 200)\\
+        \textbf{blind} - wartość ciemnej (domyślnie - 1)
+    
+    \subsection{Możliwości programu}
+        \begin{itemize}
+            \item Jednoczesna rozgrywka w pokera dla maksymalnie sześciu graczy przez internet
+            \item Automatyczne obliczanie siły układu
+            \item Automatyczna kontrola rozgrywki przez serwer
+            \item Komunikacja program-użytkownik za pomocą GUI
+            \item System odzyskiwania danych przy zerwaniu połączenia
+        \end{itemize}
+
+\section{Format danych i struktura plików}
+    \subsection{Struktura katalogów}
+        Użytkownik docelowy otrzyma jeden katalog w którym będą znajdować się jedynie dwie aplikacje: \textbf{PokerRoyalFlush.jar} - klient gry, \textbf{PokerRoyalFlushServer.jar} - serwer gry.
+    
+    \subsection{Dane wejściowe}
+        \subsubsection{Klient}
+            Danymi wejściowymi dla aplikacji klienckiej są informacje potrzebne do połączenia się z serwerem.
+            Użytkownikowi po włączeniu programu, ukaże się małe okno w którym, będzie poproszony o podanie: \textbf{IP serwera}, \textbf{port serwera}.
+        
+        \subsubsection{Serwer}
+            Jedyne dane wejściowe jakich serwer potrzebuje to dane, które użytkownik podaje jako parametry uruchomienne. Zostały one opisane w rozdziale \textbf{2.2 Uruchomienie programu}.
+    
+    \subsection{Dane wyjściowe}
+        \subsubsection{Klient}
+            Program nie będzie generować ani modyfikować żadnych plików. Wszystkie dane wyjściowe będą pokazywane w GUI.
+        
+        \subsubsection{Serwer}
+            Serwer będzie tworzyć plik logujący \textbf{log.txt}. Wszystkie komunikaty (także te o błędach) będą wypisywane w oknie konsoli oraz do pliku \textbf{log.txt}.
+
+\section{Scenariusz działania programu}
+    \subsection{Scenariusz ogólny}
+        \begin{enumerate}
+            \item Uruchomienie aplikacji serwerowej
+            \item Uruchomienie aplikacji klienckiej
+            \item Połączenie się aplikacji klienckiej z serwerową
+            \item Rozpoczęcie rozgrywki
+            \item % DO DOKONCZENIA
+        \end{enumerate}
+    
+    \subsection{Scenariusz szczegółowy}
+    
+    \subsection{Ekran działania programu}
+
+\section{Testowanie}
+
+
+\end{document}
