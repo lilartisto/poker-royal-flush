@@ -3,12 +3,15 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
+\usepackage{polski}
 
 \title{Specyfikacja funkcjonalna - Poker Royal Flush}
 \author{Artur Prasuła}
 
 \begin{document}
 \maketitle
+\tableofcontents
+\newpage
 
 \section{Opis ogólny}
     \subsection{Nazwa programu}
@@ -16,23 +19,24 @@
     
     \subsection{Poruszany problem}
         Program umożliwiać będzie sieciową grę w pokera, pomiędzy sześcioma graczami.
+        Udział w rozgrywkach będzie całkowicie darmowy i nie będzie wiązał się z ryzykiem przegrania swoich pieniędzy.
     
     \subsection{Użytkownik docelowy}
-        Granie w tę grę, nie będzie wiązało się z ryzykiem przegrania pieniędzy, dzięki czemu program przeznaczony jest do dwóch grup osób.
-        Pierwsza grupa to miłośnicy pokera, którzy nie chcą wydawać pieniędzy i martwić się stratami, a
-        druga grupa to osoby początkujące, które dopiero uczą się gry i nie chcą przegrywać pieniędzy w swoich pierwszych rozgrywkach.
+        Program przeznaczony jest dla dwóch grup osób.
+        Pierwsza grupa to miłośnicy pokera, którzy nie chcą wydawać pieniędzy i martwić się stratami, 
+        a druga grupa to osoby początkujące, które dopiero uczą się gry i nie chcą przegrywać pieniędzy w swoich pierwszych rozgrywkach.
 
 \section{Opis funkcjonalności}
     \subsection{Jak korzystać z programu}
         Aplikację kliencką obsłużyć będzie można za pomocą myszy komputerowej.
-        Po uruchomieniu programu, poprosi on użytkownika o podanie odpowiednich informacji, takich jak: IP serwera, port.
+        Po uruchomieniu programu, poprosi on użytkownika o podanie odpowiednich informacji, takich jak IP i port serwera.
         W czasie rozgrywki, wszystkie możliwe ruchy będą wyświetlone w dolnym menu, a wykonanie ruchu będzie się wiązało z kliknięciem odpowiedniego przycisku w tym menu. Odpowiedni kolor graczy, będzie sygnalizować o tym kogo jest kolej na wykonanie ruchu.
         \\
         Aplikację serwerową należy jedynie uruchomić z odpowiednimi parametrami. W czasie rozgrywki serwer nie będzie wymagać żadnej ingerencji użytkownika.
     
     \subsection{Uruchomienie programu}
         Do uruchomienia aplikacji serwerowej jak i klienckiej będzie potrzebne oprogramowanie \textbf{Java} w wersji 14 lub nowszej.\\
-        Aplikacje będą dostępne na systemy operacyjne:
+        Aplikacja będzie dostępna na systemy operacyjne:
         \begin{itemize}
             \item Windows 10
             \item MacOS
@@ -56,8 +60,8 @@
             \item Jednoczesna rozgrywka w pokera dla maksymalnie sześciu graczy przez internet
             \item Automatyczne obliczanie siły układu
             \item Automatyczna kontrola rozgrywki przez serwer
-            \item Komunikacja program-użytkownik za pomocą GUI
-            \item System odzyskiwania danych przy zerwaniu połączenia
+            \item Komunikacja program-użytkownik za pomocą graficznego interfejsu
+            \item System odzyskiwania danych w przypadku zerwania połączenia klienta z serwerem
         \end{itemize}
 
 \section{Format danych i struktura plików}
@@ -67,7 +71,7 @@
     \subsection{Dane wejściowe}
         \subsubsection{Klient}
             Danymi wejściowymi dla aplikacji klienckiej są informacje potrzebne do połączenia się z serwerem.
-            Użytkownikowi po włączeniu programu, ukaże się małe okno w którym, będzie poproszony o podanie: \textbf{IP serwera}, \textbf{port serwera}.
+            Użytkownikowi po włączeniu programu, ukaże się małe okno w którym, będzie poproszony o podanie: \textbf{IP serwera}, \textbf{port serwera}, \textbf{pseudonim}.
         
         \subsubsection{Serwer}
             Jedyne dane wejściowe jakich serwer potrzebuje to dane, które użytkownik podaje jako parametry uruchomienne. Zostały one opisane w rozdziale \textbf{2.2 Uruchomienie programu}.
@@ -77,7 +81,7 @@
             Program nie będzie generować ani modyfikować żadnych plików. Wszystkie dane wyjściowe będą pokazywane w GUI.
         
         \subsubsection{Serwer}
-            Serwer będzie tworzyć plik logujący \textbf{log.txt}. Wszystkie komunikaty (także te o błędach) będą wypisywane w oknie konsoli oraz do pliku \textbf{log.txt}.
+            Serwer będzie tworzyć plik logujący \textbf{log.txt}. Wszystkie komunikaty (także te o błędach) będą wypisywane w oknie konsoli oraz do pliku logującego.
 
 \section{Scenariusz działania programu}
     \subsection{Scenariusz ogólny}
@@ -111,7 +115,7 @@
                     \item W każdej rundzie zostaną wykonane maksymalnie 4 tury ( mniej niż 4 w sytuacji, gdy pozostali gracze wykonają pas)
                     \item W każdej turze, każdy z graczy wykonuje co najmniej jeden ruch.
                 \end{enumerate}
-                \item Jeśli gracz wyjdzie podczas rozgrywki, serwer zapisze stan jego konta. Dzięki temu gracz będzie mógł dołączyć do serwera ponownie z takim samym stanem konta.
+                \item Jeśli gracz wyjdzie podczas rozgrywki lub straci połączenie z serwerem, serwer automatycznie zapisze stan jego konta. Dzięki temu gracz będzie mógł dołączyć do serwera ponownie z takim samym stanem konta.
             \end{enumerate}
             \item Zakończenie rozgrywki poprzez wyłonienie jednego zwycięzcy
             \item Zamknięcie aplikacji klienckiej; odłączenie się graczy z serwera
@@ -127,7 +131,7 @@
             Ekran startowy włącza się po uruchomieniu programu. Służy on do połączenia się z serwerem.
             W odpowiednich polach wpisujemy:
             \begin{itemize}
-                \item nickname - pseudonim pod jakim będą nas widzieć inni gracze (maksymalnie 10 znaków)
+                \item nickname - pseudonim pod jakim będą nas widzieć inni gracze (1-10 znaków)
                 \item Server IP - adres IP serwera do którego chcemy się połączyć
                 \item Server port - numer port serwera do którego chcemy się połączyć
             \end{itemize}
@@ -143,10 +147,10 @@
             Niebieskie ramki zawierają informacje o danym graczu - pseudonimie i stanie konta.
             Obok ramek może pojawić się tekst, który informuje o tym ile dany gracz postawił pieniędzy w aktualnej turze. Ramka zapalona na:\\
             czerwono - informuje o tym, kogo jest teraz kolej,\\
-            czarno - informuje o tym, czy gracz wykonał pas.\\
+            czarno - informuje o tym, że gracz wykonał pas w tej rundzie.\\
             Na środku stołu, po każdej turze, pokazują się kolejne karty wspólne.\\
             Pod kartami wspólnymi w białej ramce widoczna jest wartość puli w danej rundzie.\\
-            Na dole widoku stołu znajdują się dwie karty, są to karty z ręki startowej gracza. Te karty widoczne są tylko dla gracza do którego one należą.\\
+            Na dole, na środku widoku stołu znajdują się dwie karty, są to karty z ręki startowej gracza. Te karty widoczne są tylko dla gracza do którego one należą.\\
             \\
             \textbf{Menu wyboru ruchu}\\
             Menu wyboru ruchu składa się z 5 kontrolek - 4 przycisków i 1 suwaka. Kontrolki wyłączają się i włączają w zależności od: czy jest teraz kolej gracza, czy gracz może wykonać dany ruch w tym momencie.\\
@@ -154,7 +158,7 @@
             \begin{itemize}
                 \item Przycisk \textbf{Fold} - pas; wycofanie się z rundy
                 \item Przycisk \textbf{Check} - czekanie; gracz podczas swojej kolejki nie podejmuje żadnych działań
-                \item Przycisk \textbf{Call} - sprawdzenie; postawić taką samą sumę pieniędzy ile wynosiło podbicie
+                \item Przycisk \textbf{Call} - sprawdzenie; postawienie takiej samej sumy pieniędzy ile wynosiło podbicie
                 \item Suwak - służy do wybrania sumy pieniędzy o jaką gracz podbije pulę
                 \item Przycisk \textbf{Raise} - podbicie; podbić pulę o taką sumę pieniędzy jaka została wybrana na suwaku
             \end{itemize}
