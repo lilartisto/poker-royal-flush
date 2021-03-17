@@ -110,18 +110,46 @@
                 \end{enumerate}
             \item Trwanie rozgrywki
             \begin{enumerate}
-                \item W rozgrywce zostanie wykonane tyle rund, aż zostanie jeden gracz z dodatnią liczbą pieniędzy
+                \item Rozpoczęcie rundy
+                \item Wylosowanie dwóch kart dla każdego z graczy (tzw. ręki)
+                \item Wykonanie pierwszej tury
                 \begin{enumerate}
-                    \item W każdej rundzie zostaną wykonane maksymalnie 4 tury ( mniej niż 4 w sytuacji, gdy pozostali gracze wykonają pas)
-                    \item W każdej turze, każdy z graczy wykonuje co najmniej jeden ruch.
+                    \item Gracz startowy musi postawić początkowe pieniądze (tzw. ciemną)
+                    \item Każdy z graczy wykonuje dowolny, ale możliwy ruch
                 \end{enumerate}
-                \item Jeśli gracz wyjdzie podczas rozgrywki lub straci połączenie z serwerem, serwer automatycznie zapisze stan jego konta. Dzięki temu gracz będzie mógł dołączyć do serwera ponownie z takim samym stanem konta.
+                \item Wykonanie drugiej tury
+                \begin{enumerate}
+                    \item Wylosowanie trzech kart wspólnych
+                    \item Każdy z dostępnych graczy wykonuje dowolny, ale możliwy ruch
+                \end{enumerate}
+                \item Wykonanie trzeciej tury
+                \begin{enumerate}
+                    \item Wylosowanie jednej karty wspólnej
+                    \item Każdy z dostępnych graczy wykonuje dowolny, ale możliwy ruch
+                \end{enumerate}
+                \item Wykonanie czwartej tury
+                \begin{enumerate}
+                    \item Wylosowanie ostatniej karty wspólnej
+                    \item Każdy z dostępnych graczy wykonuje dowolny, ale możliwy ruch
+                \end{enumerate}
+                \item Wybranie zwycięzcy na podstawie siły układu każdego gracza
+                \item Jeśli jest co najmniej dwóch graczy przy stole, skok do (a).
             \end{enumerate}
             \item Zakończenie rozgrywki poprzez wyłonienie jednego zwycięzcy
             \item Zamknięcie aplikacji klienckiej; odłączenie się graczy z serwera
             \item Zamknięcie aplikacji serwerowej.
         \end{enumerate}
-    
+
+        \textbf{Adnotacja do 5.}
+        \begin{enumerate}
+                \item W rozgrywce zostanie wykonane tyle rund, aż zostanie jeden gracz z dodatnią liczbą pieniędzy
+                \begin{enumerate}
+                    \item W każdej rundzie zostaną wykonane maksymalnie 4 tury ( mniej niż 4 w sytuacji, gdy pozostali gracze wykonają pas)
+                \end{enumerate}
+                \item Jeśli gracz wyjdzie podczas rozgrywki lub straci połączenie z serwerem, serwer automatycznie zapisze stan jego konta. Dzięki temu gracz będzie mógł dołączyć do serwera ponownie z takim samym stanem konta.
+            \end{enumerate}
+            
+    \newpage
     \subsection{Ekran działania programu}
         Ekrany działania programu dotyczą tylko aplikacji klienckiej.
         \subsubsection{Ekran startowy}
