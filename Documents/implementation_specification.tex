@@ -1,0 +1,265 @@
+\documentclass{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{polski}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\colorlet{punct}{red!60!black}
+\definecolor{background}{HTML}{EEEEEE}
+\definecolor{delim}{RGB}{20,105,176}
+\colorlet{numb}{magenta!60!black}
+
+\lstdefinelanguage{json}{
+    basicstyle=\normalfont\ttfamily,
+    numbers=left,
+    numberstyle=\scriptsize,
+    stepnumber=1,
+    numbersep=8pt,
+    showstringspaces=false,
+    breaklines=true,
+    frame=lines,
+    literate=
+     *{0}{{{\color{numb}0}}}{1}
+      {1}{{{\color{numb}1}}}{1}
+      {2}{{{\color{numb}2}}}{1}
+      {3}{{{\color{numb}3}}}{1}
+      {4}{{{\color{numb}4}}}{1}
+      {5}{{{\color{numb}5}}}{1}
+      {6}{{{\color{numb}6}}}{1}
+      {7}{{{\color{numb}7}}}{1}
+      {8}{{{\color{numb}8}}}{1}
+      {9}{{{\color{numb}9}}}{1}
+      {:}{{{\color{punct}{:}}}}{1}
+      {,}{{{\color{punct}{,}}}}{1}
+      {int}{{{\color{magenta}{int}}}}{3}
+      {string}{{{\color{magenta}{string}}}}{6}
+      {boolean}{{{\color{magenta}{boolean}}}}{7}
+      {"}{{{\color{numb}{"}}}}{1}
+      {\{}{{{\color{delim}{\{}}}}{1}
+      {\}}{{{\color{delim}{\}}}}}{1}
+      {[}{{{\color{delim}{[}}}}{1}
+      {]}{{{\color{delim}{]}}}}{1},
+}
+
+\title{Specyfikacja implementacyjna - Poker Royal Flush}
+\author{Artur Prasuła}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+
+\section{Opis API} % 25.03
+    API wykorzystywane jest do komunikacji pomiędzy aplikacją serwerową, a aplikacją kliencką.
+    Komunikaty wykorzystują format JSON. Każdy z komunikatów ma swoją nazwę.
+    
+    \subsection{Komunikat start}
+        Komunikat \textbf{start} wysyłany jest przez serwer do klienta.
+        Informuje on o rozpoczęciu nowej rundy oraz przesyła informacje o wylosowanych dwóch kartach dla każdego gracza.
+        \begin{lstlisting}[language=json,firstnumber=1]
+{
+    "name": "start",
+    "cards": [
+        {"number": int, "color": int},
+        {"number": int, "color": int}
+    ]
+}
+        \end{lstlisting}
+    
+    \subsection{Komunikat info}
+        Komunikat \textbf{info} wysyłany jest przez serwer do wszystkich klientów, po każdej zmianie stanu stołu.
+        Dzięki temu w aplikacji klienckiej stół zawsze jest aktualny.
+    
+        \begin{lstlisting}[language=json,firstnumber=1]
+{
+    "name": "info",
+    "table": {
+        "cards":[
+            {"number": int, "color": int},
+            {"number": int, "color": int},
+            {"number": int, "color": int}
+        ],
+        "pot": int,
+        "players": [
+            {
+                "nickname": string,
+                "money": int,
+                "state": int,
+                "pot": int
+            },
+            {
+                "nickname": string,
+                "money": int,
+                "state": int,
+                "pot": int
+            }
+        ]
+    }
+}
+    \end{lstlisting}
+    Liczba kart w sekcji \textbf{cards} zawiera się w przedziale <0;5>.\\
+    Liczba graczy w sekcji \textbf{players} zawiera się w przedziale <1;6>.
+    
+    \subsection{Komunikat request}
+    Komunikat \textbf{request} wysyłany jest przez serwer do klienta.
+    Jest to żądanie wykonania ruchu przez gracza do którego to żądanie jest wysyłane.
+    Serwer po wysłaniu tego komunikatu, nasłuchuje wiadomości zwrotnej od klienta.
+    
+        \begin{lstlisting}[language=json,firstnumber=1]
+{
+    "name": "request",
+    "minValue": int,
+}
+        \end{lstlisting}
+    
+    \subsection{Komunikat end}
+        Komunikat \textbf{end} wysyłany jest przez serwer do klienta.
+        Informuje on o zakończeniu rundy oraz o informacjach związanych z końcem: zwycięzca/y, wysokość wygranej, karty graczy.
+        \begin{lstlisting}[language=json,firstnumber=1]
+{
+    "name": "end",
+    "prize": int,
+    "players": [
+        {
+            "nickname": string,
+            "winner": boolean,
+            "cards": [
+                {"number": int, "color": int},
+                {"number": int, "color": int}
+            ]
+        },
+        {
+            "nickname": string,
+            "winner": boolean,
+            "cards": [
+                {"number": int, "color": int},
+                {"number": int, "color": int}
+            ]
+        }
+    ]
+}
+        \end{lstlisting}
+        Liczba graczy w sekcji \textbf{players} zawiera się w przedziale <1;4>.
+    
+    \subsection{Komunikat move}
+        Komunikat \textbf{move} jest jedynym komunikatem wysyłanym przez klienta do serwera.
+        Informuje on o wykonanym przez gracza ruchu.
+        Z powodu tego, że możliwe ruchy są od siebie różne, komunikaty \textbf{move} można pogrupować ze względu na typ ruchu: call, fold, check, raise.
+        
+        \subsubsection{Call, Fold, Check}
+            \begin{lstlisting}[language=json,firstnumber=1]
+{
+    "name": "move",
+    "type": int
+}
+            \end{lstlisting}
+
+        \subsubsection{Raise}
+            \begin{lstlisting}[language=json,firstnumber=1]
+{
+    "name": "move",
+    "type": 3,
+    "value": int
+}
+            \end{lstlisting}
+
+
+\section{Opis pakietu properties}
+    Pakiet \textbf{poker.properties} odpowiada za przechowywanie stałych wspólnych dla części klienckiej i części serwerowej.
+    Znajdziemy w nim klasy: CardsProperties, PlayerMoveProperties, PlayerStateProperties.
+    
+    \subsection{Klasa CardsProperties}
+        Klasa \textbf{CardsProperties} przechowuje liczby całkowite, które odpowiadają kolorom kart.
+        \paragraph{Pola}
+            \begin{itemize}
+                \item public final int CLUBS = 0
+                \item public final int DIAMONDS = 13
+                \item public final int HEARTS = 26
+                \item public final int SPADES = 39
+            \end{itemize}
+            
+    \subsection{Klasa PlayerMoveProperties}
+        Klasa \textbf{PlayerMoveProperties} przechowuje liczby całkowite, które odpowiadają danym ruchom gracza.
+        Liczby te zostaną wykorzystane w API w komunikacie \textbf{TU NAZWA KOMUNIKATU}.
+        \paragraph{Pola}
+            \begin{itemize}
+                \item public final int CALL = 0
+                \item public final int FOLD = 1
+                \item public final int CHECK = 2
+                \item public final int RAISE = 3
+            \end{itemize}
+    
+    \subsection{Klasa PlayerStateProperties}
+        Klasa \textbf{PlayerStateProperties} przechowuje liczby całkowite, które odpowiadają danym stanom gracza.
+        Liczby te zostaną wykorzystane aby przechowywać informacje o stanie rozgrywki oraz w API w komunikacie \textbf{TU NAZWA KOMUNIKATU}.
+        \paragraph{Pola}
+            \begin{itemize}
+                \item public final int INGAME = 0
+                \item public final int AFTERFOLD = 1
+                \item public final int INMOVE = 2
+            \end{itemize}
+
+\section{Opis części serwerowej}
+    \subsection{Opis ogólny}
+    
+    \subsection{Diagram klas}
+    
+    \subsection{Opis pakietów}
+
+
+\section{Opis części klienckiej}
+    \subsection{Opis ogólny}
+    
+    \subsection{Diagram klas}
+    
+    \subsection{Opis pakietów}
+    
+    \subsection{Opis GUI}
+
+        
+\section{Testowanie}
+    \subsection{Użyte narzędzia}
+        Do przetestowania programu zostanie wykorzystane narzędzie \textbf{JUnit 5}.
+        Posłuży ono do napisania testów jednostkowych klas.
+        Dzięki temu zostaną przetestowane pojedyncze funkcjonalności programu.
+        \\
+        Test integralności tych funkcjonalności i testy GUI zostaną wykonane ręcznie w trakcie i po zakończeniu implementacji.
+    
+    \subsection{Konwencja}
+        Testy danych klas za pomocą narzędzia JUnit zostaną napisane w odpowiadającej klasie i pakiecie w katalogu test.
+        Metody testujące będą mieć nazwy odpowiadające temu, co metoda testuje.
+        Użyta zostanie konwencja nazewnictwa metod testujących: 
+        \begin{center}
+            should + [co] + When + [warunek]\\
+            np. shouldThrowIllegalArgumentExceptionWhenFilePathIsNull
+        \end{center}
+        Dzięki takiej konwencji rozmieszczenia klas testujących, łatwo będzie można znaleźć testy danej klasy, a dzięki konwencji nazewnictwa metod, łatwo zrozumiemy co dana metoda testuje.
+    
+    \subsection{Warunki brzegowe}
+        \subsubsection{Część kliencka}
+            Najważniejszą funkcjonalnością jest komunikacja pomiędzy klientem a serwerem.
+            Klasy implementujące interfejs \textbf{MsgInterpreter}
+                (MoveRequestMsgInterpreter, StartMsgInterpreter, GameInfoMsgInterpreter, EndMsgInterpreter),
+            zostaną przetestowane pod kątem poprawnej interpretacji komunikatów wysyłanych przez serwer.\\
+            Klasa \textbf{MovesFormat} również zostanie przetestowana, gdyż niedopuszczalna jest sytuacja, że klient wysyłałby komunikaty, których serwer nie jest w stanie przetworzyć.
+            \\
+            Graficzny interfejs zostanie przetestowany pod kątem poprawnego działania kontrolek i poprawnego działania systemu wyłączania przycisków.
+            Szczególnie system wyłączania przycisków zostanie skrupulatnie przetestowany, gdyż odpowiada on za możliwości wykonania danego ruchu, a zasady gry w pokera nie pozwalają, aby wszystkie ruchy mogły być wykonane w danym momencie.
+                
+        \subsubsection{Część serwerowa}
+            Podobnie jak w części klienckiej, najważniejszą funkcjonalnością jest komunikacja serwera z klientami.
+            Program zostanie dokładnie przetestowany pod tym względem, a w skład testowania komunikacji wchodzi:
+            \begin{itemize}
+                \item Testowanie tworzenia poprawnych komunikatów
+                \item Testowanie poprawnej interpretacji ruchów graczy
+                \item Zapis danych gracza w przypadku utraty połączenia
+            \end{itemize}
+            Oprócz komunikacji, bardzo ważny jest poprawny przebieg rozgrywki.
+            Aby zapewnić poprawną i uporządkowaną kolejność gry, klasy: GameController, RoundController, CycleController, zostaną przetestowane za pomocą testów jednostkowych.
+            Również poprawne wyłanianie zwycięzcy jest bardzo ważne, dlatego klasa \textbf{PokerHandCalculator} zostanie przetestowana z użyciem różnych układów kart.
+
+\end{document}
