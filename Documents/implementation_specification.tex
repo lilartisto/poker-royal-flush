@@ -102,21 +102,22 @@
         ]
     }
 }
-    \end{lstlisting}
-    Liczba kart w sekcji \textbf{cards} zawiera się w przedziale <0;5>.\\
-    Liczba graczy w sekcji \textbf{players} zawiera się w przedziale <1;6>.
+        \end{lstlisting}
+        Liczba kart w sekcji \textbf{cards} zawiera się w przedziale <0;5>.\\
+        Liczba graczy w sekcji \textbf{players} zawiera się w przedziale <1;6>.
     
     \subsection{Komunikat request}
-    Komunikat \textbf{request} wysyłany jest przez serwer do klienta.
-    Jest to żądanie wykonania ruchu przez gracza do którego to żądanie jest wysyłane.
-    Serwer po wysłaniu tego komunikatu, nasłuchuje wiadomości zwrotnej od klienta.
+        Komunikat \textbf{request} wysyłany jest przez serwer do klienta.
+        Jest to żądanie wykonania ruchu przez gracza do którego to żądanie jest wysyłane.
+        Serwer po wysłaniu tego komunikatu, nasłuchuje wiadomości zwrotnej od klienta.
     
         \begin{lstlisting}[language=json,firstnumber=1]
 {
     "name": "request",
-    "minValue": int,
+    "minValue": int
 }
         \end{lstlisting}
+        Wartość \textbf{minValue} oznacz minimalną ilość pieniędzy jaką gracz musi dołożyć do puli.
     
     \subsection{Komunikat end}
         Komunikat \textbf{end} wysyłany jest przez serwer do klienta.
@@ -159,6 +160,7 @@
     "type": int
 }
             \end{lstlisting}
+            Wartość \textbf{type} mówi o typie komunikatu. Wysyłane wartości tego atrybutu powinny być zgodne z tym co przechowuje klasa \textbf{poker.properties.PlayerMoveProperties}.
 
         \subsubsection{Raise}
             \begin{lstlisting}[language=json,firstnumber=1]
@@ -249,7 +251,7 @@
             \mparagraph{Klasa - Deck}
                 Klasa \textbf{Deck} przechowuje wszystkie możliwe karty.
                 \\
-                Pole \textbf{drawnCards} przechowuje informacje o tym czy dana karta została już wyjęta z talii.
+                Pole \textbf{drawnCards} przechowuje informacje o tym, czy dana karta została już wyjęta z talii.
                 Karty z danego koloru znajdują się w danym przedziale. Przedział ten odpowiada stałym z klasy \textbf{poker.properties.CardsProperties}. Im (indeks \% kolor) większe, tym wyższa jest to karta.
                 \\
                 Metoda \textbf{getRandomCard} zwraca losową kartę z talii, ale wykonuje losowanie bez powtórzeń, więc nie da się wyciągnąć z talii dwóch takich samych kart.
@@ -317,7 +319,7 @@
             \mparagraph{Klasa - PokerHandCalculator}
                 Klasa \textbf{PokerHandCalculator} oblicza jaki jest najsilniejszy układ z podanych kart.
                 Metoda \textbf{handStrength} zwraca liczbę double z zakresu 0-9.
-                Każda liczba jedności odpowiada danemu układowi:
+                Każda cyfra jedności odpowiada danemu układowi:
                 \begin{itemize}
                     \item 0 - wysoka karta
                     \item 1 - para
