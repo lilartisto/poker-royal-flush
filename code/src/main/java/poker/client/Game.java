@@ -9,15 +9,11 @@ import poker.client.view.TableView;
 
 public class Game {
 
-	public static final GameTable GAMETABLE = new GameTable();
-	//public static final Player PLAYER;
-	public static final Deck DECK = new Deck();
-	public static final ServerConnector SERVERCONNCETOR = new ServerConnector();
-	public static final GameMenuController GAMEMENUCONTROLLER = new GameMenuController();
-	public static final TableView TABLEVIEW = new TableView();
-
-	public static void main(String[] args){
-		System.out.println("client works");
-	}
+	private static GameTable GAMETABLE;
+	private static Player PLAYER;
+	private static Deck DECK;
+	private static ServerConnector SERVERCONNCETOR;
+	private static GameMenuController GAMEMENUCONTROLLER;
+	private static TableView TABLEVIEW;
 
 }
