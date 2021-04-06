@@ -16,4 +16,7 @@ public class Game {
 	private static GameMenuController GAMEMENUCONTROLLER;
 	private static TableView TABLEVIEW;
 
+	public static void setSERVERCONNCETOR(ServerConnector serverconncetor){
+		SERVERCONNCETOR = serverconncetor;
+	}
 }

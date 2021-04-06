@@ -30,5 +30,10 @@
             <artifactId>junit-jupiter</artifactId>
             <version>5.7.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20180813</version>
+        </dependency>
     </dependencies>
 </project>

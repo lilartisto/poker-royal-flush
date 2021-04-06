@@ -27,12 +27,12 @@
                         <Insets bottom="5.0" top="5.0" />
                      </VBox.margin>
                   </TextField>
-                  <TextField fx:id="ipTextField" promptText="Server IP">
+                  <TextField fx:id="hostTextField" promptText="Server IP">
                      <VBox.margin>
                         <Insets bottom="5.0" top="5.0" />
                      </VBox.margin>
                   </TextField>
-                  <TextField fx:id="hostTextField" promptText="Server port">
+                  <TextField fx:id="portTextField" promptText="Server port">
                      <VBox.margin>
                         <Insets bottom="5.0" top="5.0" />
                      </VBox.margin>

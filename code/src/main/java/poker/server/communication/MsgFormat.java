@@ -22,4 +22,12 @@ public class MsgFormat {
 		throw new UnsupportedOperationException("Not implemented yet");
 	}
 
+	public static String connectMsg(boolean connected, String answer){
+		String msg =
+				"{" +
+					"\"connected\": " + connected + ", " +
+					"\"answer\": " + answer +
+				"}";
+		return msg;
+	}
 }

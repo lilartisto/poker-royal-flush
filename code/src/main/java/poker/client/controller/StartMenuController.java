@@ -8,8 +8,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.json.JSONObject;
+import poker.client.Game;
+import poker.client.communication.ServerConnector;
 
 import java.io.IOException;
+import java.net.ConnectException;
+import java.net.UnknownHostException;
+import java.util.HashMap;
 
 public class StartMenuController {
 
@@ -18,7 +24,7 @@ public class StartMenuController {
     @FXML
     private TextField nicknameTextField;
     @FXML
-    private TextField ipTextField;
+    private TextField portTextField;
     @FXML
     private TextField hostTextField;
     @FXML
@@ -32,8 +38,9 @@ public class StartMenuController {
     private void connectButtonClicked() {
         try {
             validData();
-            connectToServer();
-            switchToMainPane();
+            if(connectToServer()){
+                switchToMainPane();
+            }
         } catch (IllegalArgumentException e) {
             errorText.setText(e.getMessage());
         }
@@ -46,10 +53,13 @@ public class StartMenuController {
             errorMsg += "Nickname's length must be in 1 - 10\n";
         }
         if (!validHost()) {
+            errorMsg += "Server IP is incorrect\n";
+        }
+        if (!validPort()) {
             errorMsg += "Port number is incorrect";
         }
 
-        if(errorMsg.length() > 0){
+        if (errorMsg.length() > 0) {
             throw new IllegalArgumentException(errorMsg);
         }
     }
@@ -60,9 +70,13 @@ public class StartMenuController {
     }
 
     private boolean validHost() {
+        return hostTextField.getText().length() > 0;
+    }
+
+    private boolean validPort() {
         try {
-            int host = Integer.parseInt(hostTextField.getText());
-            return host >= 0 && host <= 65535;
+            int port = Integer.parseInt(portTextField.getText());
+            return port >= 0 && port <= 65535;
         } catch (NumberFormatException e) {
             return false;
         }
@@ -86,7 +100,16 @@ public class StartMenuController {
         alert.showAndWait();
     }
 
-    private void connectToServer() {
-        System.err.println("NOT IMPLEMENTED: poker.client.controller.StartMenuController.connectToServer()");
+    private boolean connectToServer() {
+        try {
+            ServerConnector serverConnector = new ServerConnector(hostTextField.getText(), Integer.parseInt(portTextField.getText()), nicknameTextField.getText());
+            Game.setSERVERCONNCETOR(serverConnector);
+            return true;
+        }catch (UnknownHostException | ConnectException exc){
+            printAlert("Cannot connect to server");
+        } catch (Exception e) {
+            printAlert(e.getMessage());
+        }
+        return false;
     }
 }
