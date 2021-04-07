@@ -9,4 +9,13 @@ public class Card {
 		this.number = number;
 		this.color = color;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof Card){
+			Card card = (Card)obj;
+			return card.number == number && card.color == color;
+		}
+		return false;
+	}
 }
