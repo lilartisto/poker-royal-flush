@@ -69,6 +69,6 @@ public class Game {
         }
 
         gameTable = new GameTable();
-        dataBaseController = new DataBaseController();
+        //dataBaseController = new DataBaseController();
     }
 }
