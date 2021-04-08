@@ -9,14 +9,18 @@ import poker.client.view.TableView;
 
 public class Game {
 
-	private static GameTable GAMETABLE;
-	private static Player PLAYER;
-	private static Deck DECK;
-	private static ServerConnector SERVERCONNCETOR;
-	private static GameMenuController GAMEMENUCONTROLLER;
-	private static TableView TABLEVIEW;
+	private static GameTable gameTable;
+	private static Player player;
+	private static final Deck deck = new Deck();
+	private static ServerConnector serverConnector;
+	private static GameMenuController gameMenuController;
+	private static TableView tableView;
 
-	public static void setSERVERCONNCETOR(ServerConnector serverconncetor){
-		SERVERCONNCETOR = serverconncetor;
+	public static void setServerConnector(ServerConnector connector){
+		serverConnector = connector;
+	}
+
+	public static Deck getDeck(){
+		return deck;
 	}
 }

@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 import org.json.JSONObject;
 import poker.client.Game;
 import poker.client.communication.ServerConnector;
+import poker.client.data.cards.Deck;
 
 import java.io.IOException;
 import java.net.ConnectException;
@@ -103,7 +104,7 @@ public class StartMenuController {
     private boolean connectToServer() {
         try {
             ServerConnector serverConnector = new ServerConnector(hostTextField.getText(), Integer.parseInt(portTextField.getText()), nicknameTextField.getText());
-            Game.setSERVERCONNCETOR(serverConnector);
+            Game.setServerConnector(serverConnector);
             return true;
         }catch (UnknownHostException | ConnectException exc){
             printAlert("Cannot connect to server");
