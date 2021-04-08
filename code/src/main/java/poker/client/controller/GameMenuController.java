@@ -2,15 +2,13 @@ package poker.client.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.text.Text;
 import poker.client.Game;
 import poker.client.communication.ServerConnector;
 import poker.client.data.GameTable;
-import poker.client.data.cards.Deck;
-import poker.properties.CardsProperties;
+import poker.client.view.TableView;
 
 public class GameMenuController {
 
@@ -32,10 +30,6 @@ public class GameMenuController {
 	@FXML
 	private Canvas canvas;
 
-	public GameMenuController(){
-
-	}
-
 	public void enableButtons(boolean all){
 		throw new UnsupportedOperationException("Not implemented yet");
 	}
@@ -44,6 +38,8 @@ public class GameMenuController {
 	private void initialize(){
 		raiseSlider.setMin(1);
 		raiseSlider.setMax(10);
+
+		Game.setTableView(new TableView(canvas));
 	}
 
 	@FXML

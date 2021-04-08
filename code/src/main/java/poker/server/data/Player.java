@@ -31,4 +31,13 @@ public class Player {
     public int getPotValue(){
         return potValue;
     }
+
+    public Card[] getHandCards(){
+        return handCards;
+    }
+
+    public void setHandCards(Card card1, Card card2){
+        handCards[0] = card1;
+        handCards[1] = card2;
+    }
 }

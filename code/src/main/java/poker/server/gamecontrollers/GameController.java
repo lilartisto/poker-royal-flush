@@ -1,13 +1,31 @@
 package poker.server.gamecontrollers;
 
+import poker.server.data.GameTable;
+
 public class GameController {
 
-	public GameController(){
+	private GameTable gameTable;
 
+	public GameController(GameTable gameTable){
+		this.gameTable = gameTable;
 	}
 
 	public void playGame(){
-		throw new UnsupportedOperationException("Not implemented yet");
+		while(true) {
+			waitForPlayers();
+
+			RoundController roundController = new RoundController(gameTable);
+			roundController.playRound();
+		}
+	}
+
+	private void waitForPlayers(){
+		while (gameTable.numberOfPlayers() <= 1) {
+			try {
+				Thread.sleep(20);
+			} catch (InterruptedException ignored) {
+			}
+		}
 	}
 
 }

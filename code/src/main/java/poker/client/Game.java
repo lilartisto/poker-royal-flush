@@ -15,6 +15,7 @@ public class Game {
 	private static ServerConnector serverConnector;
 	private static GameMenuController gameMenuController;
 	private static TableView tableView;
+	//private static String playersNickname;
 
 	public static void setServerConnector(ServerConnector connector){
 		serverConnector = connector;
@@ -22,5 +23,29 @@ public class Game {
 
 	public static Deck getDeck(){
 		return deck;
+	}
+
+	public static void setTableView(TableView view){
+		tableView = view;
+	}
+
+	public static TableView getTableView(){
+		return tableView;
+	}
+
+	public static GameTable getGameTable(){
+		return gameTable;
+	}
+
+	public static void setGameTable(GameTable table){
+		gameTable = table;
+	}
+
+	public static void setPlayer(Player mainPlayer){
+		player = mainPlayer;
+	}
+
+	public static Player getPlayer(){
+		return player;
 	}
 }

@@ -11,7 +11,9 @@ import javafx.stage.Stage;
 import org.json.JSONObject;
 import poker.client.Game;
 import poker.client.communication.ServerConnector;
+import poker.client.data.Player;
 import poker.client.data.cards.Deck;
+import poker.client.view.TableView;
 
 import java.io.IOException;
 import java.net.ConnectException;
@@ -31,16 +33,13 @@ public class StartMenuController {
     @FXML
     private Text errorText;
 
-    public StartMenuController() {
-
-    }
-
     @FXML
     private void connectButtonClicked() {
         try {
             validData();
             if(connectToServer()){
                 switchToMainPane();
+                Game.setPlayer(new Player(nicknameTextField.getText()));
             }
         } catch (IllegalArgumentException e) {
             errorText.setText(e.getMessage());

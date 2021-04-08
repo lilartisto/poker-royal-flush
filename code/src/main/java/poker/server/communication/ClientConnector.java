@@ -1,6 +1,7 @@
 package poker.server.communication;
 
 import poker.server.Game;
+import poker.server.data.GameTable;
 import poker.server.data.Player;
 
 import java.io.BufferedReader;
@@ -54,12 +55,13 @@ public class ClientConnector {
 				//TODO
 				// player exist ? sendMsg( MsgFormat.connectMsg - player exist and plays)
 				Player player = new Player(nickname);
-				if(Game.getGameTable().addPlayer(player)){
+				int seat = Game.getGameTable().addPlayer(player);
+				if(seat >= 0){
 					playersSockets.put(player, socket);
-					sendMsg(MsgFormat.connectMsg(true, null), player);
+					sendMsg(MsgFormat.connectMsg(true, null, seat), player);
 					System.out.println("Player " + nickname + " connected to server");
 				} else {
-					sendMsg(MsgFormat.connectMsg(false, "Server is full"), socket);
+					sendMsg(MsgFormat.connectMsg(false, "Server is full", seat), socket);
 				}
 			} else {
 				throw new JSONException("Expected connect msg, received mg type: " + msgName);

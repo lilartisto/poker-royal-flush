@@ -4,6 +4,7 @@ import org.json.JSONObject;
 import poker.server.communication.ClientConnector;
 import poker.server.data.database.DataBaseController;
 import poker.server.data.GameTable;
+import poker.server.gamecontrollers.GameController;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -70,5 +71,8 @@ public class Game {
 
         gameTable = new GameTable();
         //dataBaseController = new DataBaseController();
+
+        GameController gameController = new GameController(gameTable);
+        gameController.playGame();
     }
 }

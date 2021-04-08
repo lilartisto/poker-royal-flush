@@ -2,18 +2,23 @@ package poker.client.view;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
+import poker.client.Game;
+import poker.client.data.Player;
+import poker.client.data.cards.Card;
 
 public class TableView {
 
 	private Canvas canvas;
-	private Image table;
+	private Image tableImage;
 
-	public TableView(){
-
+	public TableView(Canvas canvas){
+		this.canvas = canvas;
+		//tableImage = wczytanie stolu;
 	}
 
 	public void draw(){
-		throw new UnsupportedOperationException("Not implemented yet");
+		drawPlayerCards(Game.getPlayer());
+		//throw new UnsupportedOperationException("Not implemented yet");
 	}
 
 	public void drawEnding(){
@@ -28,8 +33,15 @@ public class TableView {
 		throw new UnsupportedOperationException("Not implemented yet");
 	}
 
-	private void drawPlayerCards(){
-		throw new UnsupportedOperationException("Not implemented yet");
+	private void drawPlayerCards(Player player){
+		Card[] cards = player.getHandCards();
+
+		for(int i = 0; i < cards.length; i++){
+			if(cards[i] != null){
+				canvas.getGraphicsContext2D().drawImage(cards[i].image, i*150 + 50, 50);
+			}
+		}
+		//throw new UnsupportedOperationException("Not implemented yet");
 	}
 
 	private void drawPlayers(){
