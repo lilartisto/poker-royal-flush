@@ -4,7 +4,6 @@ import org.json.JSONObject;
 import poker.client.communication.interpreters.*;
 import poker.client.Game;
 import poker.client.data.GameTable;
-import poker.client.data.Player;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -62,11 +61,12 @@ public class ServerConnector {
 		}
 	}
 
-	public void startConstantlyListenForMsgs(){
+	private void startConstantlyListenForMsgs(){
 		Thread listenThread = new Thread(() -> {
 			while (true){
 				String msg = listenForMsg();
 				interpretMsg(msg);
+				Game.getTableView().draw();
 			}
 		});
 		listenThread.setDaemon(true);
@@ -84,17 +84,13 @@ public class ServerConnector {
 	}
 
 	private MsgInterpreter getMsgInterpreter(String msgName){
-		if(msgName.equals("info")){
-			return new GameInfoMsgInterpreter();
-		} else if(msgName.equals("request")){
-			return new MoveRequestMsgInterpreter();
-		} else if(msgName.equals("start")){
-			return new StartMsgInterpreter();
-		} else if(msgName.equals("end")){
-			return new EndMsgInterpreter();
-		} else {
-			return null;
-		}
+		return switch (msgName) {
+			case "info" -> new GameInfoMsgInterpreter();
+			case "request" -> new MoveRequestMsgInterpreter();
+			case "start" -> new StartMsgInterpreter();
+			case "end" -> new EndMsgInterpreter();
+			default -> null;
+		};
 	}
 
 	public void sendMsg(String msg){

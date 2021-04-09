@@ -43,4 +43,8 @@ public class Game {
 	public static Player getPlayer(){
 		return player;
 	}
+
+	public static void setPlayer(Player mainPlayer){
+		player = mainPlayer;
+	}
 }
