@@ -10,12 +10,11 @@ import poker.client.view.TableView;
 public class Game {
 
 	private static GameTable gameTable;
-	private static Player player;
+	private static Player player = new Player("");
 	private static final Deck deck = new Deck();
 	private static ServerConnector serverConnector;
 	private static GameMenuController gameMenuController;
 	private static TableView tableView;
-	//private static String playersNickname;
 
 	public static void setServerConnector(ServerConnector connector){
 		serverConnector = connector;
@@ -39,10 +38,6 @@ public class Game {
 
 	public static void setGameTable(GameTable table){
 		gameTable = table;
-	}
-
-	public static void setPlayer(Player mainPlayer){
-		player = mainPlayer;
 	}
 
 	public static Player getPlayer(){

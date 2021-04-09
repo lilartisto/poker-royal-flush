@@ -39,7 +39,6 @@ public class StartMenuController {
             validData();
             if(connectToServer()){
                 switchToMainPane();
-                Game.setPlayer(new Player(nicknameTextField.getText()));
             }
         } catch (IllegalArgumentException e) {
             errorText.setText(e.getMessage());
@@ -105,10 +104,8 @@ public class StartMenuController {
             ServerConnector serverConnector = new ServerConnector(hostTextField.getText(), Integer.parseInt(portTextField.getText()), nicknameTextField.getText());
             Game.setServerConnector(serverConnector);
             return true;
-        }catch (UnknownHostException | ConnectException exc){
+        }catch (Exception e) {
             printAlert("Cannot connect to server");
-        } catch (Exception e) {
-            printAlert(e.getMessage());
         }
         return false;
     }

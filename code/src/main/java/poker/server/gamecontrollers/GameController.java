@@ -13,6 +13,10 @@ public class GameController {
 	public void playGame(){
 		while(true) {
 			waitForPlayers();
+			long delay = 3500;
+			try {
+				Thread.sleep(delay);
+			} catch (InterruptedException e) { }
 
 			RoundController roundController = new RoundController(gameTable);
 			roundController.playRound();
