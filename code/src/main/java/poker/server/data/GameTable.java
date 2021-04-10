@@ -21,6 +21,18 @@ public class GameTable {
         deck = new Deck();
     }
 
+    public int getPotValue(){
+        return potValue;
+    }
+
+    public Card[] getTableCards(){
+        return tableCards;
+    }
+
+    public Player[] getPlayers(){
+        return players;
+    }
+
     public int addPlayer(Player player){
         for(int i = 0; i < players.length; i++){
             if(players[i] == null){
@@ -29,6 +41,15 @@ public class GameTable {
             }
         }
         return -1;
+    }
+
+    public void addTableCard(Card card){
+        for(int i = 0; i < tableCards.length; i++){
+            if(tableCards[i] == null){
+                tableCards[i] = card;
+                return;
+            }
+        }
     }
 
     public int numberOfPlayers(){

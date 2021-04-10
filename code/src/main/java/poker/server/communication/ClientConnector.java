@@ -1,6 +1,7 @@
 package poker.server.communication;
 
 import poker.server.Game;
+import poker.server.communication.msgformats.ConnectMsgFormat;
 import poker.server.data.GameTable;
 import poker.server.data.Player;
 
@@ -11,6 +12,8 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.SortedMap;
 
 import org.json.*;
 
@@ -58,10 +61,10 @@ public class ClientConnector {
 				int seat = Game.getGameTable().addPlayer(player);
 				if(seat >= 0){
 					playersSockets.put(player, socket);
-					sendMsg(MsgFormat.connectMsg(true, null, seat), player);
+					sendMsg(ConnectMsgFormat.getMsg(true, null, seat), player);
 					System.out.println("Player " + nickname + " connected to server");
 				} else {
-					sendMsg(MsgFormat.connectMsg(false, "Server is full", seat), socket);
+					sendMsg(ConnectMsgFormat.getMsg(false, "Server is full", seat), socket);
 				}
 			} else {
 				throw new JSONException("Expected connect msg, received mg type: " + msgName);
@@ -91,7 +94,9 @@ public class ClientConnector {
 	}
 
 	public void sendMsgToAll(String msg){
-		throw new UnsupportedOperationException("Not implemented yet");
+		for(Socket socket: playersSockets.values()){
+			sendMsg(msg, socket);
+		}
 	}
 
 	public String listenForPlayerMsg(Player player){

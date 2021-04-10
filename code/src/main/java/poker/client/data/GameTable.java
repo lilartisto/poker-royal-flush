@@ -19,4 +19,8 @@ public class GameTable {
 		players[index] = player;
 	}
 
+	public Player[] getPlayers(){
+		return players;
+	}
+
 }

@@ -1,12 +1,13 @@
-package poker.server.communication;
+package poker.server.communication.msgformats;
 
 import org.junit.jupiter.api.Test;
+import poker.server.communication.msgformats.StartMsgFormat;
 import poker.server.data.cards.Deck;
 import poker.server.data.cards.Card;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class MsgFormatTest {
+public class StartMsgFormatTest {
 
     @Test
     public void shouldReturnCorrectStringWhenCardsAreNotNull(){
@@ -16,7 +17,7 @@ public class MsgFormatTest {
         String expectedMsg = "{\"name\":\"start\",\"cards\":[" +
                 "{\"color\":" + cards[0].color + ",\"number\":" + cards[0].number + "}," +
                 "{\"color\":" + cards[1].color + ",\"number\":" + cards[1].number + "}]}";
-        String actualMsg = MsgFormat.startMsg(cards);
+        String actualMsg = StartMsgFormat.getMsg(cards);
 
         assertEquals(expectedMsg, actualMsg);
     }
@@ -26,7 +27,7 @@ public class MsgFormatTest {
         Card[] cards = {null, null};
 
         String expectedMsg = "{\"name\":\"start\",\"cards\":[null,null]}";
-        String actualMsg = MsgFormat.startMsg(cards);
+        String actualMsg = StartMsgFormat.getMsg(cards);
 
         assertEquals(expectedMsg, actualMsg);
     }

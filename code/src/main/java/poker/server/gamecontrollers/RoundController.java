@@ -2,7 +2,8 @@ package poker.server.gamecontrollers;
 
 import poker.server.Game;
 import poker.server.communication.ClientConnector;
-import poker.server.communication.MsgFormat;
+import poker.server.communication.msgformats.GameInfoMsgFormat;
+import poker.server.communication.msgformats.StartMsgFormat;
 import poker.server.data.GameTable;
 import poker.server.data.Player;
 import poker.server.data.cards.Deck;
@@ -13,45 +14,60 @@ public class RoundController {
 
 	private GameTable gameTable;
 	private Deck deck;
+	private ClientConnector clientConnector;
 
-	public RoundController(GameTable gameTable){
+	public RoundController(GameTable gameTable, ClientConnector clientConnector){
 		this.gameTable = gameTable;
+		this.clientConnector = clientConnector;
 		deck = new Deck();
 	}
 
 	public void playRound(){
-		startRound();
+		CycleController cycle = new CycleController(gameTable, clientConnector);
 
 		try {
-			Thread.sleep(20000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+			startRound();
+			cycle.playCycle();
+
+			for (int i = 0; i < 3; i++) {
+				drawTableCards(i == 0 ? 3 : 1);
+				sendGameInfoMsg();
+				cycle.playCycle();
+			}
+
+			chooseHandCardsWinner();
+		} catch (IllegalStateException e) {
+			chooseFoldWinner();
 		}
 	}
 
 	private void startRound(){
 		Iterator<Player> players = gameTable.playersIterator();
-		ClientConnector clientConnector = Game.getClientConnector();
 
 		while (players.hasNext()) {
 			Player player = players.next();
-
-			System.out.println("Losuje 2 karty dla gracza " + player.nickname);
-
 			player.setHandCards(deck.getRandomCard(), deck.getRandomCard());
-			clientConnector.sendMsg(MsgFormat.startMsg(player.getHandCards()), player);
+			clientConnector.sendMsg(StartMsgFormat.getMsg(player.getHandCards()), player);
 		}
 	}
 
-	private void drawThreeTableCards(){
-		throw new UnsupportedOperationException("Not implemented yet");
+	private void sendGameInfoMsg(){
+		clientConnector.sendMsgToAll(GameInfoMsgFormat.getMsg(gameTable));
 	}
 
-	private void drawOneTableCard(){
-		throw new UnsupportedOperationException("Not implemented yet");
+	private void drawTableCards(int amount){
+		for(int i = 0; i < amount; i++){
+			gameTable.addTableCard(deck.getRandomCard());
+		}
 	}
 
-	private Player chooseWinner(){
+	private Player chooseHandCardsWinner(){
+		System.out.println("Wybieram zwyciezce");
+		return null;
+		//throw new UnsupportedOperationException("Not implemented yet");
+	}
+
+	private Player chooseFoldWinner(){
 		throw new UnsupportedOperationException("Not implemented yet");
 	}
 

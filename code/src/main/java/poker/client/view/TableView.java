@@ -4,6 +4,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import poker.client.Game;
+import poker.client.data.GameTable;
 import poker.client.data.Player;
 import poker.client.data.cards.Card;
 
@@ -23,11 +24,17 @@ public class TableView {
 
 	public void draw(){
 		GraphicsContext gc = canvas.getGraphicsContext2D();
+
+		clear(gc);
 		drawTable(gc);
 		drawPlayerCards(gc);
 
 		//TODO
 		// other draw functions
+	}
+
+	private void clear(GraphicsContext gc){
+		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 	}
 
 	private void drawTable(GraphicsContext gc){
@@ -51,6 +58,10 @@ public class TableView {
 	}
 
 	private void drawPlayers(GraphicsContext gc){
+		throw new UnsupportedOperationException("Not implemented yet");
+	}
+
+	private void drawPlayer(GraphicsContext gc, int x, int y, Player player){
 		throw new UnsupportedOperationException("Not implemented yet");
 	}
 
