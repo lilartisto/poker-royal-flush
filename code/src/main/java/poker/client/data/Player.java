@@ -20,7 +20,31 @@ public class Player {
         handCards[1] = card2;
     }
 
+    public void setState(int state){
+        this.state = state;
+    }
+
+    public void setMoney(int money){
+        this.money = money;
+    }
+
+    public void setPotValue(int potValue){
+        this.potValue = potValue;
+    }
+
     public Card[] getHandCards(){
         return handCards;
+    }
+
+    public int getState(){
+        return state;
+    }
+
+    public int getPotValue(){
+        return potValue;
+    }
+
+    public int getMoney(){
+        return money;
     }
 }

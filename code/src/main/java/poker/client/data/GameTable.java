@@ -23,4 +23,23 @@ public class GameTable {
 		return players;
 	}
 
+	public int getPotValue(){
+		return potValue;
+	}
+
+	public Card[] getTableCards(){
+		return tableCards;
+	}
+
+	public void setPotValue(int potValue){
+		this.potValue = potValue;
+	}
+
+	public void setPlayer(Player player, int index){
+		players[index] = player;
+	}
+
+	public void setTableCard(Card card, int index){
+		tableCards[index] = card;
+	}
 }
