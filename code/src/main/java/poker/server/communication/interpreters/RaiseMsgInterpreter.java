@@ -1,11 +1,11 @@
 package poker.server.communication.interpreters;
 
-import poker.server.data.GameTable;
 import poker.server.data.Player;
+import poker.server.gamecontrollers.CycleController;
 
 public class RaiseMsgInterpreter implements MsgInterpreter {
 
-	public void interpret(String msg, GameTable gameTable, Player player){
+	public void interpret(String msg, Player player, CycleController cycleController){
 		throw new UnsupportedOperationException("Not implemented yet");
 	}
 
