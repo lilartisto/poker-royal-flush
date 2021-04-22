@@ -42,7 +42,7 @@ public class PokerHandCalculator {
 	private Card[] getAllCardsSorted(Card[] handCards){
 		Card[] cards = copyHandAndTableCards(handCards);
 
-		Arrays.sort(cards, Comparator.comparingInt(o -> o.number));
+		Arrays.sort(cards, ((o1, o2) -> o2.number - o1.number));
 		return cards;
 	}
 
@@ -75,7 +75,7 @@ public class PokerHandCalculator {
 		double flush = flush(sortedCards);
 
 		if(straight != 0 && flush != 0){
-			return flush + Math.floor(straight);
+			return flush + Math.floor(straight) - 1;
 		}
 
 		return 0;
@@ -85,9 +85,9 @@ public class PokerHandCalculator {
 		for(int i = cardCounter.length - 1; i >= 0; i--){
 			if(cardCounter[i] == 4){
 				if(sortedCards[0].number == i){
-					return 7 + 0.01*i + sortedCards[4].number;
+					return 7 + 0.001*(13*i + sortedCards[4].number);
 				} else {
-					return 7 + 0.01*i + sortedCards[0].number;
+					return 7 + 0.001*(13*i + sortedCards[0].number);
 				}
 			}
 		}
@@ -118,8 +118,14 @@ public class PokerHandCalculator {
 
 		for(ArrayList<Card> cardsOneColor: cardsByColor){
 			if(cardsOneColor.size() >= 5){
-				Card biggestCard = Collections.max(cardsOneColor, Comparator.comparingInt(o -> o.number));
-				return 5 + 0.1*(cardsInColor - biggestCard.number);
+				cardsOneColor.sort(Comparator.comparingInt((o) -> o.number));
+				double points = 0;
+
+				for(int i = 4; i >= 0; i--){
+					points += Math.pow(cardsInColor, i) * cardsOneColor.get(i).number;
+				}
+
+				return 5 + points/1e6;
 			}
 		}
 
@@ -154,7 +160,7 @@ public class PokerHandCalculator {
 
 	private boolean isStraight(Card[] cards, int startIndex){
 		for(int i = 0; i < tableCards.length - 1; i++){
-			if(cards[startIndex + i].number != cards[startIndex + i + 1].number - 1){
+			if(cards[startIndex + i].number != cards[startIndex + i + 1].number + 1){
 				return false;
 			}
 		}
@@ -187,7 +193,7 @@ public class PokerHandCalculator {
 			return 0;
 		}
 
-		return 2 + 0.01*(cardsInColor*pairValues.get(0) + pairValues.get(1)) + 0.001*highCard(cards);
+		return 2 + 0.001*(cardsInColor*pairValues.get(0) + pairValues.get(1)) + 0.001*highCard(cards);
 	}
 
 	private double onePair(Card[] sortedCards, int[] cardCounter){
@@ -203,7 +209,7 @@ public class PokerHandCalculator {
 
 	private void deleteCardsWithNumber(Card[] cards, int cardNumber){
 		for(int i = 0; i < cards.length; i++){
-			if(cards[i].number == cardNumber){
+			if(cards[i] != null && cards[i].number == cardNumber){
 				cards[i] = null;
 			}
 		}
