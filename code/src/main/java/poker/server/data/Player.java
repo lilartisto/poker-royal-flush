@@ -40,4 +40,16 @@ public class Player {
         handCards[0] = card1;
         handCards[1] = card2;
     }
+
+    public void setState(int state){
+        this.state = state;
+    }
+
+    public void setMoney(int money){
+        this.money = money;
+    }
+
+    public void setPotValue(int potValue){
+        this.potValue = potValue;
+    }
 }

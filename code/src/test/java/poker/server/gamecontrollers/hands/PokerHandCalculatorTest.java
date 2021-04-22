@@ -214,4 +214,5 @@ public class PokerHandCalculatorTest {
         assertTrue(weaker > expectedPoints && weaker < expectedPoints + 1);
         assertTrue(stronger > weaker);
     }
+
 }

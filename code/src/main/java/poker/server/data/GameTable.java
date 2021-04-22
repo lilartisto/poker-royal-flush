@@ -21,8 +21,20 @@ public class GameTable {
         deck = new Deck();
     }
 
+    public int getStarterPlayerIndex(){
+        return starterPlayer;
+    }
+
+    public void setStarterPlayerIndex(int starterPlayerIndex){
+        starterPlayer = starterPlayerIndex;
+    }
+
     public int getPotValue(){
         return potValue;
+    }
+
+    public void setPotValue(int potValue) {
+        this.potValue = potValue;
     }
 
     public Card[] getTableCards(){

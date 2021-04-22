@@ -27,11 +27,13 @@ public class RoundController {
 
 		try {
 			startRound();
+			gameTable.setPotValue(0);
+			cycle.setMinPot(Game.getBlind());
 			cycle.playCycle();
 
 			for (int i = 0; i < 3; i++) {
 				drawTableCards(i == 0 ? 3 : 1);
-				sendGameInfoMsg();
+				cycle.setMinPot(0);
 				cycle.playCycle();
 			}
 
@@ -62,6 +64,8 @@ public class RoundController {
 	}
 
 	private Player chooseHandCardsWinner(){
+		//TODO
+
 		System.out.println("Wybieram zwyciezce");
 		return null;
 		//throw new UnsupportedOperationException("Not implemented yet");

@@ -1,41 +1,134 @@
 package poker.server.gamecontrollers;
 
-import poker.client.Game;
-import poker.client.communication.ServerConnector;
+import org.json.JSONException;
+import org.json.JSONObject;
+import poker.properties.PlayerMoveProperties;
+import poker.properties.PlayerStateProperties;
 import poker.server.communication.ClientConnector;
+import poker.server.communication.interpreters.*;
+import poker.server.communication.msgformats.GameInfoMsgFormat;
+import poker.server.communication.msgformats.MoveRequestMsgFormat;
 import poker.server.data.GameTable;
+import poker.server.data.Player;
 
 public class CycleController {
 
-	/*
-		musi wyrzucac IllegalStateException kiedy
-		wszyscy gracze spasowali i zostal tylko wygrany
-	 */
-
 	private GameTable gameTable;
 	private ClientConnector clientConnector;
+	private int starterPlayer;
+	private int minPot;
 
 	public CycleController(GameTable gameTable, ClientConnector clientConnector){
 		this.gameTable = gameTable;
+		starterPlayer = gameTable.getStarterPlayerIndex();
 		this.clientConnector = clientConnector;
 	}
 
+	public void setMinPot(int minPot){
+		this.minPot = minPot;
+	}
+
+	public int getMinPot(){
+		return minPot;
+	}
+
+	public void setStarterPlayer(Player player){
+		Player[] players = gameTable.getPlayers();
+
+		for(int i = 0; i < players.length; i++){
+			if(players[i] != null && players[i].nickname.equals(player.nickname)){
+				starterPlayer = i;
+				return;
+			}
+		}
+	}
+
 	public void playCycle(){
-		try {
-			Thread.sleep(10000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		Player[] players = gameTable.getPlayers();
+		starterPlayer = gameTable.getStarterPlayerIndex();
+		firstMove(players[starterPlayer]);
+
+		for(int i = starterPlayer + 1; i != starterPlayer; i = (i + 1) % 6){
+			if(isOver(players)){
+				throw new IllegalStateException("Players have folded");
+			} else if(players[i] != null) {
+				nextMove(players[i]);
+			}
 		}
 
-		//throw new UnsupportedOperationException("Not implemented yet");
+		addPlayersPotsToTablePot(players);
 	}
 
-	private boolean isOver(){
-		throw new UnsupportedOperationException("Not implemented yet");
+	private void addPlayersPotsToTablePot(Player[] players){
+		int pot = 0;
+
+		for(int i = 0; i < players.length; i++){
+			if(players[i] != null){
+				pot += players[i].getPotValue();
+				players[i].setPotValue(0);
+			}
+		}
+
+		gameTable.setPotValue(gameTable.getPotValue() + pot);
 	}
 
-	private void nextMove(){
-		throw new UnsupportedOperationException("Not implemented yet");
+	private void firstMove(Player player){
+		if(player != null){
+			nextMove(player);
+		}
 	}
 
+	private boolean isOver(Player[] players){
+		return numberOfActivePlayers(players) <= 1;
+	}
+
+	private int numberOfActivePlayers(Player[] players){
+		int amount = 0;
+
+		for(Player player: players){
+			if(player != null && player.getState() != PlayerStateProperties.AFTERFOLD){
+				amount++;
+			}
+		}
+
+		return amount;
+	}
+
+	private void nextMove(Player player){
+		if(player.getMoney() == 0){
+			return;
+		}
+
+		player.setState(PlayerStateProperties.INMOVE);
+		sendGameInfo();
+
+		int pot = Math.min(player.getMoney(), minPot);
+		clientConnector.sendMsg(MoveRequestMsgFormat.getMsg(pot), player);
+		interpret(clientConnector.listenForPlayerMsg(player), player);
+	}
+
+	private void sendGameInfo(){
+		clientConnector.sendMsgToAll(GameInfoMsgFormat.getMsg(gameTable));
+	}
+
+	private void interpret(String msg, Player player){
+		JSONObject jsonMsg = new JSONObject(msg);
+		try{
+			int type = jsonMsg.getInt("type");
+			MsgInterpreter interpreter;
+
+			if(type == PlayerMoveProperties.CALL){
+				interpreter = new CallMsgInterpreter();
+			} else if(type == PlayerMoveProperties.FOLD){
+				interpreter = new FoldMsgInterpreter();
+			} else if(type == PlayerMoveProperties.CHECK){
+				interpreter = new CheckMsgInterpreter();
+			} else if(type == PlayerMoveProperties.RAISE){
+				interpreter = new RaiseMsgInterpreter();
+			} else {
+				return;
+			}
+			interpreter.interpret(jsonMsg, player, this);
+		} catch(JSONException ignored){}
+	}
 }
