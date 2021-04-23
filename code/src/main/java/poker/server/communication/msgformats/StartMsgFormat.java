@@ -7,6 +7,10 @@ import java.util.HashMap;
 
 public class StartMsgFormat {
 
+    //TODO
+    // zamiast mapy to od razu jsonobject
+    // sprawdz dla innych klas czy nie ma tego bledu!
+
     public static String getMsg(Card[] cards){
         HashMap<String, Object> msgMap = new HashMap<>();
 
