@@ -11,6 +11,7 @@ public class Player {
     private Card[] handCards;
     private int state;
     private int potValue;
+    private double handStrength;
 
     public Player(String nickname) {
         this.nickname = nickname;
@@ -18,6 +19,7 @@ public class Player {
         handCards = new Card[2];
         state = PlayerStateProperties.AFTERFOLD;
         potValue = 0;
+        handStrength = 0;
     }
 
     public int getMoney(){
@@ -36,6 +38,14 @@ public class Player {
         return handCards;
     }
 
+    public double getHandStrength(){
+        return handStrength;
+    }
+
+    public void setHandStrength(double handStrength) {
+        this.handStrength = handStrength;
+    }
+
     public void setHandCards(Card card1, Card card2){
         handCards[0] = card1;
         handCards[1] = card2;
@@ -51,5 +61,10 @@ public class Player {
 
     public void setPotValue(int potValue){
         this.potValue = potValue;
+    }
+
+    @Override
+    public int hashCode() {
+        return nickname.hashCode();
     }
 }

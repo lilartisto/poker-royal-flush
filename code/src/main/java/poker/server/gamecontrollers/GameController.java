@@ -21,6 +21,7 @@ public class GameController {
 
 			RoundController roundController = new RoundController(gameTable, Game.getClientConnector());
 			roundController.playRound();
+			gameTable.moveStarterPlayerIndex();
 		}
 	}
 

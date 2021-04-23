@@ -9,8 +9,8 @@ import poker.server.data.GameTable;
 import poker.server.data.Player;
 import poker.server.data.cards.Card;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -18,12 +18,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class EndMsgFormatTest {
 
     private GameTable gameTable;
-    private Map<String, Boolean> winners;
+    private Set<Player> winners;
 
     @BeforeEach
     public void setUp(){
         gameTable = new GameTable();
-        winners = new HashMap<>();
+        winners = new HashSet<>();
     }
 
     @Test
@@ -31,12 +31,12 @@ public class EndMsgFormatTest {
         Player player1 = new Player("player1");
         player1.setState(PlayerStateProperties.INGAME);
         player1.setHandCards(new Card(3, 2), new Card(6, 0));
-        winners.put(player1.nickname, true);
+        winners.add(player1);
 
         Player player2 = new Player("player2");
         player2.setState(PlayerStateProperties.INGAME);
         player2.setHandCards(new Card(7, 1), new Card(11, 3));
-        winners.put(player2.nickname, true);
+        winners.add(player2);
 
         Player player3 = new Player("player3");
         player3.setState(PlayerStateProperties.AFTERFOLD);
@@ -50,7 +50,7 @@ public class EndMsgFormatTest {
         gameTable.addPlayer(player2);
         gameTable.addPlayer(player3);
 
-        String msg = EndMsgFormat.getMsg(gameTable, winners, numberOfWinners);
+        String msg = EndMsgFormat.getMsg(gameTable, winners);
 
         checkMsg(new JSONObject(msg), potValue/numberOfWinners);
     }
@@ -58,13 +58,13 @@ public class EndMsgFormatTest {
     @Test
     public void shouldReturnCorrectMsgWhenOnePlayerIsInGame(){
         Player player1 = new Player("player1");
-        player1.setState(PlayerStateProperties.AFTERFOLD);
+        player1.setState(PlayerStateProperties.INGAME);
         player1.setHandCards(new Card(3, 2), new Card(6, 0));
 
         Player player2 = new Player("player2");
         player2.setState(PlayerStateProperties.INMOVE);
         player2.setHandCards(new Card(7, 1), new Card(11, 3));
-        winners.put(player2.nickname, true);
+        winners.add(player2);
 
         int potValue = 100;
         int numberOfWinners = 1;
@@ -73,7 +73,7 @@ public class EndMsgFormatTest {
         gameTable.addPlayer(player1);
         gameTable.addPlayer(player2);
 
-        String msg = EndMsgFormat.getMsg(gameTable, winners, numberOfWinners);
+        String msg = EndMsgFormat.getMsg(gameTable, winners);
 
         checkMsg(new JSONObject(msg), potValue/numberOfWinners);
     }
@@ -97,7 +97,7 @@ public class EndMsgFormatTest {
     }
 
     private void checkPlayer(Player expectedPlayer, JSONObject actualPlayerJSON){
-        assertEquals(winners.get(expectedPlayer.nickname), actualPlayerJSON.getBoolean("winner"));
+        assertEquals(winners.contains(expectedPlayer), actualPlayerJSON.getBoolean("winner"));
 
         Card[] expectedCards = expectedPlayer.getHandCards();
         JSONArray actualCardsJSON = actualPlayerJSON.getJSONArray("cards");

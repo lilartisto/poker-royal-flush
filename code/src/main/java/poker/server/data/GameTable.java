@@ -1,5 +1,6 @@
 package poker.server.data;
 
+import poker.properties.PlayerStateProperties;
 import poker.server.data.cards.Card;
 import poker.server.data.cards.Deck;
 
@@ -25,8 +26,13 @@ public class GameTable {
         return starterPlayer;
     }
 
-    public void setStarterPlayerIndex(int starterPlayerIndex){
-        starterPlayer = starterPlayerIndex;
+    public void moveStarterPlayerIndex(){
+        for(int i = (starterPlayer + 1) % players.length; i < players.length; i = (i + 1) % players.length){
+            if(players[i] != null){
+                starterPlayer = i;
+                return;
+            }
+        }
     }
 
     public int getPotValue(){
@@ -72,6 +78,18 @@ public class GameTable {
             }
         }
         return counter;
+    }
+
+    public int numberOfActivePlayers(){
+        int amount = 0;
+
+        for(Player player: players){
+            if(player != null && player.getState() != PlayerStateProperties.AFTERFOLD){
+                amount++;
+            }
+        }
+
+        return amount;
     }
 
     public Iterator<Player> playersIterator(){

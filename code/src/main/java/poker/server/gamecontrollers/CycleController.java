@@ -13,8 +13,8 @@ import poker.server.data.Player;
 
 public class CycleController {
 
-	private GameTable gameTable;
-	private ClientConnector clientConnector;
+	private final GameTable gameTable;
+	private final ClientConnector clientConnector;
 	private int starterPlayer;
 	private int minPot;
 
@@ -49,7 +49,7 @@ public class CycleController {
 		firstMove(players[starterPlayer]);
 
 		for(int i = starterPlayer + 1; i != starterPlayer; i = (i + 1) % 6){
-			if(isOver(players)){
+			if(isOver()){
 				throw new IllegalStateException("Players have folded");
 			} else if(players[i] != null) {
 				nextMove(players[i]);
@@ -62,10 +62,10 @@ public class CycleController {
 	private void addPlayersPotsToTablePot(Player[] players){
 		int pot = 0;
 
-		for(int i = 0; i < players.length; i++){
-			if(players[i] != null){
-				pot += players[i].getPotValue();
-				players[i].setPotValue(0);
+		for (Player player : players) {
+			if (player != null) {
+				pot += player.getPotValue();
+				player.setPotValue(0);
 			}
 		}
 
@@ -78,20 +78,8 @@ public class CycleController {
 		}
 	}
 
-	private boolean isOver(Player[] players){
-		return numberOfActivePlayers(players) <= 1;
-	}
-
-	private int numberOfActivePlayers(Player[] players){
-		int amount = 0;
-
-		for(Player player: players){
-			if(player != null && player.getState() != PlayerStateProperties.AFTERFOLD){
-				amount++;
-			}
-		}
-
-		return amount;
+	private boolean isOver(){
+		return gameTable.numberOfActivePlayers() <= 1;
 	}
 
 	private void nextMove(Player player){
