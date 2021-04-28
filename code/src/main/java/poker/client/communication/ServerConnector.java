@@ -1,5 +1,6 @@
 package poker.client.communication;
 
+import javafx.application.Platform;
 import org.json.JSONObject;
 import poker.client.communication.interpreters.*;
 import poker.client.Game;
@@ -65,8 +66,9 @@ public class ServerConnector {
 		Thread listenThread = new Thread(() -> {
 			while (true){
 				String msg = listenForMsg();
+				System.out.println(msg);
 				interpretMsg(msg);
-				Game.getTableView().draw();
+				Platform.runLater(() -> Game.getTableView().draw());
 			}
 		});
 		listenThread.setDaemon(true);

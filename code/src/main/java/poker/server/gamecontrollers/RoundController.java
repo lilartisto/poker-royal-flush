@@ -27,6 +27,7 @@ public class RoundController {
 
 	public void playRound(){
 		CycleController cycle = new CycleController(gameTable, clientConnector);
+		updateGameTableAndPlayers();
 
 		try {
 			startRound();
@@ -69,13 +70,13 @@ public class RoundController {
 	private void endRoundByHandCardsWinner(){
 		Set<Player> winners = getWinnersByHandStrength(getPlayersSortedByHandStrength());
 		clientConnector.sendMsgToAll(EndMsgFormat.getMsg(gameTable, winners));
-		updateGameTableAndPlayers(winners);
+		givePrizeToWinners(winners);
 	}
 
 	private void endRoundByFoldWinner(){
 		Set<Player> winners = getWinnersByNotFolded();
 		clientConnector.sendMsgToAll(EndMsgFormat.getMsg(gameTable, winners));
-		updateGameTableAndPlayers(winners);
+		givePrizeToWinners(winners);
 	}
 
 	private Set<Player> getWinnersByNotFolded(){
@@ -93,9 +94,14 @@ public class RoundController {
 	private Set<Player> getWinnersByHandStrength(Player[] players){
 		Set<Player> winnersSet = new HashSet<>();
 
-		for(int i = 1; i < players.length; i++){
+		for(Player player: players){
+			System.out.println(player);
+		}
+
+		for(int i = 1; i < players.length || players[i - 1] != null; i++){
 			winnersSet.add(players[i - 1]);
-			if(players[i - 1].getHandStrength() > players[i].getHandStrength()){
+
+			if(players[i] == null || players[i - 1].getHandStrength() > players[i].getHandStrength()){
 				break;
 			}
 		}
@@ -108,23 +114,39 @@ public class RoundController {
 		Player[] players = gameTable.getPlayers().clone();
 
 		for(Player player: players){
-			player.setHandStrength(calculator.handStrength(player.getHandCards()));
+			if(player != null) {
+				player.setHandStrength(calculator.handStrength(player.getHandCards()));
+			}
 		}
 
-		Arrays.sort(players, (o1, o2) -> Double.compare(o2.getHandStrength(), o1.getHandStrength()));
+		Arrays.sort(players, (o1, o2) -> {
+			if(o1 == null){
+				return 1;
+			} else if(o2 == null){
+				return -1;
+			} else {
+				return Double.compare(o2.getHandStrength(), o1.getHandStrength());
+			}
+		});
 
 		return players;
 	}
 
-	private void updateGameTableAndPlayers(Set<Player> winners){
+	private void givePrizeToWinners(Set<Player> winners){
 		int prize = gameTable.getPotValue()/winners.size();
-		Player[] players = gameTable.getPlayers();
 
-		for(Player player: players){
+		for(Player player: gameTable.getPlayers()){
 			if(player != null){
 				if(winners.contains(player)){
 					player.setMoney(player.getMoney() + prize);
 				}
+			}
+		}
+	}
+
+	private void updateGameTableAndPlayers(){
+		for(Player player: gameTable.getPlayers()){
+			if(player != null){
 				player.setPotValue(0);
 				player.setState(PlayerStateProperties.INGAME);
 			}

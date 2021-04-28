@@ -6,9 +6,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.text.Text;
 import poker.client.Game;
+import poker.client.communication.MovesFormat;
 import poker.client.communication.ServerConnector;
 import poker.client.data.GameTable;
 import poker.client.view.TableView;
+import poker.properties.PlayerMoveProperties;
+import poker.properties.PlayerStateProperties;
 
 public class GameMenuController {
 
@@ -39,36 +42,41 @@ public class GameMenuController {
 		raiseSlider.setMin(1);
 		raiseSlider.setMax(10);
 
+		serverConnector = Game.getServerConnector();
 		Game.setTableView(new TableView(canvas));
 	}
 
 	@FXML
 	private void foldButtonClicked(){
-		System.out.println("foldButton");
-		//throw new UnsupportedOperationException("Not implemented yet");
+		makeMove(PlayerMoveProperties.FOLD);
 	}
 
 	@FXML
 	private void checkButtonClicked(){
-		System.out.println("checkButton");
-		//throw new UnsupportedOperationException("Not implemented yet");
+		makeMove(PlayerMoveProperties.CHECK);
 	}
 
 	@FXML
 	private void callButtonClicked(){
-		System.out.println("callButton");
-		//throw new UnsupportedOperationException("Not implemented yet");
+		makeMove(PlayerMoveProperties.CALL);
+	}
+
+	private void makeMove(int move){
+		serverConnector.sendMsg(MovesFormat.moveFormat(move));
 	}
 
 	@FXML
 	private void raiseButtonClicked(){
-		System.out.println("raiseButton");
-		//throw new UnsupportedOperationException("Not implemented yet");
+		serverConnector.sendMsg(MovesFormat.raiseFormat(getRaiseSliderValue()));
+	}
+
+	private int getRaiseSliderValue(){
+		return (int)Math.round(raiseSlider.getValue());
 	}
 
 	@FXML
-	private void sliderMoved(){
-		raiseText.setText(Math.round(raiseSlider.getValue()) + " $");
+	private void sliderMoved() {
+		raiseText.setText(getRaiseSliderValue() + " $");
 		//throw new UnsupportedOperationException("Not implemented yet");
 	}
 

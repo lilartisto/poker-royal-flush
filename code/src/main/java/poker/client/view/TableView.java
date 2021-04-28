@@ -103,7 +103,6 @@ public class TableView {
 		int y = frameY + (playerFrameHeight - fontSize)/2;
 		int x = frameX + 5;
 		String text = String.format("%-10s %6d$", player.nickname, player.getPotValue());
-		System.out.println(text);
 		gc.setFont(Font.font("Verdana", FontWeight.LIGHT, fontSize));
 		gc.setFill(Color.BLACK);
 

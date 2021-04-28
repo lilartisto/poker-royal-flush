@@ -20,6 +20,10 @@ public class Game {
 		serverConnector = connector;
 	}
 
+	public static ServerConnector getServerConnector(){
+		return serverConnector;
+	}
+
 	public static Deck getDeck(){
 		return deck;
 	}

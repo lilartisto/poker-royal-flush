@@ -100,7 +100,7 @@ public class ClientConnector {
 	}
 
 	public String listenForPlayerMsg(Player player){
-		throw new UnsupportedOperationException("Not implemented yet");
+		return listenForPlayerMsg(playersSockets.get(player));
 	}
 
 	private String listenForPlayerMsg(Socket socket){

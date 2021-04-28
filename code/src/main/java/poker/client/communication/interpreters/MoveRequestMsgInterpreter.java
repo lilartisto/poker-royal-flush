@@ -8,7 +8,7 @@ public class MoveRequestMsgInterpreter implements MsgInterpreter {
 
 	@Override
 	public void interpret(JSONObject msg, GameTable gameTable){
-		throw new UnsupportedOperationException("Not implemented yet");
+		//TODO
 	}
 
 }
