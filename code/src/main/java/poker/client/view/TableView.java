@@ -4,16 +4,13 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import poker.client.Game;
-import poker.client.data.GameTable;
 import poker.client.data.Player;
 import poker.client.data.cards.Card;
 import poker.properties.PlayerStateProperties;
-
-import java.util.Collections;
 
 public class TableView {
 
@@ -21,8 +18,8 @@ public class TableView {
 	private final Image tableImage;
 
 	private final int cardsSpace = 10;
-	private final int playerFrameHeight = 50;
-	private final int playerFrameWidth = 200;
+	private final int playersFrameHeight = 50;
+	private final int playersFrameWidth = 200;
 
 	public TableView(Canvas canvas){
 		this.canvas = canvas;
@@ -38,9 +35,8 @@ public class TableView {
 		drawTable(gc);
 		drawPlayerCards(gc);
 		drawPlayers(gc);
-
-		//TODO
-		// other draw functions
+		drawTableCards(gc);
+		drawPot(gc);
 	}
 
 	private void clear(GraphicsContext gc){
@@ -69,11 +65,52 @@ public class TableView {
 
 	private void drawPlayers(GraphicsContext gc){
 		Player[] players = Game.getGameTable().getPlayers();
+
+		drawFirstRowOfPlayers(gc, players);
+		drawSecondRowOfPlayers(gc, players);
+		drawThirdRowOfPlayers(gc, players);
+	}
+
+	private void drawFirstRowOfPlayers(GraphicsContext gc, Player[] players){
 		int x = 290;
 		int y = 5;
+		int playersPotX = x + playersFrameWidth/2;
+		int playersPotY = y + playersFrameHeight + 25;
 
-		drawPlayer(gc, x, y, 0, 0, players[0]);
-		drawPlayer(gc, (int)canvas.getWidth() - x - playerFrameWidth, y, 0, 0, players[1]);
+		drawPlayer(gc, x, y, playersPotX, playersPotY, players[0]);
+
+		x = getSymmetricalX(x, playersFrameWidth);
+		playersPotX = x + playersFrameWidth/2;
+
+		drawPlayer(gc, x, y, playersPotX, playersPotY, players[1]);
+	}
+
+	private void drawSecondRowOfPlayers(GraphicsContext gc, Player[] players){
+		int x = 5;
+		int y = 200;
+		int playersPotX = x + playersFrameWidth + 65;
+		int playersPotY = y + playersFrameHeight/2;
+
+		drawPlayer(gc, x, y, playersPotX, playersPotY, players[5]);
+
+		x = getSymmetricalX(x, playersFrameWidth);
+		playersPotX = x - 65;
+
+		drawPlayer(gc, x, y, playersPotX, playersPotY, players[2]);
+	}
+
+	private void drawThirdRowOfPlayers(GraphicsContext gc, Player[] players){
+		int x = 220;
+		int y = 395;
+		int playersPotX = x + playersFrameWidth/2;
+		int playersPotY = y - 25;
+
+		drawPlayer(gc, x, y, playersPotX, playersPotY, players[4]);
+
+		x = getSymmetricalX(x, playersFrameWidth);
+		playersPotX = x + playersFrameWidth/2;
+
+		drawPlayer(gc, x, y, playersPotX, playersPotY, players[3]);
 	}
 
 	private void drawPlayer(GraphicsContext gc, int frameX, int frameY, int playerPotX, int playerPotY, Player player){
@@ -82,9 +119,7 @@ public class TableView {
 		}
 
 		drawPlayersFrame(gc, frameX, frameY, player);
-		drawPlayerInfo(gc, frameX, frameY, player);
-		//TODO
-		//	drawing player's pot
+		drawPlayersPot(gc, playerPotX, playerPotY, player);
 	}
 
 	private void drawPlayersFrame(GraphicsContext gc, int x, int y, Player player){
@@ -94,19 +129,32 @@ public class TableView {
 		gc.setStroke(getBorderColor(player));
 		gc.setLineWidth(playerFrameBorderThickness);
 
-		gc.strokeRect(x,  y, playerFrameWidth, playerFrameHeight);
-		gc.fillRect(x, y, playerFrameWidth, playerFrameHeight);
+		gc.strokeRect(x,  y, playersFrameWidth, playersFrameHeight);
+		gc.fillRect(x, y, playersFrameWidth, playersFrameHeight);
+
+		drawPlayerInfo(gc, x, y, player);
 	}
 
 	private void drawPlayerInfo(GraphicsContext gc, int frameX, int frameY, Player player){
-		int fontSize = 15;
-		int y = frameY + (playerFrameHeight - fontSize)/2;
-		int x = frameX + 5;
-		String text = String.format("%-10s %6d$", player.nickname, player.getPotValue());
-		gc.setFont(Font.font("Verdana", FontWeight.LIGHT, fontSize));
-		gc.setFill(Color.BLACK);
+		int fontSize = 20;
+		int y = frameY + playersFrameHeight/2;
+		int x = frameX + playersFrameWidth/2;
+		String text = String.format("%-10s %6d$", player.nickname, player.getMoney());
+		Font font = Font.font("Arial", FontWeight.LIGHT, fontSize);
 
-		gc.fillText(text, x, y);
+		drawText(gc, text, font, x, y, Color.BLACK);
+	}
+
+	private void drawPlayersPot(GraphicsContext gc, int x, int y, Player player){
+		int playersPot = player.getPotValue();
+
+		if(playersPot > 0){
+			int fontSize = 17;
+			String text = playersPot + "$";
+			Font font = Font.font("Arial", FontWeight.LIGHT, fontSize);
+
+			drawText(gc, text, font, x, y, Color.BLACK);
+		}
 	}
 
 	private Color getBorderColor(Player player){
@@ -122,13 +170,51 @@ public class TableView {
 	}
 
 	private void drawPot(GraphicsContext gc){
-		throw new UnsupportedOperationException("Not implemented yet");
+		int framesWidth = 100;
+		int framesHeight = 60;
+		int x = getCenterX(framesWidth);
+		int y = 275;
+
+		gc.setStroke(Color.LIGHTGRAY);
+		gc.strokeRect(x, y, framesWidth, framesHeight);
+
+		int fontSize = 22;
+		Font font = Font.font("Arial", FontWeight.LIGHT, fontSize);
+		String text = Game.getGameTable().getPotValue() + "$";
+
+		drawText(gc, text, font, x + framesWidth/2, y + framesHeight/2, Color.BLACK);
 	}
 
 	private void drawTableCards(GraphicsContext gc){
-		throw new UnsupportedOperationException("Not implemented yet");
+		Card[] tableCards = Game.getGameTable().getTableCards();
+		int x = 330;
+		int y = 125;
+
+		for(int i = 0; i < tableCards.length && tableCards[i] != null; i++){
+			gc.drawImage(tableCards[i].image, x, y);
+			x += tableCards[i].image.getWidth() + cardsSpace;
+		}
 	}
 
+	private void drawText(GraphicsContext gc, String s, Font font, int x, int y, Color color){
+		Text text = new Text(s);
+		text.setFont(font);
+
+		x -= (int)(text.getLayoutBounds().getWidth()/2);
+		y += (int)(text.getLayoutBounds().getHeight()*(0.66)/2.0);
+
+		gc.setFont(font);
+		gc.setFill(color);
+		gc.fillText(s, x, y);
+	}
+
+	private int getCenterX(int width){
+		return ((int)canvas.getWidth() - width)/2;
+	}
+
+	private int getSymmetricalX(int x, int width){
+		return (int)canvas.getWidth() - (x + width);
+	}
 
 
 	public void drawEnding(GraphicsContext gc){
