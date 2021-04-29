@@ -15,6 +15,7 @@ import poker.client.data.Player;
 import poker.client.data.cards.Deck;
 import poker.client.view.TableView;
 
+import javax.crypto.spec.PSource;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.UnknownHostException;
@@ -83,7 +84,9 @@ public class StartMenuController {
 
     private void switchToMainPane() {
         try {
-            Pane mainPane = FXMLLoader.load(getClass().getResource("/fxml/mainPane.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/mainPane.fxml"));
+            Pane mainPane = fxmlLoader.load();
+            Game.setGameMenuController(fxmlLoader.getController());
             Scene scene = new Scene(mainPane);
             Stage stage = (Stage) thisPane.getScene().getWindow();
             stage.setScene(scene);

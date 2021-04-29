@@ -51,4 +51,12 @@ public class Game {
 	public static void setPlayer(Player mainPlayer){
 		player = mainPlayer;
 	}
+
+	public static GameMenuController getGameMenuController() {
+		return gameMenuController;
+	}
+
+	public static void setGameMenuController(GameMenuController gameMenuController) {
+		Game.gameMenuController = gameMenuController;
+	}
 }

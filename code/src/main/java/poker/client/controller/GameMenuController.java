@@ -33,10 +33,6 @@ public class GameMenuController {
 	@FXML
 	private Canvas canvas;
 
-	public void enableButtons(boolean all){
-		throw new UnsupportedOperationException("Not implemented yet");
-	}
-
 	@FXML
 	private void initialize(){
 		raiseSlider.setMin(1);
@@ -49,16 +45,19 @@ public class GameMenuController {
 	@FXML
 	private void foldButtonClicked(){
 		makeMove(PlayerMoveProperties.FOLD);
+		disableButtons();
 	}
 
 	@FXML
 	private void checkButtonClicked(){
 		makeMove(PlayerMoveProperties.CHECK);
+		disableButtons();
 	}
 
 	@FXML
 	private void callButtonClicked(){
 		makeMove(PlayerMoveProperties.CALL);
+		disableButtons();
 	}
 
 	private void makeMove(int move){
@@ -68,6 +67,7 @@ public class GameMenuController {
 	@FXML
 	private void raiseButtonClicked(){
 		serverConnector.sendMsg(MovesFormat.raiseFormat(getRaiseSliderValue()));
+		disableButtons();
 	}
 
 	private int getRaiseSliderValue(){
@@ -76,8 +76,35 @@ public class GameMenuController {
 
 	@FXML
 	private void sliderMoved() {
+		//TODO
+		// text sie nie przesuwa gdy klikniemy raz mysza tzn. nie przeciagniemy jej
+
 		raiseText.setText(getRaiseSliderValue() + " $");
 		//throw new UnsupportedOperationException("Not implemented yet");
+	}
+
+	private void disableButtons(){
+		foldButton.setDisable(true);
+		checkButton.setDisable(true);
+		callButton.setDisable(true);
+		raiseButton.setDisable(true);
+	}
+
+	public void enableFoldCheckRaise(){
+		foldButton.setDisable(false);
+		checkButton.setDisable(false);
+		raiseButton.setDisable(false);
+	}
+
+	public void enableCallFold(){
+		callButton.setDisable(false);
+		foldButton.setDisable(false);
+	}
+
+	public void enableFoldCallRaise(){
+		foldButton.setDisable(false);
+		callButton.setDisable(false);
+		raiseButton.setDisable(false);
 	}
 
 }
