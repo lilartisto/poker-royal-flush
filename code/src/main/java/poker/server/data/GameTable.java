@@ -70,6 +70,12 @@ public class GameTable {
         }
     }
 
+    public void resetTableCards(){
+        for(int i = 0; i < tableCards.length; i++){
+            tableCards[i] = null;
+        }
+    }
+
     public int numberOfPlayers(){
         int counter = 0;
         for(int i = 0; i < players.length; i++){

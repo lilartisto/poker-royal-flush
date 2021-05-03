@@ -152,6 +152,7 @@ public class RoundController {
 			}
 		}
 
+		gameTable.resetTableCards();
 		gameTable.setPotValue(0);
 	}
 

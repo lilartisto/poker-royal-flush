@@ -14,7 +14,7 @@ public class GameController {
 	public void playGame(){
 		while(true) {
 			waitForPlayers();
-			long roundDelay = 3500;
+			long roundDelay = 6000;
 			try {
 				Thread.sleep(roundDelay);
 			} catch (InterruptedException e) { }
