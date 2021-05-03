@@ -15,17 +15,20 @@ public class Deck {
 		for(int i = 0; i < cards.length-1; i++){
 			int color = i / 13;
 			int number = i % 13;
-			Image image;
 
-			try {
-				String resourcesPath = "/graphics/cards/" + color + "/" + number + ".png";
-				String path = getClass().getResource(resourcesPath).toExternalForm();
-				image = new Image(path);
-			} catch (Exception e){
-				image = null;
-			}
+			String resourcesPath = "/graphics/cards/" + color + "/" + number + ".png";
 
-			cards[i] = new Card(color, number, image);
+			cards[i] = new Card(color, number, loadImage(resourcesPath));
+		}
+		cards[cards.length - 1] = new Card(-1, -1, loadImage("/graphics/cards/52.png"));
+	}
+
+	private Image loadImage(String resourcesPath){
+		try {
+			String path = getClass().getResource(resourcesPath).toExternalForm();
+			return new Image(path);
+		} catch (Exception e){
+			return null;
 		}
 	}
 

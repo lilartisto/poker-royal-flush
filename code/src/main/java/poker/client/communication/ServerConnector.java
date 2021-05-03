@@ -1,6 +1,7 @@
 package poker.client.communication;
 
 import javafx.application.Platform;
+import org.json.JSONException;
 import org.json.JSONObject;
 import poker.client.communication.interpreters.*;
 import poker.client.Game;
@@ -68,7 +69,6 @@ public class ServerConnector {
 				String msg = listenForMsg();
 				System.out.println(msg);
 				interpretMsg(msg);
-				Platform.runLater(() -> Game.getTableView().draw());
 			}
 		});
 		listenThread.setDaemon(true);
@@ -76,13 +76,20 @@ public class ServerConnector {
 	}
 
 	private void interpretMsg(String msg){
-		JSONObject jsonMsg = new JSONObject(msg);
-		String msgName = jsonMsg.getString("name");
-		MsgInterpreter msgInterpreter = getMsgInterpreter(msgName);
+		try {
+			JSONObject jsonMsg = new JSONObject(msg);
+			String msgName = jsonMsg.getString("name");
+			MsgInterpreter msgInterpreter = getMsgInterpreter(msgName);
 
-		if(msgInterpreter != null){
-			msgInterpreter.interpret(jsonMsg, Game.getGameTable());
-		}
+			if (msgInterpreter != null) {
+				msgInterpreter.interpret(jsonMsg, Game.getGameTable());
+				if (msgName.equals("end")) {
+					Platform.runLater(() -> Game.getTableView().drawEnding());
+				} else {
+					Platform.runLater(() -> Game.getTableView().draw());
+				}
+			}
+		} catch (JSONException ignored){}
 	}
 
 	private MsgInterpreter getMsgInterpreter(String msgName){

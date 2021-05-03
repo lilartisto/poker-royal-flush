@@ -21,8 +21,11 @@ public class TableView {
 	private final int playersFrameHeight = 50;
 	private final int playersFrameWidth = 200;
 
+	private boolean drawingEnding;
+
 	public TableView(Canvas canvas){
 		this.canvas = canvas;
+		drawingEnding = false;
 
 		String path = getClass().getResource("/graphics/table.png").toExternalForm();
 		tableImage = path != null ? new Image(path): null;
@@ -33,7 +36,7 @@ public class TableView {
 
 		clear(gc);
 		drawTable(gc);
-		drawPlayerCards(gc);
+		drawMainPlayerCards(gc);
 		drawPlayers(gc);
 		drawTableCards(gc);
 		drawPot(gc);
@@ -49,7 +52,7 @@ public class TableView {
 		}
 	}
 
-	private void drawPlayerCards(GraphicsContext gc){
+	private void drawMainPlayerCards(GraphicsContext gc){
 		Player player = Game.getPlayer();
 		Card[] cards = player.getHandCards();
 		int x = 480;
@@ -119,7 +122,28 @@ public class TableView {
 		}
 
 		drawPlayersFrame(gc, frameX, frameY, player);
-		drawPlayersPot(gc, playerPotX, playerPotY, player);
+
+		if(drawingEnding) {
+			drawPlayersCards(gc, frameX, frameY, player.getHandCards());
+		} else {
+			drawPlayersPot(gc, playerPotX, playerPotY, player);
+		}
+	}
+
+	private void drawPlayersCards(GraphicsContext gc, int frameX, int frameY, Card[] handCards){
+		if(handCards == null){
+			return;
+		}
+
+		int x = frameX + playersFrameWidth/2;
+		int y = frameY + (playersFrameHeight - (int)handCards[0].image.getHeight()/2)/2;
+
+		for (Card handCard : handCards) {
+			if (handCard != null) {
+				gc.drawImage(handCard.image, x, y, handCard.image.getWidth()/2, handCard.image.getHeight()/2);
+				x += (handCard.image.getWidth() + cardsSpace)/2;
+			}
+		}
 	}
 
 	private void drawPlayersFrame(GraphicsContext gc, int x, int y, Player player){
@@ -158,8 +182,22 @@ public class TableView {
 	}
 
 	private Color getBorderColor(Player player){
-		int state = player.getState();
+		if(drawingEnding){
+			return getBorderColorEnding(player.isWinner());
+		} else {
+			return getBorderColorNotEnding(player.getState());
+		}
+	}
 
+	private Color getBorderColorEnding(boolean isWinner){
+		if(isWinner){
+			return Color.INDIANRED;
+		} else {
+			return Color.DARKGRAY;
+		}
+	}
+
+	private Color getBorderColorNotEnding(int state){
 		if(state == PlayerStateProperties.INGAME){
 			return Color.BLUEVIOLET;
 		} else if(state == PlayerStateProperties.INMOVE){
@@ -190,9 +228,16 @@ public class TableView {
 		int x = 330;
 		int y = 125;
 
-		for(int i = 0; i < tableCards.length && tableCards[i] != null; i++){
-			gc.drawImage(tableCards[i].image, x, y);
-			x += tableCards[i].image.getWidth() + cardsSpace;
+		for (Card tableCard : tableCards) {
+			Image image;
+			if(tableCard == null) {
+				image = Game.getDeck().getBackCard().image;
+			} else {
+				image = tableCard.image;
+			}
+
+			gc.drawImage(image, x, y);
+			x += image.getWidth() + cardsSpace;
 		}
 	}
 
@@ -217,15 +262,9 @@ public class TableView {
 	}
 
 
-	public void drawEnding(GraphicsContext gc){
-		throw new UnsupportedOperationException("Not implemented yet");
-	}
-
-	private void drawEndingPlayersCards(GraphicsContext gc){
-		throw new UnsupportedOperationException("Not implemented yet");
-	}
-
-	private void drawEndingWinner(GraphicsContext gc){
-		throw new UnsupportedOperationException("Not implemented yet");
+	public void drawEnding(){
+		drawingEnding = true;
+		draw();
+		drawingEnding = false;
 	}
 }
