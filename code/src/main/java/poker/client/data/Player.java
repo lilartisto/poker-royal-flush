@@ -9,6 +9,7 @@ public class Player {
     private int money;
     private int state;
     private int potValue;
+    private boolean winner;
 
     public Player(String nickname) {
         handCards = new Card[2];
@@ -46,5 +47,13 @@ public class Player {
 
     public int getMoney(){
         return money;
+    }
+
+    public boolean isWinner() {
+        return winner;
+    }
+
+    public void setWinner(boolean winner) {
+        this.winner = winner;
     }
 }
