@@ -14,18 +14,20 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 public class StartMsgInterpreterTest {
 
     private MsgInterpreter interpreter;
+    private Player player;
+    private GameTable gameTable;
 
     @BeforeEach
     public void setUp(){
         interpreter = new StartMsgInterpreter();
-        Game.setPlayer(new Player(""));
+        player = new Player("test");
+        gameTable = new GameTable(0);
+        gameTable.setPlayer(player, 0);
     }
 
     @Test
     public void shouldDoNothingWhenMsgIsNull(){
-        Player player = Game.getPlayer();
-
-        interpreter.interpret(null, new GameTable(0, player));
+        interpreter.interpret(null, new GameTable(0));
         Card[] actualCards = player.getHandCards();
 
         assertNull(actualCards[0]);
@@ -35,9 +37,8 @@ public class StartMsgInterpreterTest {
     @Test
     public void shouldInterpretMsgCorrectWhenMsgIsCorrect(){
         String msg = "{\"name\":\"start\",\"cards\":[{\"color\":3,\"number\":12},{\"color\":0,\"number\":8}]}";
-        Player player = Game.getPlayer();
 
-        interpreter.interpret(new JSONObject(msg), new GameTable(0, player));
+        interpreter.interpret(new JSONObject(msg), gameTable);
         Card[] actualCards = player.getHandCards();
 
         assertEquals(3, actualCards[0].color);
@@ -49,9 +50,8 @@ public class StartMsgInterpreterTest {
     @Test
     public void shouldInterpretMsgCorrectWhenGameTableIsNull(){
         String msg = "{\"name\":\"start\",\"cards\":[{\"color\":1,\"number\":2},{\"color\":3,\"number\":4}]}";
-        Player player = Game.getPlayer();
 
-        interpreter.interpret(new JSONObject(msg), new GameTable(0, player));
+        interpreter.interpret(new JSONObject(msg), gameTable);
         Card[] actualCards = player.getHandCards();
 
         assertEquals(1, actualCards[0].color);
@@ -63,9 +63,8 @@ public class StartMsgInterpreterTest {
     @Test
     public void shouldDoNothingWhenCardsAreNull(){
         String msg = "{\"name\":\"start\",\"cards\":[null,null]}";
-        Player player = Game.getPlayer();
 
-        interpreter.interpret(new JSONObject(msg), new GameTable(0, player));
+        interpreter.interpret(new JSONObject(msg), gameTable);
         Card[] actualCards = player.getHandCards();
 
         assertNull(actualCards[0]);
@@ -75,9 +74,8 @@ public class StartMsgInterpreterTest {
     @Test
     public void shouldDoNothingWhenCardsDoNotContainNumber(){
         String msg = "{\"name\":\"start\",\"cards\":[{\"color\":1},{\"color\":3,\"number\":4}]}";
-        Player player = Game.getPlayer();
 
-        interpreter.interpret(new JSONObject(msg), new GameTable(0, player));
+        interpreter.interpret(new JSONObject(msg), gameTable);
         Card[] actualCards = player.getHandCards();
 
         assertNull(actualCards[0]);
@@ -87,9 +85,8 @@ public class StartMsgInterpreterTest {
     @Test
     public void shouldDoNothingWhenCardsDoNotContainColor(){
         String msg = "{\"name\":\"start\",\"cards\":[{\"color\":1,\"number\":2},{\"number\":4}]}";
-        Player player = Game.getPlayer();
 
-        interpreter.interpret(new JSONObject(msg), new GameTable(0, player));
+        interpreter.interpret(new JSONObject(msg), gameTable);
         Card[] actualCards = player.getHandCards();
 
         assertNull(actualCards[0]);

@@ -17,7 +17,6 @@ public class StartMsgInterpreter implements MsgInterpreter {
 			return;
 		}
 
-		Player player = Game.getPlayer();
 		try {
 			JSONArray cards = msg.getJSONArray("cards");
 			JSONObject card0JSON = cards.getJSONObject(0);
@@ -26,9 +25,9 @@ public class StartMsgInterpreter implements MsgInterpreter {
 
 			Card card0 = deck.getCard(card0JSON.getInt("color"), card0JSON.getInt("number"));
 			Card card1 = deck.getCard(card1JSON.getInt("color"), card1JSON.getInt("number"));
-			player.setHandCards(card0, card1);
+			gameTable.setHandCards(card0, card1);
 		} catch (JSONException e){
-			player.setHandCards(null, null);
+			gameTable.setHandCards(null, null);
 		}
 	}
 

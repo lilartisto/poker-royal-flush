@@ -53,8 +53,7 @@ public class TableView {
 	}
 
 	private void drawMainPlayerCards(GraphicsContext gc){
-		Player player = Game.getPlayer();
-		Card[] cards = player.getHandCards();
+		Card[] cards = Game.getGameTable().getHandCards();
 		int x = 480;
 		int y = 360;
 

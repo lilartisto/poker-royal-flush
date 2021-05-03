@@ -10,7 +10,7 @@ import poker.client.view.TableView;
 public class Game {
 
 	private static GameTable gameTable;
-	private static Player player = new Player("");
+	//private static Player player = new Player("");
 	private static final Deck deck = new Deck();
 	private static ServerConnector serverConnector;
 	private static GameMenuController gameMenuController;
@@ -44,13 +44,13 @@ public class Game {
 		gameTable = table;
 	}
 
-	public static Player getPlayer(){
-		return player;
-	}
+	//public static Player getPlayer(){
+	//	return gameTable.getMainPlayer();
+	//}
 
-	public static void setPlayer(Player mainPlayer){
-		player = mainPlayer;
-	}
+	//public static void setPlayer(Player mainPlayer){
+	//	player = mainPlayer;
+	//}
 
 	public static GameMenuController getGameMenuController() {
 		return gameMenuController;

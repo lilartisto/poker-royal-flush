@@ -12,7 +12,7 @@ public class MoveRequestMsgInterpreter implements MsgInterpreter {
 	@Override
 	public void interpret(JSONObject msg, GameTable gameTable){
 		int minValue = msg.getInt("minValue");
-		int playersMoney = Game.getPlayer().getMoney();
+		int playersMoney = gameTable.getMainPlayer().getMoney();
 		GameMenuController controller = Game.getGameMenuController();
 
 		if(minValue == 0){

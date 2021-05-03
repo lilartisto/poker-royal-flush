@@ -33,7 +33,7 @@ public class ServerConnector {
 		JSONObject answer = new JSONObject(listenForMsg());
 		checkIfConnected(answer);
 
-		Game.setGameTable(new GameTable(answer.getInt("seat"), Game.getPlayer()));
+		Game.setGameTable(new GameTable(answer.getInt("seat")));
 	}
 
 	private void checkIfConnected(JSONObject msgJSON) throws Exception {

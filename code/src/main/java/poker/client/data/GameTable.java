@@ -8,11 +8,15 @@ public class GameTable {
 	private Card[] tableCards;
 	private Player[] players;
 	private int potValue;
+	private int mainPlayerSeat;
+	private Card[] handCards;
 
-	public GameTable(int mainPlayerSeat, Player mainPlayer){
+	public GameTable(int mainPlayerSeat){
 		tableCards = new Card[5];
 		players = new Player[6];
-		players[mainPlayerSeat] = mainPlayer;
+		//players[mainPlayerSeat] = mainPlayer;
+		this.mainPlayerSeat = mainPlayerSeat;
+		handCards = new Card[2];
 	}
 
 	public void addPlayer(Player player, int index){
@@ -21,6 +25,10 @@ public class GameTable {
 
 	public Player[] getPlayers(){
 		return players;
+	}
+
+	public Player getMainPlayer(){
+		return players[mainPlayerSeat];
 	}
 
 	public int getPotValue(){
@@ -41,5 +49,14 @@ public class GameTable {
 
 	public void setTableCard(Card card, int index){
 		tableCards[index] = card;
+	}
+
+	public void setHandCards(Card card0, Card card1){
+		handCards[0] = card0;
+		handCards[1] = card1;
+	}
+
+	public Card[] getHandCards(){
+		return handCards;
 	}
 }
