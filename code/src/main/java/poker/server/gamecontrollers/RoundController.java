@@ -94,10 +94,6 @@ public class RoundController {
 	private Set<Player> getWinnersByHandStrength(Player[] players){
 		Set<Player> winnersSet = new HashSet<>();
 
-		for(Player player: players){
-			System.out.println(player);
-		}
-
 		for(int i = 1; i < players.length || players[i - 1] != null; i++){
 			winnersSet.add(players[i - 1]);
 

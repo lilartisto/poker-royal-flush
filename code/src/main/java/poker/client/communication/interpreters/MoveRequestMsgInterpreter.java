@@ -22,6 +22,7 @@ public class MoveRequestMsgInterpreter implements MsgInterpreter {
 		} else {
 			controller.enableFoldCallRaise();
 		}
+		controller.setMinMaxSlider(minValue + 1, playersMoney);
 	}
 
 }

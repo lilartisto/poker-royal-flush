@@ -107,4 +107,9 @@ public class GameMenuController {
 		raiseButton.setDisable(false);
 	}
 
+	public void setMinMaxSlider(int min, int max){
+		raiseSlider.setMin(min);
+		raiseSlider.setMax(max);
+	}
+
 }
