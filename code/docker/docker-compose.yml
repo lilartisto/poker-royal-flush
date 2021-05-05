@@ -1,0 +1,10 @@
+version: "3.5"
+services:
+  postgres:
+    build:
+      context: ./postgres
+    image: poker_postgres_image
+    container_name: poker_postgres_container
+    ports:
+      - "7432:5432"
+    env_file: ./postgres/.env

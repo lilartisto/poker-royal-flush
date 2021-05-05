@@ -1,0 +1,27 @@
+CREATE ROLE poker_user WITH
+    LOGIN
+    PASSWORD 'Fl94yuwHClB6eKltjLnPYQ=='
+    NOSUPERUSER
+    INHERIT
+    NOCREATEDB
+    NOCREATEROLE
+    NOREPLICATION;
+
+CREATE DATABASE poker_database WITH
+    OWNER = postgres
+    ENCODING = 'UTF8'
+    TABLESPACE = pg_default
+    LC_COLLATE = 'pl_PL.UTF-8'
+    LC_CTYPE = 'pl_PL.UTF-8'
+    CONNECTION LIMIT = -1;
+
+\connect poker_database
+
+DROP TABLE IF EXISTS T_PLAYERS;
+
+CREATE TABLE T_PLAYERS (
+    nickname varchar(10) NOT NULL PRIMARY KEY,
+    money int NOT NULL
+);
+
+GRANT SELECT, UPDATE, INSERT ON T_PLAYERS TO poker_user;
