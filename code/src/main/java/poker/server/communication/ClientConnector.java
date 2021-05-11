@@ -11,11 +11,13 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.SortedMap;
 
 import org.json.*;
+import poker.server.data.database.DataBaseController;
 
 public class ClientConnector {
 
@@ -55,11 +57,16 @@ public class ClientConnector {
 			String msgName = msg.getString("name");
 			if(msgName.equals("connect")){
 				String nickname = msg.getString("nickname");
-				//TODO
-				// player exist ? sendMsg( MsgFormat.connectMsg - player exist and plays)
 				Player player = new Player(nickname);
+
+				if(playersSockets.containsKey(player)){
+					sendMsg(ConnectMsgFormat.getMsg(false, "Player " + nickname + " is already playing", -1), socket);
+					return;
+				}
+
 				int seat = Game.getGameTable().addPlayer(player);
 				if(seat >= 0){
+					player = getPlayer(nickname);
 					playersSockets.put(player, socket);
 					sendMsg(ConnectMsgFormat.getMsg(true, null, seat), player);
 					System.out.println("Player " + nickname + " connected to server");
@@ -72,6 +79,25 @@ public class ClientConnector {
 		} catch (JSONException e){
 			System.err.println("Received unexpected msg or msg with wrong format from: " + socket.getInetAddress() + "\n"
 					+ "error: " + e.getMessage());
+		}
+	}
+
+	private Player getPlayer(String nickname){
+		DataBaseController dbController = Game.getDataBaseController();
+
+		if(dbController == null){
+			return new Player(nickname);
+		}
+
+		try {
+			Player player = dbController.getPlayer(nickname);
+			if (player == null) {
+				player = new Player(nickname);
+				dbController.insertPlayer(player);
+			}
+			return player;
+		} catch (SQLException e){
+			return new Player(nickname);
 		}
 	}
 

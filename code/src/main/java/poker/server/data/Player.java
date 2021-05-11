@@ -67,4 +67,12 @@ public class Player {
     public int hashCode() {
         return nickname.hashCode();
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Player){
+            return nickname.equals(((Player) obj).nickname);
+        }
+        return false;
+    }
 }

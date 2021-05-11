@@ -7,6 +7,7 @@ import poker.server.data.GameTable;
 import poker.server.gamecontrollers.GameController;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.HashMap;
 
 public class Game {
@@ -70,7 +71,17 @@ public class Game {
         }
 
         gameTable = new GameTable();
-        //dataBaseController = new DataBaseController();
+        try {
+            //TODO
+            // moze wrzucic to do jakiegos pliku
+            dataBaseController = new DataBaseController(
+                    "jdbc:postgresql://localhost:7432/poker_database",
+                    "poker_user",
+                    "Fl94yuwHClB6eKltjLnPYQ=="
+            );
+        } catch (SQLException e) {
+            System.err.println("Cannot connect to database. " + e.getMessage());
+        }
 
         GameController gameController = new GameController(gameTable);
         gameController.playGame();
