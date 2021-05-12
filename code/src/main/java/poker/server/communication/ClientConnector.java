@@ -2,6 +2,7 @@ package poker.server.communication;
 
 import poker.server.Game;
 import poker.server.communication.msgformats.ConnectMsgFormat;
+import poker.server.communication.msgformats.GameInfoMsgFormat;
 import poker.server.data.GameTable;
 import poker.server.data.Player;
 
@@ -64,14 +65,15 @@ public class ClientConnector {
 					return;
 				}
 
-				int seat = Game.getGameTable().addPlayer(player);
-				if(seat >= 0){
+				GameTable gameTable = Game.getGameTable();
+				if(gameTable.hasFreeSeat()){
 					player = getPlayer(nickname);
 					playersSockets.put(player, socket);
+					int seat = gameTable.addPlayer(player);
 					sendMsg(ConnectMsgFormat.getMsg(true, null, seat), player);
 					System.out.println("Player " + nickname + " connected to server");
 				} else {
-					sendMsg(ConnectMsgFormat.getMsg(false, "Server is full", seat), socket);
+					sendMsg(ConnectMsgFormat.getMsg(false, "Server is full", -1), socket);
 				}
 			} else {
 				throw new JSONException("Expected connect msg, received mg type: " + msgName);
@@ -115,7 +117,7 @@ public class ClientConnector {
 			pw.println(msg);
 			pw.flush();
 		} catch (IOException e) {
-			e.printStackTrace();
+			disconnectFromPlayer(socket);
 		}
 	}
 
@@ -142,11 +144,50 @@ public class ClientConnector {
 
 			//return msgBuilder.toString();
 		} catch (IOException e){
-			//TODO
-			//	rebuild catch
-			e.printStackTrace();
+			disconnectFromPlayer(socket);
 			return null;
 		}
 	}
 
+	private void disconnectFromPlayer(Socket socket){
+		Player player = getPlayerBySocket(socket);
+
+		if(player == null){
+			return;
+		}
+
+		GameTable gameTable = Game.getGameTable();
+		gameTable.deletePlayer(player);
+		updateDataBase(player);
+		playersSockets.remove(player);
+
+		sendMsgToAll(GameInfoMsgFormat.getMsg(gameTable));
+
+		System.out.println("Player " + player.nickname + " has been disconnected from the server");
+	}
+
+	private void updateDataBase(Player player){
+		try {
+			DataBaseController dbController = Game.getDataBaseController();
+			dbController.updatePlayer(player);
+		} catch (SQLException | NullPointerException ignored){ }
+	}
+
+	private Player getPlayerBySocket(Socket socket){
+		for(Map.Entry<Player, Socket> entry: playersSockets.entrySet()){
+			if(socket.equals(entry.getValue())){
+
+				/*Player player = entry.getKey();
+				Player[] players = Game.getGameTable().getPlayers();
+				for(Player p: players){
+					if(player.equals(p)){
+						return p;
+					}
+				}*/
+
+				return entry.getKey();
+			}
+		}
+		return null;
+	}
 }

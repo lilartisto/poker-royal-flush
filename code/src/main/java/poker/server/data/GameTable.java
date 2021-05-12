@@ -61,6 +61,15 @@ public class GameTable {
         return -1;
     }
 
+    public void deletePlayer(Player player){
+        for(int i = 0; i < players.length; i++){
+            if(player.equals(players[i])){
+                players[i] = null;
+                return;
+            }
+        }
+    }
+
     public void addTableCard(Card card){
         for(int i = 0; i < tableCards.length; i++){
             if(tableCards[i] == null){
@@ -96,6 +105,10 @@ public class GameTable {
         }
 
         return amount;
+    }
+
+    public boolean hasFreeSeat(){
+        return numberOfPlayers() < players.length;
     }
 
     public Iterator<Player> playersIterator(){

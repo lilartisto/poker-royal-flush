@@ -12,10 +12,16 @@ import java.util.Set;
 public class EndMsgFormat {
 
     public static String getMsg(GameTable gameTable, Set<Player> winners){
+        int n = winners.size();
+
+        if(n == 0){
+            return null;
+        }
+
         JSONObject jsonMsg = new JSONObject();
 
         jsonMsg.put("name", "end");
-        jsonMsg.put("prize", gameTable.getPotValue()/winners.size());
+        jsonMsg.put("prize", gameTable.getPotValue()/n);
         jsonMsg.put("players", playersToJSONArray(gameTable, winners));
 
         return jsonMsg.toString();

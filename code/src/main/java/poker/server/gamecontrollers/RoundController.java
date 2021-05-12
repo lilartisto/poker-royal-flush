@@ -26,6 +26,10 @@ public class RoundController {
 	}
 
 	public void playRound(){
+		if(gameTable.numberOfPlayers() <= 1){
+			throw new IllegalStateException("Not enough players for the game");
+		}
+
 		CycleController cycle = new CycleController(gameTable, clientConnector);
 		updateGameTableAndPlayers();
 
@@ -44,6 +48,8 @@ public class RoundController {
 			endRoundByHandCardsWinner();
 		} catch (IllegalStateException e) {
 			endRoundByFoldWinner();
+		} finally {
+			updateGameTableAndPlayers();
 		}
 	}
 

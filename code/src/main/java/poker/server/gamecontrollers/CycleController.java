@@ -50,7 +50,7 @@ public class CycleController {
 
 		for(int i = starterPlayer + 1; i != starterPlayer; i = (i + 1) % 6){
 			if(isOver()){
-				throw new IllegalStateException("Players have folded");
+				throw new IllegalStateException("Players have folded or disconnected");
 			} else if(players[i] != null) {
 				nextMove(players[i]);
 			}
@@ -92,7 +92,10 @@ public class CycleController {
 
 		int pot = Math.min(player.getMoney(), minPot);
 		clientConnector.sendMsg(MoveRequestMsgFormat.getMsg(pot), player);
-		interpret(clientConnector.listenForPlayerMsg(player), player);
+		String msg = clientConnector.listenForPlayerMsg(player);
+		if(msg != null){
+			interpret(msg, player);
+		}
 	}
 
 	private void sendGameInfo(){
