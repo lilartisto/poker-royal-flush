@@ -16,6 +16,7 @@ public class Main extends Application {
     public void start(Stage stage) throws Exception{
         Pane startPane = FXMLLoader.load(getClass().getResource("/fxml/startPane.fxml"));
         Scene scene = new Scene(startPane);
+        stage.setResizable(false);
         stage.setScene(scene);
         stage.setTitle("Poker Royal Flush");
         stage.show();

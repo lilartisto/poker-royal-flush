@@ -1,10 +1,16 @@
 package poker.client.controller;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import poker.client.Game;
 import poker.client.communication.MovesFormat;
 import poker.client.communication.ServerConnector;
@@ -12,6 +18,8 @@ import poker.client.data.GameTable;
 import poker.client.view.TableView;
 import poker.properties.PlayerMoveProperties;
 import poker.properties.PlayerStateProperties;
+
+import java.io.IOException;
 
 public class GameMenuController {
 
@@ -32,6 +40,8 @@ public class GameMenuController {
 	private Text raiseText;
 	@FXML
 	private Canvas canvas;
+	@FXML
+	private Pane thisPane;
 
 	@FXML
 	private void initialize(){
@@ -76,11 +86,7 @@ public class GameMenuController {
 
 	@FXML
 	private void sliderMoved() {
-		//TODO
-		// text sie nie przesuwa gdy klikniemy raz mysza tzn. nie przeciagniemy jej
-
 		raiseText.setText(getRaiseSliderValue() + " $");
-		//throw new UnsupportedOperationException("Not implemented yet");
 	}
 
 	private void disableButtons(){
@@ -110,6 +116,32 @@ public class GameMenuController {
 	public void setMinMaxSlider(int min, int max){
 		raiseSlider.setMin(min);
 		raiseSlider.setMax(max);
+	}
+
+	public void resetApp(String reason){
+		Platform.runLater(() -> {
+			printAlert(reason);
+			switchToStartPane();
+		});
+	}
+
+	private void printAlert(String msg) {
+		Alert alert = new Alert(Alert.AlertType.ERROR);
+		alert.setTitle("Error");
+		alert.setContentText(msg);
+		alert.showAndWait();
+	}
+
+	private void switchToStartPane() {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/startPane.fxml"));
+			Pane pane = fxmlLoader.load();
+			Scene scene = new Scene(pane);
+			Stage stage = (Stage) thisPane.getScene().getWindow();
+			stage.setScene(scene);
+		} catch (IOException e) {
+			printAlert(e.getMessage());
+		}
 	}
 
 }

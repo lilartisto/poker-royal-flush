@@ -56,9 +56,7 @@ public class ServerConnector {
 
 			//return msgBuilder.toString();
 		} catch (IOException e){
-			//TODO
-			//	rebuild catch
-			e.printStackTrace();
+			Game.getGameMenuController().resetApp("Application lost connection with server");
 			return null;
 		}
 	}
@@ -67,7 +65,9 @@ public class ServerConnector {
 		Thread listenThread = new Thread(() -> {
 			while (true){
 				String msg = listenForMsg();
-				System.out.println(msg);
+				if(msg == null){
+					return;
+				}
 				interpretMsg(msg);
 			}
 		});
@@ -112,6 +112,7 @@ public class ServerConnector {
 			pw.println(msg);
 			pw.flush();
 		} catch (IOException e) {
+			Game.getGameMenuController().resetApp("Application lost connection with server");
 			e.printStackTrace();
 		}
 	}
