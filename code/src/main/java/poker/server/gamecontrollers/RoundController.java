@@ -29,6 +29,7 @@ public class RoundController {
 		if(gameTable.numberOfPlayers() <= 1){
 			throw new IllegalStateException("Not enough players for the game");
 		}
+		int cycleDelay = 1500;
 
 		CycleController cycle = new CycleController(gameTable, clientConnector);
 		updateGameTableAndPlayers();
@@ -38,11 +39,13 @@ public class RoundController {
 			gameTable.setPotValue(0);
 			cycle.setMinPot(Game.getBlind());
 			cycle.playCycle();
+			timeDelay(cycleDelay);
 
 			for (int i = 0; i < 3; i++) {
 				drawTableCards(i == 0 ? 3 : 1);
 				cycle.setMinPot(0);
 				cycle.playCycle();
+				timeDelay(cycleDelay);
 			}
 
 			endRoundByHandCardsWinner();
@@ -163,4 +166,11 @@ public class RoundController {
 		gameTable.setPotValue(0);
 	}
 
+	private void timeDelay(long millis){
+		try{
+			Thread.sleep(millis);
+		} catch (InterruptedException e){
+			return;
+		}
+	}
 }

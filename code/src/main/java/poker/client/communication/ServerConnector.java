@@ -48,7 +48,10 @@ public class ServerConnector {
 			BufferedReader br = new BufferedReader(new InputStreamReader(server.getInputStream()));
 			//StringBuilder msgBuilder = new StringBuilder(br.readLine());
 			//String line;
-			return br.readLine();
+
+			String tmp = br.readLine();
+			System.out.println(tmp);
+			return tmp;//br.readLine();
 
 			//while ((line = br.readLine()).length() != 0) {
 			//	msgBuilder.append("\n").append(line);
@@ -56,6 +59,9 @@ public class ServerConnector {
 
 			//return msgBuilder.toString();
 		} catch (IOException e){
+			if(server.isClosed()){
+				return null;
+			}
 			Game.getGameMenuController().resetApp("Application lost connection with server");
 			return null;
 		}
@@ -112,8 +118,10 @@ public class ServerConnector {
 			pw.println(msg);
 			pw.flush();
 		} catch (IOException e) {
+			if(server.isClosed()){
+				return;
+			}
 			Game.getGameMenuController().resetApp("Application lost connection with server");
-			e.printStackTrace();
 		}
 	}
 

@@ -118,7 +118,9 @@ public class GameMenuController {
 	}
 
 	public void resetApp(String reason){
+		Platform.setImplicitExit(false);
 		Platform.runLater(() -> {
+			System.out.println("REASON = " + reason);
 			printAlert(reason);
 			switchToStartPane();
 		});

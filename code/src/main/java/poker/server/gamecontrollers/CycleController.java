@@ -95,6 +95,7 @@ public class CycleController {
 		int pot = Math.min(player.getMoney(), minPot);
 		clientConnector.sendMsg(MoveRequestMsgFormat.getMsg(pot), player);
 		receiveMsg(player);
+		sendGameInfo();
 	}
 
 	private void sendGameInfo(){
