@@ -116,4 +116,11 @@ public class ServerConnector {
 			e.printStackTrace();
 		}
 	}
+
+	public void disconnect(){
+		sendMsg(MsgFormats.disconnectFormat());
+		try {
+			server.close();
+		} catch (IOException ignored){ }
+	}
 }

@@ -2,7 +2,7 @@ package poker.server.communication.interpreters;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
-import poker.client.communication.MovesFormat;
+import poker.client.communication.MsgFormats;
 import poker.properties.PlayerStateProperties;
 import poker.server.data.GameTable;
 import poker.server.data.Player;
@@ -22,7 +22,7 @@ public class RaiseMsgInterpreterTest {
         int pot = 5;
         int raise = 10;
         controller.setMinPot(pot);
-        interpreter.interpret(new JSONObject(MovesFormat.raiseFormat(raise)), player, controller);
+        interpreter.interpret(new JSONObject(MsgFormats.raiseFormat(raise)), player, controller);
 
         int expectedControllersPot = raise;
         int actualControllersPot = controller.getMinPot();

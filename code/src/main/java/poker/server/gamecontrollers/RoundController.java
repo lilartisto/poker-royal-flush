@@ -135,7 +135,12 @@ public class RoundController {
 	}
 
 	private void givePrizeToWinners(Set<Player> winners){
-		int prize = gameTable.getPotValue()/winners.size();
+		int n = winners.size();
+		if(n == 0){
+			return;
+		}
+
+		int prize = gameTable.getPotValue()/n;
 
 		for(Player player: gameTable.getPlayers()){
 			if(player != null){

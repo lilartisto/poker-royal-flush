@@ -12,6 +12,7 @@ public class Player {
     private int state;
     private int potValue;
     private double handStrength;
+    private String lastMsg;
 
     public Player(String nickname) {
         this.nickname = nickname;
@@ -61,6 +62,14 @@ public class Player {
 
     public void setPotValue(int potValue){
         this.potValue = potValue;
+    }
+
+    public void setLastMsg(String lastMsg) {
+        this.lastMsg = lastMsg;
+    }
+
+    public String getLastMsg() {
+        return lastMsg;
     }
 
     @Override

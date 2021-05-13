@@ -23,10 +23,12 @@ import poker.server.data.database.DataBaseController;
 public class ClientConnector {
 
 	private HashMap<Player, Socket> playersSockets;
+	private HashMap<Player, PlayerListener> playersListeners;
 	private ServerSocket serverSocket;
 
 	public ClientConnector(int port) throws IOException{
 		playersSockets = new HashMap<>();
+		playersListeners = new HashMap<>();
 		serverSocket = new ServerSocket(port);
 		listenForPlayers();
 	}
@@ -73,6 +75,7 @@ public class ClientConnector {
 					sendMsg(ConnectMsgFormat.getMsg(true, null, seat), player);
 					System.out.println("Player " + nickname + " connected to server");
 					sendMsg(GameInfoMsgFormat.getMsg(gameTable), player);
+					playersListeners.put(player, new PlayerListener(this, player));
 				} else {
 					sendMsg(ConnectMsgFormat.getMsg(false, "Server is full", -1), socket);
 				}
@@ -151,8 +154,10 @@ public class ClientConnector {
 	}
 
 	private void disconnectFromPlayer(Socket socket){
-		Player player = getPlayerBySocket(socket);
+		disconnectFromPlayer(getPlayerBySocket(socket));
+	}
 
+	public void disconnectFromPlayer(Player player){
 		if(player == null){
 			return;
 		}
@@ -160,7 +165,10 @@ public class ClientConnector {
 		GameTable gameTable = Game.getGameTable();
 		gameTable.deletePlayer(player);
 		updateDataBase(player);
-		playersSockets.remove(player);
+		playersListeners.remove(player).stopListening();
+		try {
+			playersSockets.remove(player).close();
+		} catch (IOException ignored) { }
 
 		sendMsgToAll(GameInfoMsgFormat.getMsg(gameTable));
 
@@ -190,5 +198,13 @@ public class ClientConnector {
 			}
 		}
 		return null;
+	}
+
+	public String getPlayerLastMsg(Player player){
+		try {
+			return playersListeners.get(player).getLastMsg();
+		} catch (NullPointerException e){
+			throw new IllegalArgumentException("Player is not on the server");
+		}
 	}
 }

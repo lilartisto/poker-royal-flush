@@ -5,6 +5,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import poker.client.communication.MsgFormats;
+import poker.client.communication.ServerConnector;
 
 public class Main extends Application {
 
@@ -22,4 +24,14 @@ public class Main extends Application {
         stage.show();
     }
 
+    @Override
+    public void stop() throws Exception {
+        ServerConnector serverConnector = Game.getServerConnector();
+
+        if(serverConnector != null){
+            serverConnector.disconnect();
+        }
+
+        super.stop();
+    }
 }

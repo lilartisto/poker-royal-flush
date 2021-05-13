@@ -2,25 +2,30 @@ package poker.client.communication;
 
 import poker.properties.PlayerMoveProperties;
 
-public class MovesFormat {
+public class MsgFormats {
 
 	public static String moveFormat(int type){
-		String msg =
-				"{" +
-						"\"name\": \"move\"," +
-						"\"type\": " + type +
-				"}";
-		return msg;
+		return
+			"{" +
+					"\"name\": \"move\"," +
+					"\"type\": " + type +
+			"}";
 	}
 
 	public static String raiseFormat(int value){
-		String msg =
+		return
 				"{" +
 						"\"name\": \"move\"," +
 						"\"type\": " + PlayerMoveProperties.RAISE + "," +
 						"\"value\": " + value +
-						"}";
-		return msg;
+				"}";
+	}
+
+	public static String disconnectFormat(){
+		return 
+			"{" +
+					"\"name\": \"disconnect\"" +
+			"}";
 	}
 
 }

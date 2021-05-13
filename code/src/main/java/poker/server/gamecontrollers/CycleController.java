@@ -11,6 +11,8 @@ import poker.server.communication.msgformats.MoveRequestMsgFormat;
 import poker.server.data.GameTable;
 import poker.server.data.Player;
 
+import java.io.IOException;
+
 public class CycleController {
 
 	private final GameTable gameTable;
@@ -92,14 +94,33 @@ public class CycleController {
 
 		int pot = Math.min(player.getMoney(), minPot);
 		clientConnector.sendMsg(MoveRequestMsgFormat.getMsg(pot), player);
-		String msg = clientConnector.listenForPlayerMsg(player);
-		if(msg != null){
-			interpret(msg, player);
-		}
+		receiveMsg(player);
 	}
 
 	private void sendGameInfo(){
 		clientConnector.sendMsgToAll(GameInfoMsgFormat.getMsg(gameTable));
+	}
+
+	private void receiveMsg(Player player){
+		//TODO
+		//	waiting for 30s for move
+
+		while(true) {
+			try {
+			String msg = clientConnector.getPlayerLastMsg(player);
+			if (msg != null) {
+				interpret(msg, player);
+				return;
+			}
+
+			Thread.sleep(20);
+			} catch (InterruptedException e){
+				System.err.println(e.getMessage());
+				return;
+			} catch (IllegalArgumentException e){
+				return;
+			}
+		}
 	}
 
 	private void interpret(String msg, Player player){

@@ -12,12 +12,11 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import poker.client.Game;
-import poker.client.communication.MovesFormat;
+import poker.client.communication.MsgFormats;
 import poker.client.communication.ServerConnector;
 import poker.client.data.GameTable;
 import poker.client.view.TableView;
 import poker.properties.PlayerMoveProperties;
-import poker.properties.PlayerStateProperties;
 
 import java.io.IOException;
 
@@ -71,12 +70,12 @@ public class GameMenuController {
 	}
 
 	private void makeMove(int move){
-		serverConnector.sendMsg(MovesFormat.moveFormat(move));
+		serverConnector.sendMsg(MsgFormats.moveFormat(move));
 	}
 
 	@FXML
 	private void raiseButtonClicked(){
-		serverConnector.sendMsg(MovesFormat.raiseFormat(getRaiseSliderValue()));
+		serverConnector.sendMsg(MsgFormats.raiseFormat(getRaiseSliderValue()));
 		disableButtons();
 	}
 
