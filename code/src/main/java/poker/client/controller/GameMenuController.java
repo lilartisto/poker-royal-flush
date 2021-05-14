@@ -115,6 +115,8 @@ public class GameMenuController {
 	public void setMinMaxSlider(int min, int max){
 		raiseSlider.setMin(min);
 		raiseSlider.setMax(max);
+		raiseSlider.setValue(min);
+		sliderMoved();
 	}
 
 	public void resetApp(String reason){
