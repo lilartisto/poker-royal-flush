@@ -17,9 +17,13 @@ import java.util.HashMap;
 public class ServerConnector {
 
 	private final Socket server;
+	private final BufferedReader serverReader;
 
 	public ServerConnector(String host, int port, String nickname) throws Exception {
 		server = new Socket(host, port);
+
+		serverReader = new BufferedReader(new InputStreamReader(server.getInputStream()));
+
 		connect(nickname);
 		startConstantlyListenForMsgs();
 	}
@@ -45,11 +49,11 @@ public class ServerConnector {
 
 	private String listenForMsg(){
 		try {
-			BufferedReader br = new BufferedReader(new InputStreamReader(server.getInputStream()));
+			//BufferedReader br = new BufferedReader(new InputStreamReader(server.getInputStream()));
 			//StringBuilder msgBuilder = new StringBuilder(br.readLine());
 			//String line;
 
-			String tmp = br.readLine();
+			String tmp = serverReader.readLine();
 			System.out.println(tmp);
 			return tmp;//br.readLine();
 
