@@ -23,9 +23,8 @@ public class EndMsgInterpreter implements MsgInterpreter {
 	private void interpretPlayers(JSONArray playersJSON, Player[] players){
 		if(playersJSON.length() == players.length){
 			for(int i = 0; i < players.length; i++){
-				if(players[i] != null) {
+				if(players[i] != null && playersJSON.get(i) != JSONObject.NULL) {
 					JSONObject playerJSON = playersJSON.getJSONObject(i);
-
 					if (playerJSON != null) {
 						interpretPlayer(playerJSON, players[i]);
 					} else {

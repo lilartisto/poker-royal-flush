@@ -130,7 +130,7 @@ public class TableView {
 	}
 
 	private void drawPlayersCards(GraphicsContext gc, int frameX, int frameY, Card[] handCards){
-		if(handCards == null){
+		if(handCards[0] == null || handCards[1] == null) {
 			return;
 		}
 
