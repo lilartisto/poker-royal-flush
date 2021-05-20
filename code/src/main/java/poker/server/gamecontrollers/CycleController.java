@@ -123,10 +123,6 @@ public class CycleController {
 		int maxLoopCounter = (int)(maxWaitingTime/threadSleepingTime);
 
 		for(int i = 0; i < maxLoopCounter; i++) {
-			if(i % 25 == 0){
-				System.out.println(i + " / " + maxLoopCounter);
-			}
-
 			try {
 				String msg = clientConnector.getPlayerLastMsg(player);
 				if (msg != null) {

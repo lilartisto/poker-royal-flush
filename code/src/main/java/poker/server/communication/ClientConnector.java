@@ -91,10 +91,6 @@ public class ClientConnector {
 	private Player getPlayer(String nickname){
 		DataBaseController dbController = Game.getDataBaseController();
 
-		if(dbController == null){
-			return new Player(nickname);
-		}
-
 		try {
 			Player player = dbController.getPlayer(nickname);
 			if (player == null) {
@@ -102,7 +98,7 @@ public class ClientConnector {
 				dbController.insertPlayer(player);
 			}
 			return player;
-		} catch (SQLException e){
+		} catch (NullPointerException | SQLException e){
 			return new Player(nickname);
 		}
 	}

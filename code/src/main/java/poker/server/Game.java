@@ -6,9 +6,13 @@ import poker.server.data.database.DataBaseController;
 import poker.server.data.GameTable;
 import poker.server.gamecontrollers.GameController;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Properties;
 
 public class Game {
 
@@ -72,18 +76,34 @@ public class Game {
 
         gameTable = new GameTable();
         try {
-            //TODO
-            // moze wrzucic to do jakiegos pliku
-            dataBaseController = new DataBaseController(
-                    "jdbc:postgresql://localhost:7432/poker_database",
-                    "poker_user",
-                    "Fl94yuwHClB6eKltjLnPYQ=="
-            );
-        } catch (SQLException e) {
+            connectToDataBase();
+        } catch (Exception e) {
             System.err.println("Cannot connect to database. " + e.getMessage());
         }
 
         GameController gameController = new GameController(gameTable);
         gameController.playGame();
+    }
+
+    private static void connectToDataBase() throws Exception {
+        Properties databaseProp = new Properties();
+        String path = new File("").getAbsolutePath() + "/src/main/resources/config/database.config";
+        databaseProp.load(new FileInputStream(path));
+
+        String url = databaseProp.getProperty("database.url");
+        String username = databaseProp.getProperty("database.username");
+        String password = databaseProp.getProperty("database.password");
+
+        if(url == null || username == null || password == null){
+            throw new Exception("Database config file must contain: " +
+                    "database.url, database.username, database.password. " +
+                    "File = " + path);
+        }
+
+        dataBaseController = new DataBaseController(
+                databaseProp.getProperty("database.url"),
+                databaseProp.getProperty("database.username"),
+                databaseProp.getProperty("database.password")
+        );
     }
 }
