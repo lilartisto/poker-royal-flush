@@ -43,10 +43,9 @@ public class ClientConnector {
 					if (msg == null) {
 						return;
 					}
-
 					JSONObject jsonMsg = new JSONObject(msg);
 					connectToPlayer(jsonMsg, socket);
-				} catch (IOException e) {
+				} catch (Exception e) {
 					System.err.println("An error occurred while trying to connect to the client");
 				}
 			}
@@ -109,7 +108,7 @@ public class ClientConnector {
 
 	private void sendMsg(String msg, Socket socket){
 		if(msg == null){
-			throw new IllegalArgumentException("Message cannot be null");
+			return;
 		}
 
 		try {

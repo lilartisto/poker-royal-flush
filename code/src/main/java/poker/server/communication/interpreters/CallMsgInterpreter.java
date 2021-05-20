@@ -11,8 +11,10 @@ public class CallMsgInterpreter implements MsgInterpreter {
 	public void interpret(JSONObject msg, Player player, CycleController cycleController){
 		int minPot = cycleController.getMinPot();
 
-		player.setMoney(player.getMoney() - (minPot - player.getPotValue()));
-		player.setPotValue(minPot);
+		int moneyToPut = Math.min(minPot - player.getPotValue(), player.getMoney());
+
+		player.setMoney(player.getMoney() - moneyToPut);
+		player.setPotValue(player.getPotValue() + moneyToPut);
 		player.setState(PlayerStateProperties.INGAME);
 	}
 

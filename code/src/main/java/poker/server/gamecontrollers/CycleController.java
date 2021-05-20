@@ -57,6 +57,7 @@ public class CycleController {
 
 		for(int i = starterPlayer + 1; i != starterPlayer; i = (i + 1) % 6){
 			if(isOver()){
+				addPlayersPotsToTablePot(players);
 				throw new IllegalStateException("Players have folded or disconnected");
 			} else if(players[i] != null) {
 				nextMove(players[i]);

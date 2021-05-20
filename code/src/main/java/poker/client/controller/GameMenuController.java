@@ -124,6 +124,7 @@ public class GameMenuController {
 
 	public void resetApp(String reason){
 		Platform.runLater(() -> {
+			Game.getServerConnector().disconnect();
 			printAlert(reason);
 			switchToStartPane();
 		});

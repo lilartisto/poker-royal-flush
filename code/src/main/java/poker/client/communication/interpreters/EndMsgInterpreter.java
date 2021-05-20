@@ -8,16 +8,20 @@ import poker.client.data.GameTable;
 import poker.client.data.Player;
 import poker.client.data.cards.Card;
 
+import java.util.Set;
+
 public class EndMsgInterpreter implements MsgInterpreter {
 
 	@Override
 	public void interpret(JSONObject msg, GameTable gameTable){
 		try {
 			gameTable.setPotValue(msg.getInt("prize"));
-		} catch (JSONException e){
-			return;
+			interpretPlayers(msg.getJSONArray("players"), gameTable.getPlayers());
+		} catch (JSONException ignored){}
+
+		if(mainPlayerHasNoMoney(gameTable)){
+			disconnectFromServer();
 		}
-		interpretPlayers(msg.getJSONArray("players"), gameTable.getPlayers());
 	}
 
 	private void interpretPlayers(JSONArray playersJSON, Player[] players){
@@ -54,5 +58,14 @@ public class EndMsgInterpreter implements MsgInterpreter {
 		int color = card.getInt("color");
 		int number = card.getInt("number");
 		return Game.getDeck().getCard(color, number);
+	}
+
+	private boolean mainPlayerHasNoMoney(GameTable gameTable){
+		Player mainPlayer = gameTable.getMainPlayer();
+		return mainPlayer.getMoney() <= 0 && !mainPlayer.isWinner();
+	}
+
+	private void disconnectFromServer(){
+		Game.getGameMenuController().resetApp("You lost all your money");
 	}
 }
