@@ -93,6 +93,9 @@ public class GameMenuController {
 		checkButton.setDisable(true);
 		callButton.setDisable(true);
 		raiseButton.setDisable(true);
+		//TODO
+		// mejbi disable
+		//raiseSlider.setDisable(true);
 	}
 
 	public void enableFoldCheckRaise(){
@@ -120,9 +123,7 @@ public class GameMenuController {
 	}
 
 	public void resetApp(String reason){
-		Platform.setImplicitExit(false);
 		Platform.runLater(() -> {
-			System.out.println("REASON = " + reason);
 			printAlert(reason);
 			switchToStartPane();
 		});
