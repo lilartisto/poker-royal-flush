@@ -9,10 +9,10 @@ public class CallMsgInterpreter implements MsgInterpreter {
 
 	@Override
 	public void interpret(JSONObject msg, Player player, CycleController cycleController){
-		int pot = cycleController.getMinPot();
+		int minPot = cycleController.getMinPot();
 
-		player.setPotValue(player.getPotValue() + pot);
-		player.setMoney(player.getMoney() - pot);
+		player.setMoney(player.getMoney() - (minPot - player.getPotValue()));
+		player.setPotValue(minPot);
 		player.setState(PlayerStateProperties.INGAME);
 	}
 

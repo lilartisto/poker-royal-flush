@@ -38,13 +38,13 @@ public class RoundController {
 			startRound();
 			gameTable.setPotValue(0);
 			cycle.setMinPot(Game.getBlind());
-			cycle.playCycle();
+			cycle.playCycle(true);
 			timeDelay(cycleDelay);
 
 			for (int i = 0; i < 3; i++) {
 				drawTableCards(i == 0 ? 3 : 1);
 				cycle.setMinPot(0);
-				cycle.playCycle();
+				cycle.playCycle(false);
 				timeDelay(cycleDelay);
 			}
 

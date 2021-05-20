@@ -13,8 +13,8 @@ public class RaiseMsgInterpreter implements MsgInterpreter {
 		cycleController.setMinPot(raiseValue);
 		cycleController.setStarterPlayer(player);
 
-		player.setPotValue(player.getPotValue() + raiseValue);
-		player.setMoney(player.getMoney() - raiseValue);
+		player.setMoney(player.getMoney() - (raiseValue - player.getPotValue()));
+		player.setPotValue(raiseValue);
 		player.setState(PlayerStateProperties.INGAME);
 	}
 

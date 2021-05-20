@@ -45,10 +45,15 @@ public class CycleController {
 		}
 	}
 
-	public void playCycle(){
+	public void playCycle(boolean firstCycle){
 		Player[] players = gameTable.getPlayers();
 		starterPlayer = gameTable.getStarterPlayerIndex();
-		firstMove(players[starterPlayer]);
+
+		if(firstCycle){
+			firstMove(players[starterPlayer]);
+		} else {
+			nextMove(players[starterPlayer]);
+		}
 
 		for(int i = starterPlayer + 1; i != starterPlayer; i = (i + 1) % 6){
 			if(isOver()){
@@ -75,8 +80,18 @@ public class CycleController {
 	}
 
 	private void firstMove(Player player){
-		if(player != null){
-			nextMove(player);
+		if(player == null){
+			return;
+		}
+
+		if(player.getMoney() >= minPot){
+			player.setMoney(player.getMoney() - minPot);
+			player.setPotValue(minPot);
+			sendGameInfo();
+		} else {
+			//TODO
+			// delete player + other cases
+			return;
 		}
 	}
 
@@ -85,7 +100,7 @@ public class CycleController {
 	}
 
 	private void nextMove(Player player){
-		if(player.getMoney() == 0){
+		if(player == null || player.getMoney() == 0){
 			return;
 		}
 
