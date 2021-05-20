@@ -56,4 +56,13 @@ public class Player {
     public void setWinner(boolean winner) {
         this.winner = winner;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Player){
+            return nickname.equals(((Player)obj).nickname);
+        } else {
+            return false;
+        }
+    }
 }

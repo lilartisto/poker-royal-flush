@@ -74,7 +74,7 @@ public class ClientConnector {
 					int seat = gameTable.addPlayer(player);
 					sendMsg(ConnectMsgFormat.getMsg(true, null, seat), player);
 					System.out.println("Player " + nickname + " connected to server");
-					sendMsg(GameInfoMsgFormat.getMsg(gameTable), player);
+					sendMsgToAll(GameInfoMsgFormat.getMsg(gameTable));
 					playersListeners.put(player, new PlayerListener(this, player));
 				} else {
 					sendMsg(ConnectMsgFormat.getMsg(false, "Server is full", -1), socket);

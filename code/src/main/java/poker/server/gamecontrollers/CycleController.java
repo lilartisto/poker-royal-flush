@@ -100,7 +100,7 @@ public class CycleController {
 	}
 
 	private void nextMove(Player player){
-		if(player == null || player.getMoney() == 0){
+		if(player == null || player.getState() == PlayerStateProperties.AFTERFOLD || player.getMoney() == 0){
 			return;
 		}
 
@@ -118,18 +118,23 @@ public class CycleController {
 	}
 
 	private void receiveMsg(Player player){
-		//TODO
-		//	waiting for 30s for move
+		long maxWaitingTime = 20 * 1000;
+		long threadSleepingTime = 20;
+		int maxLoopCounter = (int)(maxWaitingTime/threadSleepingTime);
 
-		while(true) {
-			try {
-			String msg = clientConnector.getPlayerLastMsg(player);
-			if (msg != null) {
-				interpret(msg, player);
-				return;
+		for(int i = 0; i < maxLoopCounter; i++) {
+			if(i % 25 == 0){
+				System.out.println(i + " / " + maxLoopCounter);
 			}
 
-			Thread.sleep(20);
+			try {
+				String msg = clientConnector.getPlayerLastMsg(player);
+				if (msg != null) {
+					interpret(msg, player);
+					return;
+				}
+
+				Thread.sleep(20);
 			} catch (InterruptedException e){
 				System.err.println(e.getMessage());
 				return;
@@ -137,6 +142,7 @@ public class CycleController {
 				return;
 			}
 		}
+		player.setState(PlayerStateProperties.AFTERFOLD);
 	}
 
 	private void interpret(String msg, Player player){

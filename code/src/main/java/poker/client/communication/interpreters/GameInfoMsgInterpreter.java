@@ -1,5 +1,6 @@
 package poker.client.communication.interpreters;
 
+import javafx.application.Platform;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -8,6 +9,7 @@ import poker.client.data.GameTable;
 import poker.client.data.Player;
 import poker.client.data.cards.Card;
 import poker.client.data.cards.Deck;
+import poker.properties.PlayerStateProperties;
 
 public class GameInfoMsgInterpreter implements MsgInterpreter {
 
@@ -32,6 +34,7 @@ public class GameInfoMsgInterpreter implements MsgInterpreter {
 				player.setPotValue(playerJSON.getInt("pot"));
 
 				gameTable.setPlayer(player, i);
+				checkIfMainPlayerFolded(gameTable, player);
 			} catch (JSONException e){
 				gameTable.setPlayer(null, i);
 			}
@@ -52,4 +55,11 @@ public class GameInfoMsgInterpreter implements MsgInterpreter {
 		}
 	}
 
+	private void checkIfMainPlayerFolded(GameTable gameTable, Player player){
+		Player mainPlayer = gameTable.getMainPlayer();
+
+		if(mainPlayer != null && mainPlayer.equals(player) && player.getState() == PlayerStateProperties.AFTERFOLD){
+			Platform.runLater(() -> Game.getGameMenuController().disableButtons());
+		}
+	}
 }

@@ -88,7 +88,7 @@ public class GameMenuController {
 		raiseText.setText(getRaiseSliderValue() + " $");
 	}
 
-	private void disableButtons(){
+	public void disableButtons(){
 		foldButton.setDisable(true);
 		checkButton.setDisable(true);
 		callButton.setDisable(true);

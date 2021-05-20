@@ -119,7 +119,7 @@ public class RoundController {
 		Player[] players = gameTable.getPlayers().clone();
 
 		for(Player player: players){
-			if(player != null) {
+			if(player != null && player.getState() != PlayerStateProperties.AFTERFOLD) {
 				player.setHandStrength(calculator.handStrength(player.getHandCards()));
 			}
 		}
