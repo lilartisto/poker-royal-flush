@@ -108,10 +108,6 @@ public class StartMenuController {
             ServerConnector serverConnector = new ServerConnector(hostTextField.getText(), Integer.parseInt(portTextField.getText()), nicknameTextField.getText());
             Game.setServerConnector(serverConnector);
 
-            //TODO
-            // do usuniecia
-            System.out.println(nicknameTextField.getText());
-
             return true;
         }catch (Exception e) {
             printAlert("Cannot connect to server\n" + e.getMessage());

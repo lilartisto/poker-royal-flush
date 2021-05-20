@@ -1,27 +1,22 @@
 package poker.server.communication.msgformats;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import poker.server.data.cards.Card;
 
-import java.util.HashMap;
-
 public class StartMsgFormat {
 
-    //TODO
-    // zamiast mapy to od razu jsonobject
-    // sprawdz dla innych klas czy nie ma tego bledu!
-
     public static String getMsg(Card[] cards){
-        HashMap<String, Object> msgMap = new HashMap<>();
+        JSONObject msg = new JSONObject();
 
-        msgMap.put("name", "start");
+        msg.put("name", "start");
 
-        HashMap<String, Object> card1;
-        HashMap<String, Object> card2;
+        JSONObject card1;
+        JSONObject card2;
 
         if(cards[0] != null && cards[1] != null) {
-            card1 = new HashMap<>();
-            card2 = new HashMap<>();
+            card1 = new JSONObject();
+            card2 = new JSONObject();
             card1.put("number", cards[0].number);
             card1.put("color", cards[0].color);
             card2.put("number", cards[1].number);
@@ -31,9 +26,9 @@ public class StartMsgFormat {
             card2 = null;
         }
 
-        msgMap.put("cards", new HashMap[]{card1, card2});
+        msg.put("cards", new JSONArray(new JSONObject[]{card1, card2}));
 
-        return new JSONObject(msgMap).toString();
+        return msg.toString();
     }
 
 }

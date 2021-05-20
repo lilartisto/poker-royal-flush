@@ -1,7 +1,6 @@
 package poker.server.communication.msgformats;
 
 import org.junit.jupiter.api.Test;
-import poker.server.communication.msgformats.StartMsgFormat;
 import poker.server.data.cards.Deck;
 import poker.server.data.cards.Card;
 
@@ -14,9 +13,12 @@ public class StartMsgFormatTest {
         Deck deck = new Deck();
         Card[] cards = {deck.getRandomCard(), deck.getRandomCard()};
 
-        String expectedMsg = "{\"name\":\"start\",\"cards\":[" +
-                "{\"color\":" + cards[0].color + ",\"number\":" + cards[0].number + "}," +
-                "{\"color\":" + cards[1].color + ",\"number\":" + cards[1].number + "}]}";
+        String expectedMsg =
+                "{\"cards\":[" +
+                "{\"number\":" + cards[0].number + "," + "\"color\":" + cards[0].color + "}," +
+                "{\"number\":" + cards[1].number + "," + "\"color\":" + cards[1].color + "}]," +
+                "\"name\":\"start\"}";
+
         String actualMsg = StartMsgFormat.getMsg(cards);
 
         assertEquals(expectedMsg, actualMsg);
@@ -26,7 +28,8 @@ public class StartMsgFormatTest {
     public void shouldReturnCorrectStringWhenCardsAreNull(){
         Card[] cards = {null, null};
 
-        String expectedMsg = "{\"name\":\"start\",\"cards\":[null,null]}";
+        String expectedMsg =
+                "{\"cards\":[null,null],\"name\":\"start\"}";
         String actualMsg = StartMsgFormat.getMsg(cards);
 
         assertEquals(expectedMsg, actualMsg);

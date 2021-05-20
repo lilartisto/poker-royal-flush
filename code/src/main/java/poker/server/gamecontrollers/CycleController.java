@@ -49,6 +49,10 @@ public class CycleController {
 		Player[] players = gameTable.getPlayers();
 		starterPlayer = gameTable.getStarterPlayerIndex();
 
+		if(isOver()){
+			throw new IllegalStateException("Players have folded or disconnected");
+		}
+
 		if(firstCycle){
 			firstMove(players[starterPlayer]);
 		} else {
@@ -88,12 +92,11 @@ public class CycleController {
 		if(player.getMoney() >= minPot){
 			player.setMoney(player.getMoney() - minPot);
 			player.setPotValue(minPot);
-			sendGameInfo();
 		} else {
-			//TODO
-			// delete player + other cases
-			return;
+			player.setPotValue(player.getMoney());
+			player.setMoney(0);
 		}
+		sendGameInfo();
 	}
 
 	private boolean isOver(){
