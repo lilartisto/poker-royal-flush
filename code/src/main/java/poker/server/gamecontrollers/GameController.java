@@ -8,10 +8,10 @@ import poker.server.data.cards.Card;
 
 public class GameController {
 
-	private GameTable gameTable;
+	private final GameTable gameTable;
 
-	public GameController(GameTable gameTable){
-		this.gameTable = gameTable;
+	public GameController(){
+		this.gameTable = GameTable.getInstance();
 	}
 
 	public void playGame(){
@@ -34,7 +34,7 @@ public class GameController {
 	}
 
 	private void sendGameInfo(){
-		Game.getClientConnector().sendMsgToAll(GameInfoMsgFormat.getMsg(Game.getGameTable()));
+		Game.getClientConnector().sendMsgToAll(GameInfoMsgFormat.getMsg(GameTable.getInstance()));
 	}
 
 	private void sendStartMsgWithNullCards(){

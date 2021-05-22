@@ -33,7 +33,7 @@ public class DataBaseController {
         statement.setString(2, player.nickname);
 
         if(statement.executeUpdate() <= 0){
-            throw new SQLException("Cannot update" + player.nickname + "in database");
+            throw new SQLException("Cannot update " + player.nickname + " in database");
         }
     }
 

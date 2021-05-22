@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
+import poker.server.Game;
 import poker.server.data.GameTable;
 import poker.server.data.Player;
 import poker.server.data.cards.Card;
@@ -15,7 +16,7 @@ public class GameInfoMsgFormatTest {
 
     @Test
     public void shouldReturnCorrectMsgWhenDataIsComplete(){
-        GameTable gameTable = new GameTable();
+        GameTable gameTable = GameTable.getInstance();
 
         addPlayers(gameTable, 6);
         addCards(gameTable, 5);
@@ -27,7 +28,7 @@ public class GameInfoMsgFormatTest {
 
     @Test
     public void shouldReturnCorrectMsgWhenSomeCardsAreNull(){
-        GameTable gameTable = new GameTable();
+        GameTable gameTable = GameTable.getInstance();
 
         addPlayers(gameTable, 6);
         addCards(gameTable, 3);
@@ -38,7 +39,7 @@ public class GameInfoMsgFormatTest {
 
     @Test
     public void shouldReturnCorrectMsgWhenSomePlayersAreNull(){
-        GameTable gameTable = new GameTable();
+        GameTable gameTable = GameTable.getInstance();
 
         addPlayers(gameTable, 3);
         addCards(gameTable, 5);
@@ -49,7 +50,7 @@ public class GameInfoMsgFormatTest {
 
     @Test
     public void shouldReturnCorrectMsgWhenSomeCardsAndPlayersAreNull(){
-        GameTable gameTable = new GameTable();
+        GameTable gameTable = GameTable.getInstance();
 
         addPlayers(gameTable, 2);
         addCards(gameTable, 2);

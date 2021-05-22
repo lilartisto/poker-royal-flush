@@ -15,7 +15,7 @@ public class RaiseMsgInterpreterTest {
     @Test
     public void shouldInterpretCorrectlyWhenPlayerRaised(){
         Player player = new Player("test");
-        GameTable gameTable = new GameTable();
+        GameTable gameTable = GameTable.getInstance();
         CycleController controller = new CycleController(gameTable, null);
         MsgInterpreter interpreter = new RaiseMsgInterpreter();
 

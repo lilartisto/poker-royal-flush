@@ -22,7 +22,7 @@ public class EndMsgFormatTest {
 
     @BeforeEach
     public void setUp(){
-        gameTable = new GameTable();
+        gameTable = GameTable.getInstance();
         winners = new HashSet<>();
     }
 

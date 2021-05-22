@@ -13,7 +13,7 @@ public class CallMsgInterpreterTest {
     @Test
     public void shouldInterpretCorrectlyWhenPlayerCalled(){
         Player player = new Player("test");
-        GameTable gameTable = new GameTable();
+        GameTable gameTable = GameTable.getInstance();
         CycleController controller = new CycleController(gameTable, null);
         MsgInterpreter interpreter = new CallMsgInterpreter();
 

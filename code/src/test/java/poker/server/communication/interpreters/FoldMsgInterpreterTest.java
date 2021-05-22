@@ -13,7 +13,7 @@ public class FoldMsgInterpreterTest {
     @Test
     public void shouldInterpretCorrectlyWhenPlayerFolded(){
         Player player = new Player("test");
-        GameTable gameTable = new GameTable();
+        GameTable gameTable = GameTable.getInstance();
         CycleController controller = new CycleController(gameTable, null);
         MsgInterpreter interpreter = new FoldMsgInterpreter();
 

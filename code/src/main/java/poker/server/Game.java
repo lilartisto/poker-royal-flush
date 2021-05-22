@@ -17,17 +17,12 @@ import java.util.Properties;
 public class Game {
 
     private static ClientConnector clientConnector;
-    private static GameTable gameTable;
     private static DataBaseController dataBaseController;
     private static int startMoney;
     private static int blind;
 
     public static ClientConnector getClientConnector(){
         return clientConnector;
-    }
-
-    public static GameTable getGameTable(){
-        return gameTable;
     }
 
     public static DataBaseController getDataBaseController(){
@@ -74,14 +69,13 @@ public class Game {
             return;
         }
 
-        gameTable = new GameTable();
         try {
             connectToDataBase();
         } catch (Exception e) {
             System.err.println("Cannot connect to database. " + e.getMessage());
         }
 
-        GameController gameController = new GameController(gameTable);
+        GameController gameController = new GameController();
         gameController.playGame();
     }
 

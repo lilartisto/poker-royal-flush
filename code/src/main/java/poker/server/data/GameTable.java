@@ -1,6 +1,7 @@
 package poker.server.data;
 
 import poker.properties.PlayerStateProperties;
+import poker.server.Game;
 import poker.server.data.cards.Card;
 import poker.server.data.cards.Deck;
 
@@ -8,13 +9,22 @@ import java.util.Iterator;
 
 public class GameTable {
 
+    private static GameTable instance;
+
+    public static GameTable getInstance(){
+        if(instance == null){
+            instance = new GameTable();
+        }
+        return instance;
+    }
+
     private Card[] tableCards;
     private Player[] players;
     private int potValue;
     private int starterPlayer;
     private Deck deck;
 
-    public GameTable() {
+    private GameTable() {
         tableCards = new Card[5];
         players = new Player[6];
         potValue = 0;

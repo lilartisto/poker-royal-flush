@@ -66,7 +66,7 @@ public class ClientConnector {
 					return;
 				}
 
-				GameTable gameTable = Game.getGameTable();
+				GameTable gameTable = GameTable.getInstance();
 				if(gameTable.hasFreeSeat()){
 					player = getPlayer(nickname);
 					playersSockets.put(player, socket);
@@ -157,7 +157,7 @@ public class ClientConnector {
 			return;
 		}
 
-		GameTable gameTable = Game.getGameTable();
+		GameTable gameTable = GameTable.getInstance();
 		gameTable.deletePlayer(player);
 		updateDataBase(player);
 		playersListeners.remove(player).stopListening();

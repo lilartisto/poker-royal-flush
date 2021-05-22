@@ -93,15 +93,14 @@ public class GameMenuController {
 		checkButton.setDisable(true);
 		callButton.setDisable(true);
 		raiseButton.setDisable(true);
-		//TODO
-		// mejbi disable
-		//raiseSlider.setDisable(true);
+		raiseSlider.setDisable(true);
 	}
 
 	public void enableFoldCheckRaise(){
 		foldButton.setDisable(false);
 		checkButton.setDisable(false);
 		raiseButton.setDisable(false);
+		raiseSlider.setDisable(false);
 	}
 
 	public void enableCallFold(){
@@ -113,6 +112,7 @@ public class GameMenuController {
 		foldButton.setDisable(false);
 		callButton.setDisable(false);
 		raiseButton.setDisable(false);
+		raiseSlider.setDisable(false);
 	}
 
 	public void setMinMaxSlider(int min, int max){
