@@ -17,10 +17,24 @@ import java.util.HashMap;
 
 public class ServerConnector {
 
+	private static ServerConnector instance;
+
+	public static void init(String host, int port, String nickname) throws Exception{
+		instance = new ServerConnector(host, port, nickname);
+	}
+
+	public static ServerConnector getInstance(){
+		if(instance == null){
+			throw new IllegalStateException("Instance is not initialized");
+		} else {
+			return instance;
+		}
+	}
+
 	private final Socket server;
 	private final BufferedReader serverReader;
 
-	public ServerConnector(String host, int port, String nickname) throws Exception {
+	private ServerConnector(String host, int port, String nickname) throws Exception {
 		server = new Socket(host, port);
 
 		serverReader = new BufferedReader(new InputStreamReader(server.getInputStream()));

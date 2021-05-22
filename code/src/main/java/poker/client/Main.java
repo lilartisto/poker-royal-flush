@@ -26,11 +26,9 @@ public class Main extends Application {
 
     @Override
     public void stop() throws Exception {
-        ServerConnector serverConnector = Game.getServerConnector();
-
-        if(serverConnector != null){
-            serverConnector.disconnect();
-        }
+        try {
+            ServerConnector.getInstance().disconnect();
+        } catch (Exception ignored){ }
 
         super.stop();
     }

@@ -43,7 +43,7 @@ public class ServerConnectorTest {
         UnknownHostException exception = assertThrows(
                 UnknownHostException.class,
                 () -> {
-                    new ServerConnector(host, port+1, "test");
+                    ServerConnector.init(host, port+1, "test");
                 });
         assertEquals(host, exception.getMessage());
     }
@@ -53,7 +53,7 @@ public class ServerConnectorTest {
         ConnectException exception = assertThrows(
                 ConnectException.class,
                 () -> {
-                    new ServerConnector(server.getInetAddress().getHostAddress(), port+1, "test");
+                    ServerConnector.init(server.getInetAddress().getHostAddress(), port+1, "test");
                 });
         assertEquals("Connection refused: connect", exception.getMessage());
     }
@@ -63,7 +63,7 @@ public class ServerConnectorTest {
         try {
             Thread thread = new Thread(() -> {
                 try {
-                    new ServerConnector(server.getInetAddress().getHostAddress(), port, "test");
+                    ServerConnector.init(server.getInetAddress().getHostAddress(), port, "test");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

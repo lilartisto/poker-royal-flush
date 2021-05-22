@@ -10,16 +10,7 @@ import poker.client.view.TableView;
 public class Game {
 
 	//private static Player player = new Player("");
-	private static ServerConnector serverConnector;
 	private static TableView tableView;
-
-	public static void setServerConnector(ServerConnector connector){
-		serverConnector = connector;
-	}
-
-	public static ServerConnector getServerConnector(){
-		return serverConnector;
-	}
 
 	public static void setTableView(TableView view){
 		tableView = view;

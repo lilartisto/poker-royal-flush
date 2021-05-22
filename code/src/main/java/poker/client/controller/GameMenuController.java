@@ -55,7 +55,7 @@ public class GameMenuController {
 		raiseSlider.setMin(1);
 		raiseSlider.setMax(10);
 
-		serverConnector = Game.getServerConnector();
+		serverConnector = ServerConnector.getInstance();
 		Game.setTableView(new TableView(canvas));
 	}
 
@@ -132,7 +132,7 @@ public class GameMenuController {
 
 	public void resetApp(String reason){
 		Platform.runLater(() -> {
-			Game.getServerConnector().disconnect();
+			ServerConnector.getInstance().disconnect();
 			printAlert(reason);
 			switchToStartPane();
 		});
