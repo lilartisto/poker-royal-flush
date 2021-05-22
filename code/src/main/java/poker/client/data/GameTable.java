@@ -5,17 +5,26 @@ import poker.client.data.cards.Card;
 
 public class GameTable {
 
+	private static GameTable instance;
+
+	public static GameTable getInstance(){
+		if(instance == null){
+			instance = new GameTable();
+		}
+		return instance;
+	}
+
 	private Card[] tableCards;
 	private Player[] players;
 	private int potValue;
 	private int mainPlayerSeat;
 	private Card[] handCards;
 
-	public GameTable(int mainPlayerSeat){
+	private GameTable(){
 		tableCards = new Card[5];
 		players = new Player[6];
 		//players[mainPlayerSeat] = mainPlayer;
-		this.mainPlayerSeat = mainPlayerSeat;
+		mainPlayerSeat = 0;
 		handCards = new Card[2];
 	}
 
@@ -25,6 +34,10 @@ public class GameTable {
 
 	public Player[] getPlayers(){
 		return players;
+	}
+
+	public void setMainPlayerSeat(int mainPlayerSeat){
+		this.mainPlayerSeat = mainPlayerSeat;
 	}
 
 	public Player getMainPlayer(){

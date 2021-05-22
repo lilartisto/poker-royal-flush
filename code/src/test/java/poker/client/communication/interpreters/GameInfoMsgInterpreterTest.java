@@ -15,16 +15,17 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 public class GameInfoMsgInterpreterTest {
 
     private MsgInterpreter interpreter;
+    private GameTable gameTable;
 
     @BeforeEach
     public void setUp(){
         interpreter = new GameInfoMsgInterpreter();
+        gameTable = GameTable.getInstance();
     }
 
     @Test
     public void shouldInterpretCorrectWhenMsgIsComplete(){
         JSONObject msg = createMsg(6, 5, 350);
-        GameTable gameTable = new GameTable(0);
 
         interpreter.interpret(msg, gameTable);
 
@@ -34,7 +35,6 @@ public class GameInfoMsgInterpreterTest {
     @Test
     public void shouldInterpretCorrectWhenSomePlayersAreNull(){
         JSONObject msg = createMsg(3, 5, 320);
-        GameTable gameTable = new GameTable(0);
 
         interpreter.interpret(msg, gameTable);
 
@@ -44,7 +44,6 @@ public class GameInfoMsgInterpreterTest {
     @Test
     public void shouldInterpretCorrectWhenSomeCardsAreNull(){
         JSONObject msg = createMsg(6, 2, 30);
-        GameTable gameTable = new GameTable(0);
 
         interpreter.interpret(msg, gameTable);
 
@@ -54,7 +53,6 @@ public class GameInfoMsgInterpreterTest {
     @Test
     public void shouldInterpretCorrectWhenCardsAndPlayersAreNull(){
         JSONObject msg = createMsg(0, 0, 1250);
-        GameTable gameTable = new GameTable(0);
 
         interpreter.interpret(msg, gameTable);
 

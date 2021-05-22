@@ -8,6 +8,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import poker.client.Game;
+import poker.client.data.GameTable;
 import poker.client.data.Player;
 import poker.client.data.cards.Card;
 import poker.properties.PlayerStateProperties;
@@ -16,6 +17,7 @@ public class TableView {
 
 	private final Canvas canvas;
 	private final Image tableImage;
+	private final GameTable gameTable;
 
 	private final int cardsSpace = 10;
 	private final int playersFrameHeight = 50;
@@ -26,6 +28,7 @@ public class TableView {
 	public TableView(Canvas canvas){
 		this.canvas = canvas;
 		drawingEnding = false;
+		gameTable = GameTable.getInstance();
 
 		String path = getClass().getResource("/graphics/table.png").toExternalForm();
 		tableImage = path != null ? new Image(path): null;
@@ -53,7 +56,7 @@ public class TableView {
 	}
 
 	private void drawMainPlayerCards(GraphicsContext gc){
-		Card[] cards = Game.getGameTable().getHandCards();
+		Card[] cards = gameTable.getHandCards();
 		int x = 480;
 		int y = 360;
 
@@ -66,7 +69,7 @@ public class TableView {
 	}
 
 	private void drawPlayers(GraphicsContext gc){
-		Player[] players = Game.getGameTable().getPlayers();
+		Player[] players = gameTable.getPlayers();
 
 		drawFirstRowOfPlayers(gc, players);
 		drawSecondRowOfPlayers(gc, players);
@@ -217,13 +220,13 @@ public class TableView {
 
 		int fontSize = 22;
 		Font font = Font.font("Arial", FontWeight.LIGHT, fontSize);
-		String text = Game.getGameTable().getPotValue() + "$";
+		String text = gameTable.getPotValue() + "$";
 
 		drawText(gc, text, font, x + framesWidth/2, y + framesHeight/2, Color.BLACK);
 	}
 
 	private void drawTableCards(GraphicsContext gc){
-		Card[] tableCards = Game.getGameTable().getTableCards();
+		Card[] tableCards = gameTable.getTableCards();
 		int x = 330;
 		int y = 125;
 

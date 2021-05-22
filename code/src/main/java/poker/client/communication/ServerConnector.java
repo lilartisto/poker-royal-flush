@@ -37,7 +37,7 @@ public class ServerConnector {
 		JSONObject answer = new JSONObject(listenForMsg());
 		checkIfConnected(answer);
 
-		Game.setGameTable(new GameTable(answer.getInt("seat")));
+		GameTable.getInstance().setMainPlayerSeat(answer.getInt("seat"));
 	}
 
 	private void checkIfConnected(JSONObject msgJSON) throws Exception {
@@ -92,7 +92,7 @@ public class ServerConnector {
 			MsgInterpreter msgInterpreter = getMsgInterpreter(msgName);
 
 			if (msgInterpreter != null) {
-				msgInterpreter.interpret(jsonMsg, Game.getGameTable());
+				msgInterpreter.interpret(jsonMsg, GameTable.getInstance());
 				if (msgName.equals("end")) {
 					Platform.runLater(() -> Game.getTableView().drawEnding());
 				} else {

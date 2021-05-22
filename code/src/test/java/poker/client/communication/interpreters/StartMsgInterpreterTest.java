@@ -21,13 +21,13 @@ public class StartMsgInterpreterTest {
     public void setUp(){
         interpreter = new StartMsgInterpreter();
         player = new Player("test");
-        gameTable = new GameTable(0);
+        gameTable = GameTable.getInstance();
         gameTable.setPlayer(player, 0);
     }
 
     @Test
     public void shouldDoNothingWhenMsgIsNull(){
-        interpreter.interpret(null, new GameTable(0));
+        interpreter.interpret(null, gameTable);
         Card[] actualCards = gameTable.getHandCards();
 
         assertNull(actualCards[0]);
