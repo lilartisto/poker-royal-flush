@@ -11,7 +11,6 @@ public class Game {
 
 	//private static Player player = new Player("");
 	private static ServerConnector serverConnector;
-	private static GameMenuController gameMenuController;
 	private static TableView tableView;
 
 	public static void setServerConnector(ServerConnector connector){
@@ -37,12 +36,4 @@ public class Game {
 	//public static void setPlayer(Player mainPlayer){
 	//	player = mainPlayer;
 	//}
-
-	public static GameMenuController getGameMenuController() {
-		return gameMenuController;
-	}
-
-	public static void setGameMenuController(GameMenuController gameMenuController) {
-		Game.gameMenuController = gameMenuController;
-	}
 }

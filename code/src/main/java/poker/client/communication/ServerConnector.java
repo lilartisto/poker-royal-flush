@@ -5,6 +5,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import poker.client.communication.interpreters.*;
 import poker.client.Game;
+import poker.client.controller.GameMenuController;
 import poker.client.data.GameTable;
 
 import java.io.BufferedReader;
@@ -37,7 +38,7 @@ public class ServerConnector {
 		JSONObject answer = new JSONObject(listenForMsg());
 		checkIfConnected(answer);
 
-		GameTable.getInstance().setMainPlayerSeat(answer.getInt("seat"));
+		GameTable.getInstance().seat(answer.getInt("seat"));
 	}
 
 	private void checkIfConnected(JSONObject msgJSON) throws Exception {
@@ -66,7 +67,7 @@ public class ServerConnector {
 			if(server.isClosed()){
 				return null;
 			}
-			Game.getGameMenuController().resetApp("Application lost connection with server");
+			GameMenuController.getInstance().resetApp("Application lost connection with server");
 			return null;
 		}
 	}
@@ -125,7 +126,7 @@ public class ServerConnector {
 			if(server.isClosed()){
 				return;
 			}
-			Game.getGameMenuController().resetApp("Application lost connection with server");
+			GameMenuController.getInstance().resetApp("Application lost connection with server");
 		}
 	}
 

@@ -72,4 +72,10 @@ public class GameTable {
 	public Card[] getHandCards(){
 		return handCards;
 	}
+
+	public void seat(int mainPlayerSeat){
+		this.mainPlayerSeat = mainPlayerSeat;
+		handCards[0] = null;
+		handCards[1] = null;
+	}
 }

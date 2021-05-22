@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import poker.client.Game;
+import poker.client.controller.GameMenuController;
 import poker.client.data.GameTable;
 import poker.client.data.Player;
 import poker.client.data.cards.Card;
@@ -67,6 +68,6 @@ public class EndMsgInterpreter implements MsgInterpreter {
 	}
 
 	private void disconnectFromServer(){
-		Game.getGameMenuController().resetApp("You lost all your money");
+		GameMenuController.getInstance().resetApp("You lost all your money");
 	}
 }

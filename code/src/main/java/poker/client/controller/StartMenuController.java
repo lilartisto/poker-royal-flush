@@ -1,6 +1,5 @@
 package poker.client.controller;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -9,18 +8,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import org.json.JSONObject;
 import poker.client.Game;
 import poker.client.communication.ServerConnector;
-import poker.client.data.Player;
-import poker.client.data.cards.Deck;
-import poker.client.view.TableView;
 
-import javax.crypto.spec.PSource;
 import java.io.IOException;
-import java.net.ConnectException;
-import java.net.UnknownHostException;
-import java.util.HashMap;
 
 public class StartMenuController {
 
@@ -85,9 +76,8 @@ public class StartMenuController {
 
     private void switchToMainPane() {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/mainPane.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/gamePane.fxml"));
             Pane mainPane = fxmlLoader.load();
-            Game.setGameMenuController(fxmlLoader.getController());
             Scene scene = new Scene(mainPane);
             Stage stage = (Stage) thisPane.getScene().getWindow();
             stage.setScene(scene);

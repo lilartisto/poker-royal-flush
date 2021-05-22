@@ -5,6 +5,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import poker.client.Game;
+import poker.client.controller.GameMenuController;
 import poker.client.data.GameTable;
 import poker.client.data.Player;
 import poker.client.data.cards.Card;
@@ -59,7 +60,7 @@ public class GameInfoMsgInterpreter implements MsgInterpreter {
 		Player mainPlayer = gameTable.getMainPlayer();
 
 		if(mainPlayer != null && mainPlayer.equals(player) && player.getState() == PlayerStateProperties.AFTERFOLD){
-			Platform.runLater(() -> Game.getGameMenuController().disableButtons());
+			Platform.runLater(() -> GameMenuController.getInstance().disableButtons());
 		}
 	}
 }

@@ -22,6 +22,12 @@ import java.io.IOException;
 
 public class GameMenuController {
 
+	private static GameMenuController instance;
+
+	public static GameMenuController getInstance(){
+		return instance;
+	}
+
 	private GameTable gameTable;
 	private ServerConnector serverConnector;
 
@@ -44,6 +50,8 @@ public class GameMenuController {
 
 	@FXML
 	private void initialize(){
+		instance = this;
+
 		raiseSlider.setMin(1);
 		raiseSlider.setMax(10);
 
