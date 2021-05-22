@@ -3,14 +3,11 @@ package poker.client.communication.interpreters;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import poker.client.Game;
 import poker.client.controller.GameMenuController;
 import poker.client.data.GameTable;
 import poker.client.data.Player;
 import poker.client.data.cards.Card;
 import poker.client.data.cards.Deck;
-
-import java.util.Set;
 
 public class EndMsgInterpreter implements MsgInterpreter {
 

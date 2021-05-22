@@ -2,10 +2,8 @@ package poker.client.communication.interpreters;
 
 
 import org.json.JSONObject;
-import poker.client.Game;
 import poker.client.controller.GameMenuController;
 import poker.client.data.GameTable;
-import poker.client.data.Player;
 
 public class MoveRequestMsgInterpreter implements MsgInterpreter {
 

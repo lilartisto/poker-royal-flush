@@ -11,7 +11,6 @@ import javafx.scene.control.Slider;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import poker.client.Game;
 import poker.client.communication.MsgFormats;
 import poker.client.communication.ServerConnector;
 import poker.client.data.GameTable;
@@ -56,7 +55,7 @@ public class GameMenuController {
 		raiseSlider.setMax(10);
 
 		serverConnector = ServerConnector.getInstance();
-		Game.setTableView(new TableView(canvas));
+		serverConnector.setTableView(new TableView(canvas));
 	}
 
 	@FXML

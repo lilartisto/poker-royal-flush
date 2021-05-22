@@ -7,7 +7,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import poker.client.Game;
 import poker.client.data.GameTable;
 import poker.client.data.Player;
 import poker.client.data.cards.Card;

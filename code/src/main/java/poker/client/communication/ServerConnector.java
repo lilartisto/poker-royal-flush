@@ -4,9 +4,9 @@ import javafx.application.Platform;
 import org.json.JSONException;
 import org.json.JSONObject;
 import poker.client.communication.interpreters.*;
-import poker.client.Game;
 import poker.client.controller.GameMenuController;
 import poker.client.data.GameTable;
+import poker.client.view.TableView;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -33,6 +33,8 @@ public class ServerConnector {
 
 	private final Socket server;
 	private final BufferedReader serverReader;
+
+	private TableView tableView;
 
 	private ServerConnector(String host, int port, String nickname) throws Exception {
 		server = new Socket(host, port);
@@ -109,9 +111,9 @@ public class ServerConnector {
 			if (msgInterpreter != null) {
 				msgInterpreter.interpret(jsonMsg, GameTable.getInstance());
 				if (msgName.equals("end")) {
-					Platform.runLater(() -> Game.getTableView().drawEnding());
+					Platform.runLater(() -> tableView.drawEnding());
 				} else {
-					Platform.runLater(() -> Game.getTableView().draw());
+					Platform.runLater(() -> tableView.draw());
 				}
 			}
 		} catch (JSONException ignored){}
@@ -149,5 +151,9 @@ public class ServerConnector {
 		try {
 			server.close();
 		} catch (IOException ignored){ }
+	}
+
+	public void setTableView(TableView tableView){
+		this.tableView = tableView;
 	}
 }

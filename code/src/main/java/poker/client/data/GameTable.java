@@ -1,6 +1,5 @@
 package poker.client.data;
 
-import poker.client.Game;
 import poker.client.data.cards.Card;
 
 public class GameTable {

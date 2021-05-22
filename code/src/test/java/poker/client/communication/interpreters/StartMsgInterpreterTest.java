@@ -3,7 +3,6 @@ package poker.client.communication.interpreters;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import poker.client.Game;
 import poker.client.data.GameTable;
 import poker.client.data.Player;
 import poker.client.data.cards.Card;
