@@ -11,7 +11,6 @@ import poker.server.communication.msgformats.MoveRequestMsgFormat;
 import poker.server.data.GameTable;
 import poker.server.data.Player;
 
-import java.io.IOException;
 
 public class CycleController {
 
@@ -66,6 +65,11 @@ public class CycleController {
 			} else if(players[i] != null) {
 				nextMove(players[i]);
 			}
+		}
+
+		if(isOver()){
+			addPlayersPotsToTablePot(players);
+			throw new IllegalStateException("Players have folded or disconnected");
 		}
 
 		addPlayersPotsToTablePot(players);

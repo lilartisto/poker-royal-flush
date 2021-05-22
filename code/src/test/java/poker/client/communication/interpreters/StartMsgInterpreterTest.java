@@ -28,7 +28,7 @@ public class StartMsgInterpreterTest {
     @Test
     public void shouldDoNothingWhenMsgIsNull(){
         interpreter.interpret(null, new GameTable(0));
-        Card[] actualCards = player.getHandCards();
+        Card[] actualCards = gameTable.getHandCards();
 
         assertNull(actualCards[0]);
         assertNull(actualCards[1]);
@@ -39,7 +39,7 @@ public class StartMsgInterpreterTest {
         String msg = "{\"name\":\"start\",\"cards\":[{\"color\":3,\"number\":12},{\"color\":0,\"number\":8}]}";
 
         interpreter.interpret(new JSONObject(msg), gameTable);
-        Card[] actualCards = player.getHandCards();
+        Card[] actualCards = gameTable.getHandCards();
 
         assertEquals(3, actualCards[0].color);
         assertEquals(12, actualCards[0].number);
@@ -52,7 +52,7 @@ public class StartMsgInterpreterTest {
         String msg = "{\"name\":\"start\",\"cards\":[{\"color\":1,\"number\":2},{\"color\":3,\"number\":4}]}";
 
         interpreter.interpret(new JSONObject(msg), gameTable);
-        Card[] actualCards = player.getHandCards();
+        Card[] actualCards = gameTable.getHandCards();
 
         assertEquals(1, actualCards[0].color);
         assertEquals(2, actualCards[0].number);
@@ -65,7 +65,7 @@ public class StartMsgInterpreterTest {
         String msg = "{\"name\":\"start\",\"cards\":[null,null]}";
 
         interpreter.interpret(new JSONObject(msg), gameTable);
-        Card[] actualCards = player.getHandCards();
+        Card[] actualCards = gameTable.getHandCards();
 
         assertNull(actualCards[0]);
         assertNull(actualCards[1]);
@@ -76,7 +76,7 @@ public class StartMsgInterpreterTest {
         String msg = "{\"name\":\"start\",\"cards\":[{\"color\":1},{\"color\":3,\"number\":4}]}";
 
         interpreter.interpret(new JSONObject(msg), gameTable);
-        Card[] actualCards = player.getHandCards();
+        Card[] actualCards = gameTable.getHandCards();
 
         assertNull(actualCards[0]);
         assertNull(actualCards[1]);
@@ -87,7 +87,7 @@ public class StartMsgInterpreterTest {
         String msg = "{\"name\":\"start\",\"cards\":[{\"color\":1,\"number\":2},{\"number\":4}]}";
 
         interpreter.interpret(new JSONObject(msg), gameTable);
-        Card[] actualCards = player.getHandCards();
+        Card[] actualCards = gameTable.getHandCards();
 
         assertNull(actualCards[0]);
         assertNull(actualCards[1]);

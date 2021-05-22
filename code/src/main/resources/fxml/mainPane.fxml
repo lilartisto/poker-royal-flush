@@ -33,7 +33,7 @@
             </Button>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <Slider fx:id="raiseSlider" onMouseClicked="#sliderMoved" onMouseDragged="#sliderMoved" />
+                  <Slider fx:id="raiseSlider" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#sliderMoved" onMouseDragged="#sliderMoved" prefHeight="20.0" prefWidth="200.0" />
                   <Text fx:id="raiseText" strokeType="OUTSIDE" strokeWidth="0.0" text="1 $">
                      <VBox.margin>
                         <Insets />

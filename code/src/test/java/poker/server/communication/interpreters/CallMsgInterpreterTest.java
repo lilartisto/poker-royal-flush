@@ -17,14 +17,17 @@ public class CallMsgInterpreterTest {
         CycleController controller = new CycleController(gameTable, null);
         MsgInterpreter interpreter = new CallMsgInterpreter();
 
+        int playerStartMoney = 100;
         int pot = 5;
+
+        player.setMoney(playerStartMoney);
         controller.setMinPot(pot);
         interpreter.interpret(null, player, controller);
 
         int expectedPlayersPot = pot;
         int actualPlayersPot = player.getPotValue();
 
-        int expectedPlayersMoney = -1 * pot;
+        int expectedPlayersMoney = playerStartMoney - pot;
         int actualPlayersMoney = player.getMoney();
 
         int expectedPlayersState = PlayerStateProperties.INGAME;

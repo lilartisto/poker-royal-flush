@@ -50,6 +50,7 @@ public class RoundController {
 
 			endRoundByHandCardsWinner();
 		} catch (IllegalStateException e) {
+			timeDelay(cycleDelay);
 			endRoundByFoldWinner();
 		} finally {
 			updateGameTableAndPlayers();

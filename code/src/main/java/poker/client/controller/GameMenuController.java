@@ -131,8 +131,8 @@ public class GameMenuController {
 	}
 
 	private void printAlert(String msg) {
-		Alert alert = new Alert(Alert.AlertType.ERROR);
-		alert.setTitle("Error");
+		Alert alert = new Alert(Alert.AlertType.INFORMATION);
+		alert.setTitle("Information dialog");
 		alert.setContentText(msg);
 		alert.showAndWait();
 	}
