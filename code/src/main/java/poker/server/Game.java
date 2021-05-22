@@ -16,18 +16,8 @@ import java.util.Properties;
 
 public class Game {
 
-    private static ClientConnector clientConnector;
-    private static DataBaseController dataBaseController;
     private static int startMoney;
     private static int blind;
-
-    public static ClientConnector getClientConnector(){
-        return clientConnector;
-    }
-
-    public static DataBaseController getDataBaseController(){
-        return dataBaseController;
-    }
 
     public static int getStartMoney(){
         return startMoney;
@@ -62,24 +52,26 @@ public class Game {
         System.out.println("Start money = " + startMoney);
         System.out.println("Blind = " + blind);
 
+        DataBaseController dbController = null;
         try {
-            clientConnector = new ClientConnector(port);
+            dbController = connectToDataBase();
+        } catch (Exception e) {
+            System.err.println("Cannot connect to database. " + e.getMessage());
+        }
+
+        ClientConnector clientConnector;
+        try {
+            clientConnector = new ClientConnector(port, dbController);
         } catch (IOException e){
             System.err.println("Cannot run a server");
             return;
         }
 
-        try {
-            connectToDataBase();
-        } catch (Exception e) {
-            System.err.println("Cannot connect to database. " + e.getMessage());
-        }
-
-        GameController gameController = new GameController();
+        GameController gameController = new GameController(clientConnector);
         gameController.playGame();
     }
 
-    private static void connectToDataBase() throws Exception {
+    private static DataBaseController connectToDataBase() throws Exception {
         Properties databaseProp = new Properties();
         String path = new File("").getAbsolutePath() + "/src/main/resources/config/database.config";
         databaseProp.load(new FileInputStream(path));
@@ -94,7 +86,7 @@ public class Game {
                     "File = " + path);
         }
 
-        dataBaseController = new DataBaseController(
+        return new DataBaseController(
                 databaseProp.getProperty("database.url"),
                 databaseProp.getProperty("database.username"),
                 databaseProp.getProperty("database.password")

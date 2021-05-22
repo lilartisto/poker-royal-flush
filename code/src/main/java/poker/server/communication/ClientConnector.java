@@ -1,5 +1,6 @@
 package poker.server.communication;
 
+import javafx.scene.chart.PieChart;
 import poker.server.Game;
 import poker.server.communication.msgformats.ConnectMsgFormat;
 import poker.server.communication.msgformats.GameInfoMsgFormat;
@@ -25,11 +26,13 @@ public class ClientConnector {
 	private HashMap<Player, Socket> playersSockets;
 	private HashMap<Player, PlayerListener> playersListeners;
 	private ServerSocket serverSocket;
+	private DataBaseController dbController;
 
-	public ClientConnector(int port) throws IOException{
+	public ClientConnector(int port, DataBaseController dbController) throws IOException{
 		playersSockets = new HashMap<>();
 		playersListeners = new HashMap<>();
 		serverSocket = new ServerSocket(port);
+		this.dbController = dbController;
 		listenForPlayers();
 	}
 
@@ -88,8 +91,6 @@ public class ClientConnector {
 	}
 
 	private Player getPlayer(String nickname){
-		DataBaseController dbController = Game.getDataBaseController();
-
 		try {
 			Player player = dbController.getPlayer(nickname);
 			if (player == null) {
@@ -167,12 +168,11 @@ public class ClientConnector {
 
 		sendMsgToAll(GameInfoMsgFormat.getMsg(gameTable));
 
-		System.out.println("Player " + player.nickname + " has been disconnected from the server");
+		System.out.println("Player " + player.nickname + " has disconnected from the server");
 	}
 
 	private void updateDataBase(Player player){
 		try {
-			DataBaseController dbController = Game.getDataBaseController();
 			dbController.updatePlayer(player);
 		} catch (SQLException | NullPointerException ignored){ }
 	}

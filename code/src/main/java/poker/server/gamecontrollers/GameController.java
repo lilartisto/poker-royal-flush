@@ -1,6 +1,7 @@
 package poker.server.gamecontrollers;
 
 import poker.server.Game;
+import poker.server.communication.ClientConnector;
 import poker.server.communication.msgformats.GameInfoMsgFormat;
 import poker.server.communication.msgformats.StartMsgFormat;
 import poker.server.data.GameTable;
@@ -9,9 +10,11 @@ import poker.server.data.cards.Card;
 public class GameController {
 
 	private final GameTable gameTable;
+	private final ClientConnector clientConnector;
 
-	public GameController(){
-		this.gameTable = GameTable.getInstance();
+	public GameController(ClientConnector clientConnector){
+		gameTable = GameTable.getInstance();
+		this.clientConnector = clientConnector;
 	}
 
 	public void playGame(){
@@ -26,7 +29,7 @@ public class GameController {
 			waitRoundDelay();
 
 			try {
-				RoundController roundController = new RoundController(gameTable, Game.getClientConnector());
+				RoundController roundController = new RoundController(gameTable, clientConnector);
 				roundController.playRound();
 				gameTable.moveStarterPlayerIndex();
 			} catch (IllegalStateException ignored){ }
@@ -34,11 +37,11 @@ public class GameController {
 	}
 
 	private void sendGameInfo(){
-		Game.getClientConnector().sendMsgToAll(GameInfoMsgFormat.getMsg(GameTable.getInstance()));
+		clientConnector.sendMsgToAll(GameInfoMsgFormat.getMsg(GameTable.getInstance()));
 	}
 
 	private void sendStartMsgWithNullCards(){
-		Game.getClientConnector().sendMsgToAll(StartMsgFormat.getMsg(new Card[]{null, null}));
+		clientConnector.sendMsgToAll(StartMsgFormat.getMsg(new Card[]{null, null}));
 	}
 
 	private void waitRoundDelay(){
