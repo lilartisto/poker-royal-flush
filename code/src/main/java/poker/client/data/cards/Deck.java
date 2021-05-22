@@ -4,6 +4,15 @@ import javafx.scene.image.Image;
 
 public class Deck {
 
+	private static Deck instance;
+
+	public static Deck getInstance(){
+		if(instance == null){
+			instance = new Deck();
+		}
+		return instance;
+	}
+
 	private final Card[] cards;
 
 	public Deck(){

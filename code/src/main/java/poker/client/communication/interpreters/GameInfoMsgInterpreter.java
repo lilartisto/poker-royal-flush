@@ -43,7 +43,7 @@ public class GameInfoMsgInterpreter implements MsgInterpreter {
 
 	private void setCards(JSONArray cards, GameTable gameTable){
 		int n = cards.length();
-		Deck deck = Game.getDeck();
+		Deck deck = Deck.getInstance();
 		for (int i = 0; i < n; i++){
 			try{
 				JSONObject cardJSON = cards.getJSONObject(i);

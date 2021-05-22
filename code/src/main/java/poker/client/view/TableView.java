@@ -11,6 +11,7 @@ import poker.client.Game;
 import poker.client.data.GameTable;
 import poker.client.data.Player;
 import poker.client.data.cards.Card;
+import poker.client.data.cards.Deck;
 import poker.properties.PlayerStateProperties;
 
 public class TableView {
@@ -233,7 +234,7 @@ public class TableView {
 		for (Card tableCard : tableCards) {
 			Image image;
 			if(tableCard == null) {
-				image = Game.getDeck().getBackCard().image;
+				image = Deck.getInstance().getBackCard().image;
 			} else {
 				image = tableCard.image;
 			}

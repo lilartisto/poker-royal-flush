@@ -7,6 +7,7 @@ import poker.client.Game;
 import poker.client.data.GameTable;
 import poker.client.data.Player;
 import poker.client.data.cards.Card;
+import poker.client.data.cards.Deck;
 
 import java.util.Set;
 
@@ -57,7 +58,7 @@ public class EndMsgInterpreter implements MsgInterpreter {
 	private Card getCard(JSONObject card) throws JSONException{
 		int color = card.getInt("color");
 		int number = card.getInt("number");
-		return Game.getDeck().getCard(color, number);
+		return Deck.getInstance().getCard(color, number);
 	}
 
 	private boolean mainPlayerHasNoMoney(GameTable gameTable){
