@@ -7,26 +7,27 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane fx:id="thisPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="poker.client.controller.GameMenuController">
+<BorderPane id="backgroundPane" fx:id="thisPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="poker.client.controller.GameMenuController">
    <center>
       <Canvas fx:id="canvas" height="500.0" width="1150.0" BorderPane.alignment="CENTER" />
    </center>
    <bottom>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <HBox id="menuPane" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="foldButton" disable="true" mnemonicParsing="false" onAction="#foldButtonClicked" prefHeight="40.0" prefWidth="100.0" text="Fold">
+            <Button id="button-modi" fx:id="foldButton" disable="true" mnemonicParsing="false" onAction="#foldButtonClicked" prefHeight="40.0" prefWidth="100.0" text="Fold">
                <HBox.margin>
                   <Insets right="20.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="checkButton" disable="true" mnemonicParsing="false" onAction="#checkButtonClicked" prefHeight="40.0" prefWidth="100.0" text="Check">
+            <Button id="button-modi" fx:id="checkButton" disable="true" mnemonicParsing="false" onAction="#checkButtonClicked" prefHeight="40.0" prefWidth="100.0" text="Check">
                <HBox.margin>
                   <Insets left="20.0" right="20.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="callButton" disable="true" mnemonicParsing="false" onAction="#callButtonClicked" prefHeight="40.0" prefWidth="100.0" text="Call">
+            <Button id="button-modi" fx:id="callButton" disable="true" mnemonicParsing="false" onAction="#callButtonClicked" prefHeight="40.0" prefWidth="100.0" text="Call">
                <HBox.margin>
                   <Insets left="20.0" right="20.0" />
                </HBox.margin>
@@ -34,17 +35,20 @@
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                <children>
                   <Slider fx:id="raiseSlider" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#sliderMoved" onMouseDragged="#sliderMoved" prefHeight="20.0" prefWidth="200.0" />
-                  <Text fx:id="raiseText" strokeType="OUTSIDE" strokeWidth="0.0" text="1 $">
+                  <Text fx:id="raiseText" fill="#c0c5e4" strokeType="OUTSIDE" strokeWidth="0.0" text="1 $">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
                   </Text>
                </children>
                <HBox.margin>
                   <Insets left="70.0" right="5.0" />
                </HBox.margin>
             </VBox>
-            <Button fx:id="raiseButton" disable="true" mnemonicParsing="false" onAction="#raiseButtonClicked" prefHeight="40.0" prefWidth="100.0" text="Raise">
+            <Button id="button-modi" fx:id="raiseButton" disable="true" mnemonicParsing="false" onAction="#raiseButtonClicked" prefHeight="40.0" prefWidth="100.0" text="Raise">
                <HBox.margin>
                   <Insets left="5.0" />
                </HBox.margin>
