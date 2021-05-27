@@ -79,10 +79,6 @@ public class RoundController {
         cycle.setMinPot(Game.getBlind());
     }
 
-    private void sendGameInfoMsg() {
-        clientConnector.sendMsgToAll(GameInfoMsgFormat.getMsg(gameTable));
-    }
-
     private void drawTableCards(int amount) {
         for (int i = 0; i < amount; i++) {
             gameTable.addTableCard(deck.getRandomCard());

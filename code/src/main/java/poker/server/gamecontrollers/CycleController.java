@@ -36,7 +36,7 @@ public class CycleController {
         Player[] players = gameTable.getPlayers();
 
         for (int i = 0; i < players.length; i++) {
-            if (players[i] != null && players[i].nickname.equals(player.nickname)) {
+            if (players[i] != null && players[i].equals(player)) {
                 starterPlayer = i;
                 return;
             }
