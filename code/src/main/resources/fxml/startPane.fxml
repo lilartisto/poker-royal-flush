@@ -49,7 +49,7 @@
                   </TextField>
                </children>
             </VBox>
-            <Button id="button-modi" mnemonicParsing="false" onAction="#connectButtonClicked" text="Connect">
+            <Button mnemonicParsing="false" onAction="#connectButtonClicked" text="Connect">
                <HBox.margin>
                   <Insets left="15.0" />
                </HBox.margin>
