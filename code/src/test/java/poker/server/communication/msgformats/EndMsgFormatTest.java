@@ -21,13 +21,13 @@ public class EndMsgFormatTest {
     private Set<Player> winners;
 
     @BeforeEach
-    public void setUp(){
+    public void setUp() {
         gameTable = GameTable.getInstance();
         winners = new HashSet<>();
     }
 
     @Test
-    public void shouldReturnCorrectMsgWhenTwoPlayersAreInGameAndOneIsAfterFold(){
+    public void shouldReturnCorrectMsgWhenTwoPlayersAreInGameAndOneIsAfterFold() {
         Player player1 = new Player("player1");
         player1.setState(PlayerStateProperties.INGAME);
         player1.setHandCards(new Card(3, 2), new Card(6, 0));
@@ -52,11 +52,11 @@ public class EndMsgFormatTest {
 
         String msg = EndMsgFormat.getMsg(gameTable, winners);
 
-        checkMsg(new JSONObject(msg), potValue/numberOfWinners);
+        checkMsg(new JSONObject(msg), potValue / numberOfWinners);
     }
 
     @Test
-    public void shouldReturnCorrectMsgWhenOnePlayerIsInGame(){
+    public void shouldReturnCorrectMsgWhenOnePlayerIsInGame() {
         Player player1 = new Player("player1");
         player1.setState(PlayerStateProperties.INGAME);
         player1.setHandCards(new Card(3, 2), new Card(6, 0));
@@ -75,20 +75,20 @@ public class EndMsgFormatTest {
 
         String msg = EndMsgFormat.getMsg(gameTable, winners);
 
-        checkMsg(new JSONObject(msg), potValue/numberOfWinners);
+        checkMsg(new JSONObject(msg), potValue / numberOfWinners);
     }
 
-    private void checkMsg(JSONObject msg, int prize){
+    private void checkMsg(JSONObject msg, int prize) {
         assertEquals("end", msg.getString("name"));
         assertEquals(prize, msg.getInt("prize"));
         checkPlayers(msg.getJSONArray("players"));
     }
 
-    private void checkPlayers(JSONArray playersJSON){
+    private void checkPlayers(JSONArray playersJSON) {
         Player[] players = gameTable.getPlayers();
 
-        for(int i = 0; i < players.length; i++){
-            if(players[i] != null && players[i].getState() != PlayerStateProperties.AFTERFOLD){
+        for (int i = 0; i < players.length; i++) {
+            if (players[i] != null && players[i].getState() != PlayerStateProperties.AFTERFOLD) {
                 checkPlayer(players[i], playersJSON.getJSONObject(i));
             } else {
                 assertEquals(JSONObject.NULL, playersJSON.get(i));
@@ -96,7 +96,7 @@ public class EndMsgFormatTest {
         }
     }
 
-    private void checkPlayer(Player expectedPlayer, JSONObject actualPlayerJSON){
+    private void checkPlayer(Player expectedPlayer, JSONObject actualPlayerJSON) {
         assertEquals(winners.contains(expectedPlayer), actualPlayerJSON.getBoolean("winner"));
 
         Card[] expectedCards = expectedPlayer.getHandCards();
@@ -104,7 +104,7 @@ public class EndMsgFormatTest {
 
         assertEquals(expectedCards.length, actualCardsJSON.length());
 
-        for(int i = 0; i < expectedCards.length; i++){
+        for (int i = 0; i < expectedCards.length; i++) {
             JSONObject actualCardJSON = actualCardsJSON.getJSONObject(i);
             assertEquals(expectedCards[i].number, actualCardJSON.getInt("number"));
             assertEquals(expectedCards[i].color, actualCardJSON.getInt("color"));

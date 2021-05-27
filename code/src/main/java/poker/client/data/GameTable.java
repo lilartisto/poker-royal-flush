@@ -13,30 +13,21 @@ public class GameTable {
 		return instance;
 	}
 
-	private Card[] tableCards;
-	private Player[] players;
+	private final Card[] tableCards;
+	private final Player[] players;
 	private int potValue;
 	private int mainPlayerSeat;
-	private Card[] handCards;
+	private final Card[] handCards;
 
 	private GameTable(){
 		tableCards = new Card[5];
 		players = new Player[6];
-		//players[mainPlayerSeat] = mainPlayer;
 		mainPlayerSeat = 0;
 		handCards = new Card[2];
 	}
 
-	public void addPlayer(Player player, int index){
-		players[index] = player;
-	}
-
 	public Player[] getPlayers(){
 		return players;
-	}
-
-	public void setMainPlayerSeat(int mainPlayerSeat){
-		this.mainPlayerSeat = mainPlayerSeat;
 	}
 
 	public Player getMainPlayer(){
@@ -74,7 +65,6 @@ public class GameTable {
 
 	public void seat(int mainPlayerSeat){
 		this.mainPlayerSeat = mainPlayerSeat;
-		handCards[0] = null;
-		handCards[1] = null;
+		setHandCards(null, null);
 	}
 }

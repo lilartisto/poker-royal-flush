@@ -15,163 +15,175 @@ import java.util.*;
 
 public class RoundController {
 
-	private GameTable gameTable;
-	private Deck deck;
-	private ClientConnector clientConnector;
+    private final GameTable gameTable;
+    private final Deck deck;
+    private final ClientConnector clientConnector;
 
-	public RoundController(GameTable gameTable, ClientConnector clientConnector){
-		this.gameTable = gameTable;
-		this.clientConnector = clientConnector;
-		deck = new Deck();
-	}
+    private static final int CYCLEDELAY = 1500;
 
-	public void playRound(){
-		if(gameTable.numberOfPlayers() <= 1){
-			throw new IllegalStateException("Not enough players for the game");
-		}
-		int cycleDelay = 1500;
+    public RoundController(GameTable gameTable, ClientConnector clientConnector) {
+        this.gameTable = gameTable;
+        this.clientConnector = clientConnector;
+        deck = new Deck();
+    }
 
-		CycleController cycle = new CycleController(gameTable, clientConnector);
-		updateGameTableAndPlayers();
+    public void playRound() {
+        if (gameTable.numberOfPlayers() <= 1) {
+            throw new IllegalStateException("Not enough players for the game");
+        }
 
-		try {
-			startRound();
-			gameTable.setPotValue(0);
-			cycle.setMinPot(Game.getBlind());
-			cycle.playCycle(true);
-			timeDelay(cycleDelay);
+        CycleController cycle = new CycleController(gameTable, clientConnector);
+        updateGameTableAndPlayers();
 
-			for (int i = 0; i < 3; i++) {
-				drawTableCards(i == 0 ? 3 : 1);
-				cycle.setMinPot(0);
-				cycle.playCycle(false);
-				timeDelay(cycleDelay);
-			}
+        playRound(cycle);
+    }
 
-			endRoundByHandCardsWinner();
-		} catch (IllegalStateException e) {
-			timeDelay(cycleDelay);
-			endRoundByFoldWinner();
-		} finally {
-			updateGameTableAndPlayers();
-		}
-	}
+    private void playRound(CycleController cycle) {
+        try {
+            startRound(cycle);
+            playAllCyclesInRound(cycle);
+            endRoundByHandCardsWinner();
+        } catch (IllegalStateException e) {
+            timeDelay(CYCLEDELAY);
+            endRoundByFoldWinner();
+        } finally {
+            updateGameTableAndPlayers();
+        }
+    }
 
-	private void startRound(){
-		Iterator<Player> players = gameTable.playersIterator();
+    private void playAllCyclesInRound(CycleController cycle) {
+        playCycle(true, cycle);
 
-		while (players.hasNext()) {
-			Player player = players.next();
-			player.setHandCards(deck.getRandomCard(), deck.getRandomCard());
-			clientConnector.sendMsg(StartMsgFormat.getMsg(player.getHandCards()), player);
-		}
-	}
+        for (int i = 0; i < 3; i++) {
+            drawTableCards(i == 0 ? 3 : 1);
+            cycle.setMinPot(0);
+            playCycle(false, cycle);
+        }
+    }
 
-	private void sendGameInfoMsg(){
-		clientConnector.sendMsgToAll(GameInfoMsgFormat.getMsg(gameTable));
-	}
+    private void playCycle(boolean firstCycle, CycleController cycle) {
+        cycle.playCycle(firstCycle);
+        timeDelay(CYCLEDELAY);
+    }
 
-	private void drawTableCards(int amount){
-		for(int i = 0; i < amount; i++){
-			gameTable.addTableCard(deck.getRandomCard());
-		}
-	}
+    private void startRound(CycleController cycle) {
+        Iterator<Player> players = gameTable.playersIterator();
 
-	private void endRoundByHandCardsWinner(){
-		Set<Player> winners = getWinnersByHandStrength(getPlayersSortedByHandStrength());
-		clientConnector.sendMsgToAll(EndMsgFormat.getMsg(gameTable, winners));
-		givePrizeToWinners(winners);
-	}
+        while (players.hasNext()) {
+            Player player = players.next();
+            player.setHandCards(deck.getRandomCard(), deck.getRandomCard());
+            clientConnector.sendMsg(StartMsgFormat.getMsg(player.getHandCards()), player);
+        }
 
-	private void endRoundByFoldWinner(){
-		Set<Player> winners = getWinnersByNotFolded();
-		clientConnector.sendMsgToAll(EndMsgFormat.getMsg(gameTable, winners));
-		givePrizeToWinners(winners);
-	}
+        gameTable.setPotValue(0);
+        cycle.setMinPot(Game.getBlind());
+    }
 
-	private Set<Player> getWinnersByNotFolded(){
-		Set<Player> winners = new HashSet<>();
+    private void sendGameInfoMsg() {
+        clientConnector.sendMsgToAll(GameInfoMsgFormat.getMsg(gameTable));
+    }
 
-		for(Player player: gameTable.getPlayers()){
-			if(player != null && player.getState() != PlayerStateProperties.AFTERFOLD){
-				winners.add(player);
-			}
-		}
+    private void drawTableCards(int amount) {
+        for (int i = 0; i < amount; i++) {
+            gameTable.addTableCard(deck.getRandomCard());
+        }
+    }
 
-		return winners;
-	}
+    private void endRoundByHandCardsWinner() {
+        Set<Player> winners = getWinnersByHandStrength(getPlayersSortedByHandStrength());
+        clientConnector.sendMsgToAll(EndMsgFormat.getMsg(gameTable, winners));
+        givePrizeToWinners(winners);
+    }
 
-	private Set<Player> getWinnersByHandStrength(Player[] players){
-		Set<Player> winnersSet = new HashSet<>();
+    private void endRoundByFoldWinner() {
+        Set<Player> winners = getWinnersByNotFolded();
+        clientConnector.sendMsgToAll(EndMsgFormat.getMsg(gameTable, winners));
+        givePrizeToWinners(winners);
+    }
 
-		for(int i = 1; i < players.length || players[i - 1] != null; i++){
-			winnersSet.add(players[i - 1]);
+    private Set<Player> getWinnersByNotFolded() {
+        Set<Player> winners = new HashSet<>();
 
-			if(players[i] == null || players[i - 1].getHandStrength() > players[i].getHandStrength()){
-				break;
-			}
-		}
+        for (Player player : gameTable.getPlayers()) {
+            if (player != null && player.getState() != PlayerStateProperties.AFTERFOLD) {
+                winners.add(player);
+            }
+        }
 
-		return winnersSet;
-	}
+        return winners;
+    }
 
-	private Player[] getPlayersSortedByHandStrength(){
-		PokerHandCalculator calculator = new PokerHandCalculator(gameTable.getTableCards());
-		Player[] players = gameTable.getPlayers().clone();
+    private Set<Player> getWinnersByHandStrength(Player[] players) {
+        Set<Player> winnersSet = new HashSet<>();
 
-		for(Player player: players){
-			if(player != null && player.getState() != PlayerStateProperties.AFTERFOLD) {
-				player.setHandStrength(calculator.handStrength(player.getHandCards()));
-			}
-		}
+        for (int i = 1; i < players.length || players[i - 1] != null; i++) {
+            winnersSet.add(players[i - 1]);
 
-		Arrays.sort(players, (o1, o2) -> {
-			if(o1 == null){
-				return 1;
-			} else if(o2 == null){
-				return -1;
-			} else {
-				return Double.compare(o2.getHandStrength(), o1.getHandStrength());
-			}
-		});
+            if (players[i] == null || players[i - 1].getHandStrength() > players[i].getHandStrength()) {
+                break;
+            }
+        }
 
-		return players;
-	}
+        return winnersSet;
+    }
 
-	private void givePrizeToWinners(Set<Player> winners){
-		int n = winners.size();
-		if(n == 0){
-			return;
-		}
+    private Player[] getPlayersSortedByHandStrength() {
+        PokerHandCalculator calculator = new PokerHandCalculator(gameTable.getTableCards());
+        Player[] players = gameTable.getPlayers().clone();
 
-		int prize = gameTable.getPotValue()/n;
+        for (Player player : players) {
+            if (player != null && player.getState() != PlayerStateProperties.AFTERFOLD) {
+                player.setHandStrength(calculator.handStrength(player.getHandCards()));
+            }
+        }
 
-		for(Player player: gameTable.getPlayers()){
-			if(player != null){
-				if(winners.contains(player)){
-					player.setMoney(player.getMoney() + prize);
-				}
-			}
-		}
-	}
+        Arrays.sort(players, (o1, o2) -> {
+            if (o1 == null) {
+                return 1;
+            } else if (o2 == null) {
+                return -1;
+            } else {
+                return Double.compare(o2.getHandStrength(), o1.getHandStrength());
+            }
+        });
 
-	private void updateGameTableAndPlayers(){
-		for(Player player: gameTable.getPlayers()){
-			if(player != null){
-				player.setPotValue(0);
-				player.setState(PlayerStateProperties.INGAME);
-			}
-		}
+        return players;
+    }
 
-		gameTable.resetTableCards();
-		gameTable.setPotValue(0);
-	}
+    private void givePrizeToWinners(Set<Player> winners) {
+        int n = winners.size();
+        if (n == 0) {
+            return;
+        }
 
-	private void timeDelay(long millis){
-		try{
-			Thread.sleep(millis);
-		} catch (InterruptedException e){
-			return;
-		}
-	}
+        int prize = gameTable.getPotValue() / n;
+
+        for (Player player : gameTable.getPlayers()) {
+            if (player != null) {
+                if (winners.contains(player)) {
+                    player.setMoney(player.getMoney() + prize);
+                }
+            }
+        }
+    }
+
+    private void updateGameTableAndPlayers() {
+        for (Player player : gameTable.getPlayers()) {
+            if (player != null) {
+                player.setPotValue(0);
+                player.setState(PlayerStateProperties.INGAME);
+            }
+        }
+
+        gameTable.resetTableCards();
+        gameTable.setPotValue(0);
+    }
+
+    private void timeDelay(long millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            return;
+        }
+    }
 }

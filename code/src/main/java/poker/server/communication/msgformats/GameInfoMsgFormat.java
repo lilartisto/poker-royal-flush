@@ -8,7 +8,7 @@ import poker.server.data.cards.Card;
 
 public class GameInfoMsgFormat {
 
-    public static String getMsg(GameTable gameTable){
+    public static String getMsg(GameTable gameTable) {
         JSONObject msg = new JSONObject();
         msg.put("name", "info");
         msg.put("table", getTableMap(gameTable));
@@ -16,7 +16,7 @@ public class GameInfoMsgFormat {
         return msg.toString();
     }
 
-    private static JSONObject getTableMap(GameTable gameTable){
+    private static JSONObject getTableMap(GameTable gameTable) {
         JSONObject table = new JSONObject();
         table.put("cards", getCardsArray(gameTable.getTableCards()));
         table.put("pot", gameTable.getPotValue());
@@ -25,7 +25,7 @@ public class GameInfoMsgFormat {
         return table;
     }
 
-    private static JSONArray getCardsArray(Card[] cards){
+    private static JSONArray getCardsArray(Card[] cards) {
         JSONArray msgCards = new JSONArray();
 
         for (Card card : cards) {
@@ -35,8 +35,8 @@ public class GameInfoMsgFormat {
         return msgCards;
     }
 
-    private static JSONObject cardToJSONObject(Card card){
-        if(card != null){
+    private static JSONObject cardToJSONObject(Card card) {
+        if (card != null) {
             JSONObject msgCard = new JSONObject();
             msgCard.put("number", card.number);
             msgCard.put("color", card.color);
@@ -45,7 +45,7 @@ public class GameInfoMsgFormat {
         return null;
     }
 
-    private static JSONArray getPlayersArray(Player[] players){
+    private static JSONArray getPlayersArray(Player[] players) {
         JSONArray msgPlayers = new JSONArray();
 
         for (Player player : players) {
@@ -55,8 +55,8 @@ public class GameInfoMsgFormat {
         return msgPlayers;
     }
 
-    private static JSONObject playerToJSONObject(Player player){
-        if(player != null){
+    private static JSONObject playerToJSONObject(Player player) {
+        if (player != null) {
             JSONObject msgPlayer = new JSONObject();
             msgPlayer.put("nickname", player.nickname);
             msgPlayer.put("money", player.getMoney());

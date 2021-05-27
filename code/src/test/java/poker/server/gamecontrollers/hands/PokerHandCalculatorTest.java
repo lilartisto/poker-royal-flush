@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class PokerHandCalculatorTest {
 
     @Test
-    public void shouldReturnHighCardWhenCardsAreHighCard(){
+    public void shouldReturnHighCardWhenCardsAreHighCard() {
         Card[] tableCards = {
                 new Card(10, 0),
                 new Card(0, 1),
@@ -31,7 +31,7 @@ public class PokerHandCalculatorTest {
     }
 
     @Test
-    public void shouldReturnOnePairWhenCardsAreOnePair(){
+    public void shouldReturnOnePairWhenCardsAreOnePair() {
         Card[] tableCards = {
                 new Card(10, 0),
                 new Card(0, 1),
@@ -54,7 +54,7 @@ public class PokerHandCalculatorTest {
     }
 
     @Test
-    public void shouldReturnTwoPairWhenCardsAreTwoPair(){
+    public void shouldReturnTwoPairWhenCardsAreTwoPair() {
         Card[] tableCards = {
                 new Card(6, 0),
                 new Card(0, 1),
@@ -77,7 +77,7 @@ public class PokerHandCalculatorTest {
     }
 
     @Test
-    public void shouldReturnThreeOfKindWhenCardsAreThreeOfKind(){
+    public void shouldReturnThreeOfKindWhenCardsAreThreeOfKind() {
         Card[] tableCards = {
                 new Card(6, 0),
                 new Card(0, 1),
@@ -100,7 +100,7 @@ public class PokerHandCalculatorTest {
     }
 
     @Test
-    public void shouldReturnStraightWhenCardsAreStraight(){
+    public void shouldReturnStraightWhenCardsAreStraight() {
         Card[] tableCards = {
                 new Card(6, 0),
                 new Card(0, 1),
@@ -147,7 +147,7 @@ public class PokerHandCalculatorTest {
     }
 
     @Test
-    public void shouldReturnFullHouseWhenCardsAreFullHouse(){
+    public void shouldReturnFullHouseWhenCardsAreFullHouse() {
         Card[] tableCards = {
                 new Card(4, 0),
                 new Card(11, 1),

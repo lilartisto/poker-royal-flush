@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class StartMsgFormatTest {
 
     @Test
-    public void shouldReturnCorrectStringWhenCardsAreNotNull(){
+    public void shouldReturnCorrectStringWhenCardsAreNotNull() {
         Deck deck = new Deck();
         Card[] cards = {deck.getRandomCard(), deck.getRandomCard()};
 
@@ -25,7 +25,7 @@ public class StartMsgFormatTest {
     }
 
     @Test
-    public void shouldReturnCorrectStringWhenCardsAreNull(){
+    public void shouldReturnCorrectStringWhenCardsAreNull() {
         Card[] cards = {null, null};
 
         String expectedMsg =

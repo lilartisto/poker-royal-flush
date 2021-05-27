@@ -11,16 +11,16 @@ public class DeckTest {
     private Deck deck;
 
     @BeforeEach
-    public void setUp(){
+    public void setUp() {
         deck = new Deck();
     }
 
     @Test
-    public void shouldThrowIllegalStateExceptionWhenAllCardsAreDrawn(){
+    public void shouldThrowIllegalStateExceptionWhenAllCardsAreDrawn() {
         IllegalStateException exception = assertThrows(
                 IllegalStateException.class,
                 () -> {
-                    for(int i = 0; i < 53; i++){
+                    for (int i = 0; i < 53; i++) {
                         deck.getRandomCard();
                     }
                 });
@@ -28,11 +28,11 @@ public class DeckTest {
     }
 
     @Test
-    public void shouldReturnOtherCardWhenMethodIsCalledMultipleTimes(){
+    public void shouldReturnOtherCardWhenMethodIsCalledMultipleTimes() {
         Card card = deck.getRandomCard();
 
-        for (int i = 0; i < 51; i++){
-            if(card.equals(deck.getRandomCard())){
+        for (int i = 0; i < 51; i++) {
+            if (card.equals(deck.getRandomCard())) {
                 assert false;
             }
         }

@@ -2,9 +2,7 @@ package poker.properties;
 
 public class CardsProperties {
 
-    public static final int CLUBS = 0;
-    public static final int DIAMONDS = 1;
-    public static final int HEARTS = 2;
-    public static final int SPADES = 3;
+    public static final int DECKSIZE = 52;
+    public static final int COLORSIZE = 13;
 
 }

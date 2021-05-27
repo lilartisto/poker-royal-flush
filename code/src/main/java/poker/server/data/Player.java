@@ -8,7 +8,7 @@ public class Player {
 
     public final String nickname;
     private int money;
-    private Card[] handCards;
+    private final Card[] handCards;
     private int state;
     private int potValue;
     private double handStrength;
@@ -23,23 +23,23 @@ public class Player {
         handStrength = 0;
     }
 
-    public int getMoney(){
+    public int getMoney() {
         return money;
     }
 
-    public int getState(){
+    public int getState() {
         return state;
     }
 
-    public int getPotValue(){
+    public int getPotValue() {
         return potValue;
     }
 
-    public Card[] getHandCards(){
+    public Card[] getHandCards() {
         return handCards;
     }
 
-    public double getHandStrength(){
+    public double getHandStrength() {
         return handStrength;
     }
 
@@ -47,29 +47,21 @@ public class Player {
         this.handStrength = handStrength;
     }
 
-    public void setHandCards(Card card1, Card card2){
+    public void setHandCards(Card card1, Card card2) {
         handCards[0] = card1;
         handCards[1] = card2;
     }
 
-    public void setState(int state){
+    public void setState(int state) {
         this.state = state;
     }
 
-    public void setMoney(int money){
+    public void setMoney(int money) {
         this.money = money;
     }
 
-    public void setPotValue(int potValue){
+    public void setPotValue(int potValue) {
         this.potValue = potValue;
-    }
-
-    public void setLastMsg(String lastMsg) {
-        this.lastMsg = lastMsg;
-    }
-
-    public String getLastMsg() {
-        return lastMsg;
     }
 
     @Override
@@ -79,7 +71,7 @@ public class Player {
 
     @Override
     public boolean equals(Object obj) {
-        if(obj instanceof Player){
+        if (obj instanceof Player) {
             return nickname.equals(((Player) obj).nickname);
         }
         return false;

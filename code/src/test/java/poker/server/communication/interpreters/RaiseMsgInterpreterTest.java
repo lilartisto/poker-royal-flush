@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class RaiseMsgInterpreterTest {
 
     @Test
-    public void shouldInterpretCorrectlyWhenPlayerRaised(){
+    public void shouldInterpretCorrectlyWhenPlayerRaised() {
         Player player = new Player("test");
         GameTable gameTable = GameTable.getInstance();
         CycleController controller = new CycleController(gameTable, null);

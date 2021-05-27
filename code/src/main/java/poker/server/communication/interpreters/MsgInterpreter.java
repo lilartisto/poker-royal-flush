@@ -6,6 +6,6 @@ import poker.server.gamecontrollers.CycleController;
 
 public interface MsgInterpreter {
 
-	public void interpret(JSONObject msg, Player player, CycleController cycleController);
+    public void interpret(JSONObject msg, Player player, CycleController cycleController);
 
 }

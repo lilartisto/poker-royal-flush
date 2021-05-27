@@ -29,7 +29,7 @@ public class StartMenuController {
     private void connectButtonClicked() {
         try {
             validData();
-            if(connectToServer()){
+            if (connectToServer()) {
                 switchToMainPane();
             }
         } catch (IllegalArgumentException e) {
@@ -96,7 +96,7 @@ public class StartMenuController {
         try {
             ServerConnector.init(hostTextField.getText(), Integer.parseInt(portTextField.getText()), nicknameTextField.getText());
             return true;
-        }catch (Exception e) {
+        } catch (Exception e) {
             printAlert("Cannot connect to server " + e.getMessage());
         }
         return false;

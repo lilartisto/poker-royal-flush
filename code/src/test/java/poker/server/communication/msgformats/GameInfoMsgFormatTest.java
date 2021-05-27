@@ -4,7 +4,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
-import poker.server.Game;
 import poker.server.data.GameTable;
 import poker.server.data.Player;
 import poker.server.data.cards.Card;
@@ -15,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 public class GameInfoMsgFormatTest {
 
     @Test
-    public void shouldReturnCorrectMsgWhenDataIsComplete(){
+    public void shouldReturnCorrectMsgWhenDataIsComplete() {
         GameTable gameTable = GameTable.getInstance();
 
         addPlayers(gameTable, 6);
@@ -27,7 +26,7 @@ public class GameInfoMsgFormatTest {
     }
 
     @Test
-    public void shouldReturnCorrectMsgWhenSomeCardsAreNull(){
+    public void shouldReturnCorrectMsgWhenSomeCardsAreNull() {
         GameTable gameTable = GameTable.getInstance();
 
         addPlayers(gameTable, 6);
@@ -38,7 +37,7 @@ public class GameInfoMsgFormatTest {
     }
 
     @Test
-    public void shouldReturnCorrectMsgWhenSomePlayersAreNull(){
+    public void shouldReturnCorrectMsgWhenSomePlayersAreNull() {
         GameTable gameTable = GameTable.getInstance();
 
         addPlayers(gameTable, 3);
@@ -49,7 +48,7 @@ public class GameInfoMsgFormatTest {
     }
 
     @Test
-    public void shouldReturnCorrectMsgWhenSomeCardsAndPlayersAreNull(){
+    public void shouldReturnCorrectMsgWhenSomeCardsAndPlayersAreNull() {
         GameTable gameTable = GameTable.getInstance();
 
         addPlayers(gameTable, 2);
@@ -59,7 +58,7 @@ public class GameInfoMsgFormatTest {
         checkCorrectness(actualMsg, gameTable);
     }
 
-    private void checkCorrectness(String msg, GameTable gameTable){
+    private void checkCorrectness(String msg, GameTable gameTable) {
         JSONObject jsonMsg = new JSONObject(msg);
         JSONObject jsonTable = jsonMsg.getJSONObject("table");
 
@@ -69,10 +68,10 @@ public class GameInfoMsgFormatTest {
         checkPlayerCorrectness(jsonTable.getJSONArray("players"), gameTable);
     }
 
-    private void checkPlayerCorrectness(JSONArray players, GameTable gameTable){
+    private void checkPlayerCorrectness(JSONArray players, GameTable gameTable) {
         Player[] expectedPlayers = gameTable.getPlayers();
 
-        for(int i = 0; i < expectedPlayers.length; i++){
+        for (int i = 0; i < expectedPlayers.length; i++) {
             try {
                 JSONObject actualPlayer = players.getJSONObject(i);
 
@@ -80,35 +79,35 @@ public class GameInfoMsgFormatTest {
                 assertEquals(expectedPlayers[i].getMoney(), actualPlayer.getInt("money"));
                 assertEquals(expectedPlayers[i].getState(), actualPlayer.getInt("state"));
                 assertEquals(expectedPlayers[i].getPotValue(), actualPlayer.getInt("pot"));
-            } catch (JSONException e){
+            } catch (JSONException e) {
                 assertNull(expectedPlayers[i]);
             }
         }
     }
 
-    private void checkCardsCorrectness(JSONArray cards, GameTable gameTable){
+    private void checkCardsCorrectness(JSONArray cards, GameTable gameTable) {
         Card[] expectedCards = gameTable.getTableCards();
 
-        for(int i = 0; i < expectedCards.length; i++){
+        for (int i = 0; i < expectedCards.length; i++) {
             try {
                 JSONObject actualCard = cards.getJSONObject(i);
 
                 assertEquals(expectedCards[i].color, actualCard.getInt("color"));
                 assertEquals(expectedCards[i].number, actualCard.getInt("number"));
-            } catch (JSONException e){
+            } catch (JSONException e) {
                 assertNull(expectedCards[i]);
             }
         }
     }
 
-    private void addPlayers(GameTable gameTable, int n){
-        for(int i = 0; i < n; i++){
+    private void addPlayers(GameTable gameTable, int n) {
+        for (int i = 0; i < n; i++) {
             gameTable.addPlayer(new Player("nick" + i));
         }
     }
 
-    private void addCards(GameTable gameTable, int n){
-        for(int i = 0; i < n; i++){
+    private void addCards(GameTable gameTable, int n) {
+        for (int i = 0; i < n; i++) {
             gameTable.addTableCard(new Card(i, 0));
         }
     }

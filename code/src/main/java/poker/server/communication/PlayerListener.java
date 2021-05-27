@@ -11,51 +11,50 @@ public class PlayerListener {
     private boolean listen;
     private String lastMsg;
 
-    public PlayerListener(ClientConnector clientConnector, Player player){
+    public PlayerListener(ClientConnector clientConnector, Player player) {
         this.clientConnector = clientConnector;
         this.player = player;
         listen = true;
         startConstantlyListenForMsg();
     }
 
-    private void startConstantlyListenForMsg(){
+    private void startConstantlyListenForMsg() {
         Thread listeningThread = new Thread(this::constantlyListenForMsg);
         listeningThread.setDaemon(true);
         listeningThread.start();
     }
 
-    private void constantlyListenForMsg(){
-        while(listen){
+    private void constantlyListenForMsg() {
+        while (listen) {
             lastMsg = clientConnector.listenForPlayerMsg(player);
 
-            if(disconnectMsg(lastMsg)){
+            if (disconnectMsg(lastMsg)) {
                 clientConnector.disconnectFromPlayer(player);
             }
 
             try {
                 Thread.sleep(20);
-            } catch (InterruptedException e){
+            } catch (InterruptedException e) {
                 return;
             }
         }
     }
 
-    private boolean disconnectMsg(String msg){
-        JSONObject jsonObject = new JSONObject(msg);
-
+    private boolean disconnectMsg(String msg) {
         try {
+            JSONObject jsonObject = new JSONObject(msg);
             String name = jsonObject.getString("name");
             return name.equals("disconnect");
-        } catch (JSONException e){
+        } catch (JSONException | NullPointerException e) {
             return false;
         }
     }
 
-    public void stopListening(){
+    public void stopListening() {
         listen = false;
     }
 
-    public String getLastMsg(){
+    public String getLastMsg() {
         String msg = lastMsg;
         lastMsg = null;
         return msg;

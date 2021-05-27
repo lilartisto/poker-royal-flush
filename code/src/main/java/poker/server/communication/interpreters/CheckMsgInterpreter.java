@@ -7,9 +7,9 @@ import poker.server.gamecontrollers.CycleController;
 
 public class CheckMsgInterpreter implements MsgInterpreter {
 
-	@Override
-	public void interpret(JSONObject msg, Player player, CycleController cycleController){
-		player.setState(PlayerStateProperties.INGAME);
-	}
+    @Override
+    public void interpret(JSONObject msg, Player player, CycleController cycleController) {
+        player.setState(PlayerStateProperties.INGAME);
+    }
 
 }

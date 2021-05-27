@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class FoldMsgInterpreterTest {
 
     @Test
-    public void shouldInterpretCorrectlyWhenPlayerFolded(){
+    public void shouldInterpretCorrectlyWhenPlayerFolded() {
         Player player = new Player("test");
         GameTable gameTable = GameTable.getInstance();
         CycleController controller = new CycleController(gameTable, null);

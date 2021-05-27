@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class CheckMsgInterpreterTest {
 
     @Test
-    public void shouldInterpretCorrectlyWhenPlayerChecked(){
+    public void shouldInterpretCorrectlyWhenPlayerChecked() {
         Player player = new Player("test");
         GameTable gameTable = GameTable.getInstance();
         CycleController controller = new CycleController(gameTable, null);

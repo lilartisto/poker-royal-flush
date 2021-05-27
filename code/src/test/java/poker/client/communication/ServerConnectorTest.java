@@ -1,5 +1,7 @@
 package poker.client.communication;
 
+import org.checkerframework.dataflow.qual.TerminatesExecution;
+import org.json.JSONObject;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,7 +21,7 @@ public class ServerConnectorTest {
     private int port;
 
     @BeforeEach
-    public void setUp(){
+    public void setUp() {
         port = 5000;
         try {
             server = new ServerSocket(port);
@@ -29,7 +31,7 @@ public class ServerConnectorTest {
     }
 
     @AfterEach
-    public void closeServer(){
+    public void closeServer() {
         try {
             server.close();
         } catch (IOException e) {
@@ -38,28 +40,28 @@ public class ServerConnectorTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenHostIsIncorrect(){
+    public void shouldThrowExceptionWhenHostIsIncorrect() {
         String host = "shouldThrowException";
         UnknownHostException exception = assertThrows(
                 UnknownHostException.class,
                 () -> {
-                    ServerConnector.init(host, port+1, "test");
+                    ServerConnector.init(host, port + 1, "test");
                 });
         assertEquals(host, exception.getMessage());
     }
 
     @Test
-    public void shouldThrowExceptionWhenPortIsIncorrect(){
+    public void shouldThrowExceptionWhenPortIsIncorrect() {
         ConnectException exception = assertThrows(
                 ConnectException.class,
                 () -> {
-                    ServerConnector.init(server.getInetAddress().getHostAddress(), port+1, "test");
+                    ServerConnector.init(server.getInetAddress().getHostAddress(), port + 1, "test");
                 });
         assertEquals("Connection refused: connect", exception.getMessage());
     }
 
     @Test
-    public void shouldSendConnectMsgToServerWhenClientTryConnectToServer(){
+    public void shouldSendConnectMsgToServerWhenClientTryConnectToServer() {
         try {
             Thread thread = new Thread(() -> {
                 try {
@@ -71,19 +73,19 @@ public class ServerConnectorTest {
             thread.start();
 
             String actualConnectMsg = listen(server.accept().getInputStream());
-            String expectedConnectMsg = "{\"name\":\"connect\",\"nickname\":\"test\"}";
+            String expectedConnectMsg = "{\"name\": \"connect\",\"nickname\": \"test\"}";
 
             assertEquals(expectedConnectMsg, actualConnectMsg);
-        } catch (Exception e){
+        } catch (Exception e) {
             assert false;
         }
     }
 
-    private String listen(InputStream inputStream){
+    private String listen(InputStream inputStream) {
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
             return br.readLine();
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
