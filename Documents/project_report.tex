@@ -78,7 +78,7 @@
         Uruchamiamy go jak każdy inny taki program - na przykład klikając podwójnie w ikonę aplikacji.
         
         \begin{center}
-            \includegraphics[width=75mm]{ekran_start.png}
+            \includegraphics[width=75mm]{finished_gui_start.png}
             \\
             Ekran startowy aplikacji klienckiej
         \end{center}
@@ -91,7 +91,7 @@
         \vspace{4mm}
         
         \begin{center}
-            \includegraphics[width=\textwidth]{ekran_glowny.png}
+            \includegraphics[width=\textwidth]{finished_gui_table.png}
             \\
             Ekran główny aplikacji klienckiej
         \end{center}
@@ -170,7 +170,70 @@ database.password=haslo
     \end{itemize}
 
 
-\section{Wnioski i spostrzeżenia}
-
-
+\section{Wnioski i podsumowanie projektu}
+    Projekt ten jest moim największym projektem, który napisałem.
+    Podejmując się go, byłem pełny wątpliwości czy poradzę sobie z tym zadaniem.
+    Przez to, że nie stworzyłem wcześniej żadnego poważnego systemu z architekturą klient-serwer i integracją aplikacji z bazą danych moje wątpliwości były jeszcze większe.
+    Patrząc teraz na skończony już projekt uważam, że jako niedoświadczony programista poradziłem sobie z tym zadaniem zaskakująco dobrze.
+    Z całego projektu i niżej wypisanych wniosków zdobyłem cenne doświadczenie.
+    
+    \subsection{Co dało się zrobić lepiej?}
+        Mimo, że aplikacja działa w pełni poprawnie i tak jak zostało to zaplanowane, widzę w tym systemie wiele niedociągnięć.\\
+        
+        \vspace{2mm}
+        \textbf{Nasłuchiwanie na komunikaty od graczy}\\
+            Aktualne rozwiązanie nasłuchiwania na komunikaty opiera się na tym, że dla każdego, nowo dołączonego gracza, serwer uruchamia oddzielny wątek, którego zadaniem jest nasłuchiwanie na wiadomości wysyłane przez klienta.
+            Jest to rozwiązanie kosztowne dla maszyny na której uruchomiony jest serwer.
+            Problem ten można rozwiązać na przykład uruchamiając jeden wątek nasłuchujący, a nowo dołączonych graczy po prostu dołączyć do iteracji nasłuchiwania na komunikaty.
+        \\
+        \vspace{2mm}
+        \textbf{Czytelność widoku stołu w aplikacji klienckiej}\\
+            Widok stołu uważam za czytelny, ale widzę w nim dwa niedociągnięcia.
+            Pierwszym z nich jest brak jakiejś kontrolki, która informowała by o tym ile czasu zostało graczowi na wykonanie danego ruchu.
+            Problem ten miałem w planach poprawić, ale z braku czasu tego nie zrobiłem.\\
+            Drugim problemem jest czytelność stanu gracza - czy jest w grze, czy jest jego kolej na ruch.
+            Aktualnie stan gracza wyświetlany jest jako kolor ramki tego gracza. Jest to rozwiązanie wystarczające, ale dla nowych graczy kolory ramek mogą być mylące.
+        \\
+        \vspace{2mm}
+        \textbf{Bezpieczeństwo systemu}\\ % + o interpreterach
+            Przez mój brak doświadczenia w tworzeniu systemów klient-serwer nie byłem świadomy na jakie zagrożenia powinienem uważać.
+            Do serwera może podłączyć się klient, który nie jest oryginalną aplikacją kliencką, a na przykład jej modyfikacją.
+            Działanie serwera jak i klienta w takiej sytuacji nie zostało przeze mnie zweryfikowane.\\
+            \\
+            Komunikat startu rundy zawiera w sobie informacje o kartach gracza.
+            Ten komunikat nie jest w żaden sposób szyfrowany, więc w sytuacji gdy ten komunikat zostanie przez kogoś przechwycony, karty te mogą być łatwo odczytane.\\
+            \\
+            W mojej aplikacji nie podoba mi się również obsługa sytuacji wyjątkowych gdy komunikaty, odbierane przez klienta bądź serwer, są błędne.
+            W takich sytuacjach program po prostu nie interpretuje tej wiadomości, a lepszym rozwiązaniem byłoby wyciągnięcie jak największej ilości informacji z tej wiadomości (oczywiście jeśli jest to możliwe).
+        
+    \subsection{Z czego jestem zadowolony?}
+        Widzę, że mój projekt nie jest bezbłędny, ale wciąż jestem zadowolony z jego ogółu.
+        W szczególności jestem zadowolony z kilku ważnych decyzji podjętych w fazie projektowania.
+        
+        \vspace{2mm}
+        \textbf{Komunikaty wysyłane pomiędzy klientem a serwerem}\\
+            Dzięki takim komunikatom jakie aktualnie znajdują się w systemie, obsługa ich i obsługa sytuacji ,,wyjątkowych'' jest bardzo prosta.
+            Mówiąc o sytuacjach wyjątkowych mam na myśli na przykład dołączenie nowego gracza do stołu.
+            Zamiast wysyłać komunikat informujący o takiej sytuacji, wysyłany jest komunikat stanu stołu.
+            Interpretacja tego komunikatu po stronie klienta jest zawsze taka sama i również należy do łatwych.
+            Dzięki temu liczba wszystkich możliwych komunikatów w systemie jest bardzo mała.
+        
+        \vspace{2mm}
+        \textbf{System punktów siły układu kart}\\
+            Tworząc funkcjonalność odpowiadającą za wyznaczanie zwycięzcy spośród graczy wpadłem na pomysł punktów danego układu.
+            Zasada działania jest bardzo prosta:\\
+            Jeśli układ A jest silniejszy od układu B, to metoda PokerHandCalculator.handStrength() spełnia zależność:\\
+            \begin{center}
+                handStrength(A) > handStrength(B)
+            \end{center} 
+            Jeśli układ A jest tak samo silny jak układ B, to metoda PokerHandCalculator.handStrength() spełnia zależność:\\
+            \begin{center}
+                handStrength(A) = handStrength(B)
+            \end{center}
+            
+            Zadanie to nie było proste. Liczba wszystkich możliwych układów w tej grze karcianej wynosi 2 598 960.
+            \begin{center}
+                \includegraphics[width=75mm]{poker_hands.png}
+            \end{center}
+            
 \end{document}
