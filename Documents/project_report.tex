@@ -48,9 +48,11 @@
 
 \title{Sprawozdanie z projektu - Poker Royal Flush}
 \author{Artur Prasuła}
+\date{}
 
 \begin{document}
 \maketitle
+\vspace{10mm}
 \tableofcontents
 \newpage
 
@@ -103,10 +105,10 @@
        
     
     \subsection{Serwer}
-        Serwer nie jest wyposażony w graficzny interfejs użytkownika gdyż taki nie jest potrzebny.
+        Serwer nie jest wyposażony w graficzny interfejs użytkownika gdyż nie jest on potrzebny.
         Aplikacja po uruchomieniu nie wymaga żadnej ingerencji.
         Bardzo ważna jest natomiast konfiguracja startowa aplikacji.
-        W skład tej konfiguracji wchodzi: parametry uruchomienne serwera, konfiguracja połączenia z bazą danych.\\
+        W skład tej konfiguracji wchodzą: parametry uruchomienne serwera, konfiguracja połączenia z bazą danych.\\
         \\
         \textbf{Parametry uruchomienne}
             \begin{center}
@@ -116,6 +118,7 @@
             \textbf{port} - port serwera (domyślnie - 5000)\\
             \textbf{start money} - wartość początkowej ilości pieniędzy jaką dostaje każdy z gracz po dołączeniu do stołu (domyślnie - 200)\\
             \textbf{blind} - wartość ciemnej (domyślnie - 1)\\
+        \\
         \\
         \textbf{Konfiguracja połączenia z bazą danych}\\
             Do skonfigurowania połączenia serwera mojej aplikacji z serwerem bazy danych wykorzystywany jest plik konfiguracyjny \textbf{database.config} w którym definiujemy wszystkie potrzebne do połączenia dane.\\
@@ -130,26 +133,31 @@ database.password=haslo
             
             Jeżeli plik konfiguracyjny będzie zawierać jakieś błędy lub taki plik nie będzie istnieć aplikacja poinformuje użytkownika o błędzie.
             Implementacja serwera przewiduje w takiej sytuacji dalsze działanie serwera z nieaktywną funkcjonalnością bazy danych.
-        
-
-\section{Opis struktury projektu}
 
 
 \section{Testowanie programu}
     Poszczególne klasy w programie testowane były za pomocą testów jednostkowych.
     Do tego celu użyłem narzędzia \textbf{JUnit}.
-    Dodatkowo integracja poszczególnych funkcjonalności i GUI było testowane ręcznie.
-    Tworzenie i wykonywanie wyżej wymienionych testów było nieodłącznym elementem mojej pracy i poświęcałem im dużą uwagę w całym okresie trwania prac przy kodzie projektu.
-
+    Integracja poszczególnych funkcjonalności i GUI były testowane ręcznie.\\
+    Tworzenie i wykonywanie wyżej wymienionych testów było nieodłącznym elementem mojej pracy i poświęcałem im dużą uwagę w całym okresie trwania prac przy kodzie projektu.\\
+    \\
+    Problematyczne okazało się testowanie funkcjonalności, które do poprawnego działania wykorzystywały odpowiedź od drugiej aplikacji.
+    To znaczy na przykład funkcje po stronie serwera, które wykorzystywały komunikaty od klienta.
+    Wydaje mi się, że tą problematyczność można by rozwiązać refraktoryzując kod.
+    
 
 \section{Zmiany w projekcie względem specyfikacji implementacyjnej}
     Podczas prac projektowania systemu starałem się, aby zaplanować jak najbardziej szczegółowo jak aplikacja będzie działać.
-    Dokładniej rzecz ujmując, jak będzie wyglądać komunikacja klient-serwer, jak wyglądać będzie współpraca poszczególnych modułów w aplikacji klienckiej i serwerowej oraz jak wyglądać będą poszczególne klasy w programie.\\
+    Dokładniej rzecz ujmując:
+        jak będzie wyglądać komunikacja klient-serwer,
+        jak wyglądać będzie współpraca poszczególnych modułów w aplikacji klienckiej i serwerowej 
+        oraz jak wyglądać będą poszczególne klasy w programie.\\
     \\
     Uważam, że faza projektowania przebiegła z pozytywnym skutkiem i końcowy projekt nie różni się dużo od tego zaprojektowanego na papierze.
-    Niestety w trakcie implementacji okazało się, że system wymaga małych poprawek, które oczywiście zrealizowałem.\\
-    \\
-    \textbf{Lista zmian w projekcie względem specyfikacji implementacyjnej}\\
+    Niestety w trakcie implementacji okazało się, że system wymaga małych poprawek, które oczywiście zrealizowałem.
+    
+    \newpage
+    \paragraph{Lista zmian w projekcie względem specyfikacji implementacyjnej}
     \begin{itemize}
         \item dodatkowe komunikaty wysyłane przez klienta do serwera
         \begin{itemize}
@@ -174,66 +182,49 @@ database.password=haslo
     Projekt ten jest moim największym projektem, który napisałem.
     Podejmując się go, byłem pełny wątpliwości czy poradzę sobie z tym zadaniem.
     Przez to, że nie stworzyłem wcześniej żadnego poważnego systemu z architekturą klient-serwer i integracją aplikacji z bazą danych moje wątpliwości były jeszcze większe.
-    Patrząc teraz na skończony już projekt uważam, że jako niedoświadczony programista poradziłem sobie z tym zadaniem zaskakująco dobrze.
-    Z całego projektu i niżej wypisanych wniosków zdobyłem cenne doświadczenie.
+    Patrząc teraz, na skończony już projekt uważam, że jako niedoświadczony programista poradziłem sobie z tym zadaniem zaskakująco dobrze.
     
     \subsection{Co dało się zrobić lepiej?}
-        Mimo, że aplikacja działa w pełni poprawnie i tak jak zostało to zaplanowane, widzę w tym systemie wiele niedociągnięć.\\
+        Mimo, że cały system działa w pełni poprawnie, widzę w nim kilka niedociągnięć.
         
-        \vspace{2mm}
+        \vspace{3mm}
         \textbf{Nasłuchiwanie na komunikaty od graczy}\\
             Aktualne rozwiązanie nasłuchiwania na komunikaty opiera się na tym, że dla każdego, nowo dołączonego gracza, serwer uruchamia oddzielny wątek, którego zadaniem jest nasłuchiwanie na wiadomości wysyłane przez klienta.
             Jest to rozwiązanie kosztowne dla maszyny na której uruchomiony jest serwer.
             Problem ten można rozwiązać na przykład uruchamiając jeden wątek nasłuchujący, a nowo dołączonych graczy po prostu dołączyć do iteracji nasłuchiwania na komunikaty.
-        \\
-        \vspace{2mm}
+            
+        \vspace{3mm}
         \textbf{Czytelność widoku stołu w aplikacji klienckiej}\\
             Widok stołu uważam za czytelny, ale widzę w nim dwa niedociągnięcia.
             Pierwszym z nich jest brak jakiejś kontrolki, która informowała by o tym ile czasu zostało graczowi na wykonanie danego ruchu.
-            Problem ten miałem w planach poprawić, ale z braku czasu tego nie zrobiłem.\\
+            \\
             Drugim problemem jest czytelność stanu gracza - czy jest w grze, czy jest jego kolej na ruch.
-            Aktualnie stan gracza wyświetlany jest jako kolor ramki tego gracza. Jest to rozwiązanie wystarczające, ale dla nowych graczy kolory ramek mogą być mylące.
-        \\
-        \vspace{2mm}
-        \textbf{Bezpieczeństwo systemu}\\ % + o interpreterach
-            Przez mój brak doświadczenia w tworzeniu systemów klient-serwer nie byłem świadomy na jakie zagrożenia powinienem uważać.
-            Do serwera może podłączyć się klient, który nie jest oryginalną aplikacją kliencką, a na przykład jej modyfikacją.
-            Działanie serwera jak i klienta w takiej sytuacji nie zostało przeze mnie zweryfikowane.\\
-            \\
-            Komunikat startu rundy zawiera w sobie informacje o kartach gracza.
-            Ten komunikat nie jest w żaden sposób szyfrowany, więc w sytuacji gdy ten komunikat zostanie przez kogoś przechwycony, karty te mogą być łatwo odczytane.\\
-            \\
-            W mojej aplikacji nie podoba mi się również obsługa sytuacji wyjątkowych gdy komunikaty, odbierane przez klienta bądź serwer, są błędne.
-            W takich sytuacjach program po prostu nie interpretuje tej wiadomości, a lepszym rozwiązaniem byłoby wyciągnięcie jak największej ilości informacji z tej wiadomości (oczywiście jeśli jest to możliwe).
+            Aktualnie stan gracza wyświetlany jest jako kolor ramki tego gracza. Jest to rozwiązanie wystarczające, ale dla nowych graczy takie rozwiązanie może być mylące.
         
+    
     \subsection{Z czego jestem zadowolony?}
         Widzę, że mój projekt nie jest bezbłędny, ale wciąż jestem zadowolony z jego ogółu.
         W szczególności jestem zadowolony z kilku ważnych decyzji podjętych w fazie projektowania.
         
-        \vspace{2mm}
+        \vspace{3mm}
         \textbf{Komunikaty wysyłane pomiędzy klientem a serwerem}\\
-            Dzięki takim komunikatom jakie aktualnie znajdują się w systemie, obsługa ich i obsługa sytuacji ,,wyjątkowych'' jest bardzo prosta.
-            Mówiąc o sytuacjach wyjątkowych mam na myśli na przykład dołączenie nowego gracza do stołu.
-            Zamiast wysyłać komunikat informujący o takiej sytuacji, wysyłany jest komunikat stanu stołu.
-            Interpretacja tego komunikatu po stronie klienta jest zawsze taka sama i również należy do łatwych.
-            Dzięki temu liczba wszystkich możliwych komunikatów w systemie jest bardzo mała.
+            Podczas projektowania tego elementu programu, postawiłem na jak największą prostotę tej komunikacji.
+            Dlatego liczba wszystkich komunikatów jest bardzo mała, ale dzięki uniwersalności komunikatu \textbf{info}, system nie wymaga większej ich ilości.
         
-        \vspace{2mm}
+        \vspace{3mm}
         \textbf{System punktów siły układu kart}\\
-            Tworząc funkcjonalność odpowiadającą za wyznaczanie zwycięzcy spośród graczy wpadłem na pomysł punktów danego układu.
+            Tworząc funkcjonalność odpowiadającą za wyznaczanie zwycięzcy spośród graczy wpadłem na pomysł systemu punktów.
+            Punkty w tym systemie odzwierciedlałyby siłę danego układu.
             Zasada działania jest bardzo prosta:\\
-            Jeśli układ A jest silniejszy od układu B, to metoda PokerHandCalculator.handStrength() spełnia zależność:\\
+            Jeśli układ A jest silniejszy od układu B, to metoda PokerHandCalculator.handStrength() spełnia zależność:
             \begin{center}
                 handStrength(A) > handStrength(B)
             \end{center} 
-            Jeśli układ A jest tak samo silny jak układ B, to metoda PokerHandCalculator.handStrength() spełnia zależność:\\
+            Jeśli układ A jest tak samo silny jak układ B, to metoda PokerHandCalculator.handStrength() spełnia zależność:
             \begin{center}
                 handStrength(A) = handStrength(B)
             \end{center}
-            
-            Zadanie to nie było proste. Liczba wszystkich możliwych układów w tej grze karcianej wynosi 2 598 960.
-            \begin{center}
-                \includegraphics[width=75mm]{poker_hands.png}
-            \end{center}
+            Zadanie to nie było proste.
+            Liczba wszystkich możliwych układów w tej grze karcianej wynosi 2 598 960.
             
 \end{document}
