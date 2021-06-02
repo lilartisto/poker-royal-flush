@@ -135,10 +135,39 @@ database.password=haslo
 \section{Opis struktury projektu}
 
 
-\section{Testowanie programu i wyniki}
+\section{Testowanie programu}
+    Poszczególne klasy w programie testowane były za pomocą testów jednostkowych.
+    Do tego celu użyłem narzędzia \textbf{JUnit}.
+    Dodatkowo integracja poszczególnych funkcjonalności i GUI było testowane ręcznie.
+    Tworzenie i wykonywanie wyżej wymienionych testów było nieodłącznym elementem mojej pracy i poświęcałem im dużą uwagę w całym okresie trwania prac przy kodzie projektu.
 
 
-\section{Zmiany względem specyfikacji}
+\section{Zmiany w projekcie względem specyfikacji implementacyjnej}
+    Podczas prac projektowania systemu starałem się, aby zaplanować jak najbardziej szczegółowo jak aplikacja będzie działać.
+    Dokładniej rzecz ujmując, jak będzie wyglądać komunikacja klient-serwer, jak wyglądać będzie współpraca poszczególnych modułów w aplikacji klienckiej i serwerowej oraz jak wyglądać będą poszczególne klasy w programie.\\
+    \\
+    Uważam, że faza projektowania przebiegła z pozytywnym skutkiem i końcowy projekt nie różni się dużo od tego zaprojektowanego na papierze.
+    Niestety w trakcie implementacji okazało się, że system wymaga małych poprawek, które oczywiście zrealizowałem.\\
+    \\
+    \textbf{Lista zmian w projekcie względem specyfikacji implementacyjnej}\\
+    \begin{itemize}
+        \item dodatkowe komunikaty wysyłane przez klienta do serwera
+        \begin{itemize}
+            \item komunikat \textbf{connect} - informuje o chęci dołączenia do serwera
+            \item komunikat \textbf{disconnect} - informuje o rozłączeniu się klienta od serwera
+        \end{itemize}
+        \item dodatkowe komunikaty wysyłane przez serwer do klienta
+        \begin{itemize}
+            \item komunikat \textbf{connect} - odpowiedź informująca o tym czy klient dołączył do serwera
+        \end{itemize}
+        \item dodatkowe klasy interpretujące i formatujące wyżej wymienione komunikaty
+        \item rozbicie klasy \textbf{server.communication.MsgFormat} na poszczególne klasy odpowiadające danym komunikatom
+        \item dodatkowa klasa \textbf{server.communuication.PlayerListener} - jej zadaniem jest nasłuchiwanie na wiadomości przysyłane przez klientów (wcześniej ta funkcjonalność była zawarta w klasie \textbf{ClientConnector})
+        \item zastosowanie wzorca projektowego \textbf{singleton} w niektórych klasach
+        \item usunięcie klasy \textbf{poker.client.Game} - przyczyną jest zastosowanie wyżej wymienionego wzorca projektowego
+        \item dodanie pliku \textbf{style.css} aby aplikacja kliencka ładniej się prezentowała
+        \item zmiany w polach i metodach w niektórych klasach
+    \end{itemize}
 
 
 \section{Wnioski i spostrzeżenia}
